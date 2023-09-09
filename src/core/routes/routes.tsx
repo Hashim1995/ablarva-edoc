@@ -4,6 +4,8 @@ import { ViewAdditionPage } from '@/modules/edc/pages/view-addition-page';
 import React, { Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 
+import LoginPage from '@core/static-pages/login-page';
+
 const HomePage = React.lazy(() => import('@/modules/home/pages/index'));
 const CreateContractPage = React.lazy(
   () => import('@/modules/edc/pages/create-contract-page')
@@ -33,7 +35,6 @@ const CreateAdditionPage = React.lazy(
 const NotificationsListPage = React.lazy(
   () => import('@/modules/notifications/pages')
 );
-const LoginPage = React.lazy(() => import('@core/static-pages/login-page'));
 const LegalEnitiesPage = React.lazy(
   () => import('@core/static-pages/legal-entities-page')
 );
