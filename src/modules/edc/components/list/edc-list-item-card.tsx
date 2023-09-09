@@ -65,21 +65,17 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
       }
     }
   };
-
-  const generateMenuItems = (z: Permission) => {
-    const actions: MenuProps['items'] = [];
-
-    if (z.viewButton) {
-      actions.push({
-        label: (
-          <Typography.Text>
-            {dictionary.en.view.toLocaleUpperCase()}
-          </Typography.Text>
-        ),
-        key: ButtonConfig.viewButton
-      });
+  const actions: MenuProps['items'] = [
+    {
+      label: (
+        <Typography.Text>
+          {dictionary.en.view.toLocaleUpperCase()}
+        </Typography.Text>
+      ),
+      key: ButtonConfig.viewButton
     }
-
+  ];
+  const generateMenuItems = (z: Permission) => {
     if (z.editButton) {
       actions.push({
         label: (
@@ -134,9 +130,9 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
         key: ButtonConfig.returnButton
       });
     }
-
-    return actions;
   };
+
+  permission && generateMenuItems(permission);
 
   const handleMenuClick: MenuProps['onClick'] = e => {
     if (e.key === '0') {
@@ -201,7 +197,7 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
   };
 
   const menuProps = {
-    items: permission && generateMenuItems(permission),
+    items: actions,
     onClick: handleMenuClick
   };
 
@@ -370,8 +366,8 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
               }}
               color="warning"
             >
-              {DocumentStatus?.toLocaleUpperCase('en-EN') ??
-                noDataText?.toLocaleUpperCase('en-EN')}
+              {DocumentStatus?.toLocaleUpperCase('tr-TR') ??
+                noDataText?.toLocaleUpperCase('tr-TR')}
             </Tag> */}
           </div>
         </Col>
