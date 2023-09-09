@@ -21,12 +21,12 @@ function ChangeLogDetailModal({ item }: IChangeLogDetailModalProps) {
 
   const columns: ColumnsType<IEdcChangeLogItem> = [
     {
-      title: 'Növü',
+      title: 'Type',
       dataIndex: 'name',
       key: '1'
     },
     {
-      title: 'Köhnə məlumat',
+      title: 'Old data',
       key: '2',
       render: (record: IEdcChangeLogItem) => {
         if (record?.type === 1) {
@@ -60,7 +60,7 @@ function ChangeLogDetailModal({ item }: IChangeLogDetailModalProps) {
       }
     },
     {
-      title: 'Yeni məlumat',
+      title: 'New data',
       key: '3',
       render: (record: IEdcChangeLogItem) => {
         if (record?.type === 1) {

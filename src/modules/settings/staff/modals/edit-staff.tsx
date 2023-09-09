@@ -173,7 +173,7 @@ function UpdateStaff({
                     validate: {
                       checkOnlyEnglishChars: (value: string) =>
                         /^[a-zA-Z0-9]+$/.test(value) ||
-                        'Fin xanası yalnız İngilis hərflərindən ibarət olmalıdır.'
+                        'FinCode field should contain only english characters.'
                     }
                   }}
                   required
@@ -256,7 +256,7 @@ function UpdateStaff({
                     validate: {
                       checkOnlyEnglishChars: (value: string) =>
                         /^[\w\\.-]+@[\w\\.-]+\.\w+$/.test(value) ||
-                        'Zəhmət olmasa düzgün bir e-poçt ünvanı daxil edin.'
+                        'Please enter a valid email address.'
                     }
                   }}
                   required

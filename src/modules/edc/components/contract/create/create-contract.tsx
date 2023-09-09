@@ -223,7 +223,7 @@ function CreateContract() {
 
   const columns: ColumnsType<IEdcContractTableFileListItem> = [
     {
-      title: 'Sənədin tipi',
+      title: 'Document Type',
       dataIndex: 'type',
       key: 'name',
       render: (record: number) =>
@@ -232,7 +232,7 @@ function CreateContract() {
           : dictionary.en.fileTypeIsPrivate
     },
     {
-      title: 'Sənədin adı',
+      title: 'Document name',
       dataIndex: 'name',
       key: 'age'
     },
@@ -770,7 +770,7 @@ function CreateContract() {
                             watch('tableFileList')?.length < 2
                               ? setShowUploadFileModal(true)
                               : toast.warn(
-                                  'Yalnız 2 sənəd əlavə edə bilərsiniz',
+                                  'You can upload only two document',
                                   toastOptions
                                 );
                             e.stopPropagation();

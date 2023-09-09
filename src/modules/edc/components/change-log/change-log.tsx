@@ -40,17 +40,17 @@ function ChangeLog({ id, refreshComponent }: IChangeLogProps) {
     useState<IEdcChangeLogListItemResponse>();
   const columns: ColumnsType<IEdcChangeLogListItem> = [
     {
-      title: 'İSTİFADƏÇİ',
+      title: dictionary.en.user.toLocaleUpperCase('en-EN'),
       dataIndex: 'userName',
       key: 'userName'
     },
     {
-      title: 'TƏYİNAT',
+      title: dictionary.en.appointment.toLocaleUpperCase('en-EN'),
       dataIndex: 'appointment',
       key: 'appointment'
     },
     {
-      title: 'TARİX',
+      title: dictionary.en.date.toLocaleUpperCase('en-EN'),
       dataIndex: 'date',
       key: 'date',
       render: (date: string) => {

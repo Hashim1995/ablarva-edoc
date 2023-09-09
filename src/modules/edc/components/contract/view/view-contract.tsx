@@ -619,9 +619,9 @@ function ViewContract() {
                       (z: IEdcContractTableFileListItem) => {
                         let tooltipText;
                         if (z.type === 1) {
-                          tooltipText = dictionary?.az?.fileTypeIsMain;
+                          tooltipText = dictionary?.en?.fileTypeIsMain;
                         } else if (z.type === 2) {
-                          tooltipText = dictionary?.az?.fileTypeIsPrivate;
+                          tooltipText = dictionary?.en?.fileTypeIsPrivate;
                         } else {
                           tooltipText = dictionary.en.noDataText;
                         }

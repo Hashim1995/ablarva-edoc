@@ -78,7 +78,7 @@ function GeneralCounts() {
             data={generalCounts?.Data.Datas}
             xKey="Month"
             yKey="Count"
-            label="Say"
+            label="Count"
           />
         )}
       </Card>

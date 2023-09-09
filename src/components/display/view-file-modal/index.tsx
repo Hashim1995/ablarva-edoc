@@ -15,7 +15,7 @@ function ViewFileModal({ src }: { src: any }) {
         <Space direction="vertical">
           <div>
             <div>
-              <Text type="secondary">SƏNƏDİN ADI</Text>
+              <Text type="secondary">FILE NAME</Text>
             </div>
             <div>
               <Text>{src?.name}</Text>
@@ -23,7 +23,7 @@ function ViewFileModal({ src }: { src: any }) {
           </div>
           <div>
             <div>
-              <Text type="secondary">SƏNƏDİN ÖLÇÜSÜ</Text>
+              <Text type="secondary">FILE SIZE</Text>
             </div>
             <div>
               <Text>{convertBytesToReadableSize(src?.size)}</Text>
@@ -31,7 +31,7 @@ function ViewFileModal({ src }: { src: any }) {
           </div>
           <div>
             <div>
-              <Text type="secondary">SƏNƏDİN TARİXİ</Text>
+              <Text type="secondary">DATE</Text>
             </div>
             <div>
               <Text>

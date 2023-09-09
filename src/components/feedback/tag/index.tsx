@@ -12,7 +12,7 @@ interface CustomTagProps {
 }
 
 const StatusColors: Record<string, string> = {
-  Gözləmədə: '#fa8c16',
+  Pending: '#fa8c16',
   'Geri qaytarılmış': '#f5222d',
   Razılaşdırılmış: '#52c41a',
   'Xitam verilmiş': '#fadb14',

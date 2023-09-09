@@ -199,13 +199,13 @@ function CreateAct() {
 
   const columns: ColumnsType<IEdcContractTableFileListItem> = [
     {
-      title: 'Sənədin tipi',
+      title: 'Document Type',
       dataIndex: 'type',
       key: 'name',
       render: () => dictionary.en.fileTypeIsMain
     },
     {
-      title: 'Sənədin adı',
+      title: 'Document name',
       dataIndex: 'name',
       key: 'age'
     },
@@ -604,7 +604,7 @@ function CreateAct() {
                             watch('tableFileList')?.length < 1
                               ? setShowUploadFileModal(true)
                               : toast.warn(
-                                  'Yalnız 1 sənəd əlavə edə bilərsiniz',
+                                  'You can upload only one document',
                                   toastOptions
                                 );
                             e.stopPropagation();
