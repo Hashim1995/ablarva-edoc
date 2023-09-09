@@ -262,7 +262,7 @@ function ViewContract() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.generalInfo.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.generalInfo.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -605,7 +605,7 @@ function ViewContract() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.documents.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.documents.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -682,7 +682,7 @@ function ViewContract() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.relatedDocs.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.relatedDocs.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -789,7 +789,7 @@ function ViewContract() {
               <Card size="small" className="box box-margin-y">
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.file.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.file.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{

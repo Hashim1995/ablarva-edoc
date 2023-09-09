@@ -81,7 +81,7 @@ function ChangeLog({ id, refreshComponent }: IChangeLogProps) {
       <Card size="small" className="box box-margin-y">
         <Typography.Text>
           {' '}
-          {dictionary.en.changeLog.toLocaleUpperCase('tr-TR')}
+          {dictionary.en.changeLog.toLocaleUpperCase('en-EN')}
         </Typography.Text>
         <Divider
           style={{

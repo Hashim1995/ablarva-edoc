@@ -55,7 +55,7 @@ function LegalEntities() {
         <Space className="w-full" direction="vertical" size="middle">
           <Card
             loading={entities.length === 0}
-            title="Davam etmək istədiyiniz şirkəti seçin"
+            title="Select the company which you want to continue"
           >
             {!loading ? (
               <Space className="w-full" direction="vertical" size={'small'}>
@@ -120,7 +120,7 @@ function LegalEntities() {
             block
             type="primary"
           >
-            {dictionary.en.signOut.toLocaleUpperCase('tr-TR')}
+            {dictionary.en.signOut.toLocaleUpperCase('en-EN')}
           </Button>
         </Space>
       </Col>

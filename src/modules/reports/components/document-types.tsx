@@ -78,7 +78,7 @@ function DocumentTypes() {
             data={documentTypes?.Data}
             xKey="label"
             yKey="value"
-            label="Say"
+            label="Count"
           />
         )}
       </Card>

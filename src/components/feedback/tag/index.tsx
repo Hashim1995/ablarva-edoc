@@ -40,8 +40,8 @@ function AppTag({ id, color, label, fontSize }: CustomTagProps) {
         }}
         color={StatusColors[matchedStatus.label]}
       >
-        {matchedStatus.label?.toLocaleUpperCase('tr-TR') ??
-          dictionary.en.noDataText?.toLocaleUpperCase('tr-TR')}
+        {matchedStatus.label?.toLocaleUpperCase('en-EN') ??
+          dictionary.en.noDataText?.toLocaleUpperCase('en-EN')}
       </Tag>
     );
   }
@@ -58,8 +58,8 @@ function AppTag({ id, color, label, fontSize }: CustomTagProps) {
         color={color}
       >
         {' '}
-        {label?.toLocaleUpperCase('tr-TR') ??
-          dictionary.en.noDataText?.toLocaleUpperCase('tr-TR')}
+        {label?.toLocaleUpperCase('en-EN') ??
+          dictionary.en.noDataText?.toLocaleUpperCase('en-EN')}
       </Tag>
     );
   }
@@ -73,7 +73,7 @@ function AppTag({ id, color, label, fontSize }: CustomTagProps) {
       }}
       color={'blue'}
     >
-      {dictionary.en.noDataText?.toLocaleUpperCase('tr-TR')}
+      {dictionary.en.noDataText?.toLocaleUpperCase('en-EN')}
     </Tag>
   );
 }

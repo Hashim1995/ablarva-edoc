@@ -370,8 +370,8 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
               }}
               color="warning"
             >
-              {DocumentStatus?.toLocaleUpperCase('tr-TR') ??
-                noDataText?.toLocaleUpperCase('tr-TR')}
+              {DocumentStatus?.toLocaleUpperCase('en-EN') ??
+                noDataText?.toLocaleUpperCase('en-EN')}
             </Tag> */}
           </div>
         </Col>
