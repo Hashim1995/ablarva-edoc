@@ -75,7 +75,7 @@ function AppFileUpload({
   const uploadButton = (
     <div>
       <PlusOutlined rev={undefined} />
-      <div style={{ marginTop: 8 }}>Seç və ya sürüşdür</div>
+      <div style={{ marginTop: 8 }}>Select or drag</div>
     </div>
   );
 
