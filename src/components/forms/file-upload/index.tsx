@@ -90,8 +90,7 @@ function AppFileUpload({
           (dimension?.height && height > dimension?.height)
         ) {
           toast.error(
-            dimension?.errorText ||
-              `Şəklin ölçüləri ${width}x${height} pikseldən kiçik olmalıdır.`
+            dimension?.errorText || `Resolution must be max  ${width}x${height}`
           );
           resolve(false);
         } else {
@@ -118,18 +117,14 @@ function AppFileUpload({
             if (size?.max && file.size > size.max) {
               toast.error(
                 size?.maxErrorText ||
-                  `Faylın həcmi maksimum ${convertBytesToReadableSize(
-                    size.max
-                  )} olmalıdır`
+                  `Max size must be ${convertBytesToReadableSize(size.max)} `
               );
               return false;
             }
             if (size?.min && file.size <= size.min) {
               toast.error(
                 size?.minErrorText ||
-                  `Faylın həcmi minimum ${convertBytesToReadableSize(
-                    size.min
-                  )} olmalıdır`
+                  `Min size must be ${convertBytesToReadableSize(size.min)} `
               );
               return false;
             }
@@ -157,7 +152,7 @@ function AppFileUpload({
             );
             setFileList(updatedFileList);
           }}
-          locale={{ uploading: loadingText || 'Yüklənilir...' }}
+          locale={{ uploading: loadingText || 'uplading...' }}
           onPreview={handlePreview}
           onChange={handleChange}
           accept={accept}
