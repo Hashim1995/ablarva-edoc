@@ -156,7 +156,7 @@ function AppFileUpload({
           onPreview={handlePreview}
           onChange={handleChange}
           accept={accept}
-          action={`https://cloud2.ninco.org:8443/api/fileupload/${folderType}`}
+          action={`${import.meta.env.VITE_ASAN_URL}/fileupload/${folderType}`}
           headers={{
             AuthPerson: userToken
           }}
