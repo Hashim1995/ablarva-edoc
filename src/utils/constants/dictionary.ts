@@ -193,7 +193,7 @@ export const dictionary = {
     errorOccurred: 'Error Occurred',
     confirmDelete:
       'The data you have entered will be deleted. Are you sure you want to close the modal window?',
-    confirmTitle: 'Confirm',
+    confirmTitle: 'Confirmation',
     noDataText: 'No Data',
     viewImgModalHeader: 'IMAGE VIEW',
     closeBtn: 'Close',
@@ -252,7 +252,7 @@ export const dictionary = {
     successTxt: 'Operation Successfully Executed',
     name: 'Name',
     surname: 'Surname',
-    finCode: 'Financial Code',
+    finCode: 'Passport ID',
     position: 'Position',
     contactNumber: 'Contact Number',
     email: 'Email Address',
