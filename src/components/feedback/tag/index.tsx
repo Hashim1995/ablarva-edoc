@@ -13,13 +13,13 @@ interface CustomTagProps {
 
 const StatusColors: Record<string, string> = {
   Pending: '#fa8c16',
-  'Geri qaytarılmış': '#f5222d',
-  Razılaşdırılmış: '#52c41a',
-  'Xitam verilmiş': '#fadb14',
-  İmzalanmış: '#13c2c2',
-  'Vaxtı bitmiş': '#722ed1',
-  'İmtina edilmiş': '#5c0011',
-  Qaralama: '#595959'
+  Returned: '#f5222d',
+  Agreed: '#52c41a',
+  Termination: '#fadb14',
+  Signed: '#13c2c2',
+  Overdue: '#722ed1',
+  Canceled: '#5c0011',
+  Draft: '#595959'
 };
 
 function AppTag({ id, color, label, fontSize }: CustomTagProps) {
