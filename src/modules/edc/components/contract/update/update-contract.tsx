@@ -698,7 +698,8 @@ function UpdateContract() {
                                 format: 'DD.MM.YYYY',
 
                                 disabledDate: current =>
-                                  current && current < dayjs().endOf('day')
+                                  current &&
+                                  current < dayjs().endOf('day').add(-1, 'day')
                               }}
                             />
                             <AppHandledDate
@@ -892,7 +893,7 @@ function UpdateContract() {
         cancelText={dictionary.en.closeBtn}
         okText={dictionary.en.save}
         footer={[
-          <Button>{dictionary.en.closeBtn}</Button>,
+          <Button onClick={handleClose}>{dictionary.en.closeBtn}</Button>,
           <Button
             form="file-upload-modal-form"
             type="primary"

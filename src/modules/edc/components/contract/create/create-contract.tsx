@@ -66,7 +66,7 @@ import FileUploadModal from '../../../modals/file-upload';
 
 function CreateContract() {
   const userCompanyData = useSelector(
-    (state: RootState) => state.user.user.getLegalEntityDto
+    (state: RootState) => state?.user?.user?.getLegalEntityDto
   );
   const {
     control,
@@ -107,8 +107,8 @@ function CreateContract() {
   const [blockRoute, setBlockRoute] = useState(true);
 
   useEffect(() => {
-    setValue('SenderLegalEntityName', userCompanyData.Name);
-    setValue('SenderLegalEntityVoen', userCompanyData.Voen);
+    setValue('SenderLegalEntityName', userCompanyData?.Name);
+    setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
@@ -636,7 +636,8 @@ function CreateContract() {
                               format: 'DD.MM.YYYY',
 
                               disabledDate: current =>
-                                current && current < dayjs().endOf('day')
+                                current &&
+                                current < dayjs().endOf('day').add(-1, 'day')
                             }}
                           />
                           <AppHandledDate
@@ -822,7 +823,7 @@ function CreateContract() {
         cancelText={dictionary.en.closeBtn}
         okText={dictionary.en.save}
         footer={[
-          <Button>{dictionary.en.closeBtn}</Button>,
+          <Button onClick={handleClose}>{dictionary.en.closeBtn}</Button>,
           <Button
             form="file-upload-modal-form"
             type="primary"

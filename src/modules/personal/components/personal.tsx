@@ -20,7 +20,7 @@ import {
   minLengthCheck
 } from '@/utils/constants/validations';
 import { inputPlaceholderText } from '@/utils/constants/texts';
-import { useReadLocalStorage } from 'usehooks-ts';
+import { tokenizeImage } from '@/utils/functions/functions';
 import { IGlobalResponse } from '@/models/common';
 import { toast } from 'react-toastify';
 import { PersonalServies } from '@/services/personal-service/personal-service';
@@ -46,36 +46,10 @@ function Personal() {
       File: null
     }
   });
-  const userToken = useReadLocalStorage<any>('userToken');
 
   const [skeleton, setSkeleton] = useState<boolean>(true);
   const [isFormSubmiting, setIsFormSubmiting] = useState<boolean>(false);
   const [fileList, setFileList] = useState<any>([]);
-  const tokenizeImage = async (file: any): Promise<any> => {
-    file.status = 'done';
-    const src = file.fileUrl;
-    const cache = await caches.open('imageCache');
-    const cachedResponse = await cache.match(src);
-    if (cachedResponse) {
-      const blob = await cachedResponse.blob();
-      const objectUrl = URL.createObjectURL(blob);
-      file.url = objectUrl;
-    } else {
-      const response = await fetch(src, {
-        headers: {
-          AuthPerson: userToken
-        }
-      });
-      if (response.ok) {
-        const blob = await response.blob();
-        const objectUrl = URL.createObjectURL(blob);
-
-        src && (await cache.put(src, new Response(blob)));
-        file.url = objectUrl;
-      }
-    }
-    return file;
-  };
 
   const getUserData = async () => {
     setIsFormSubmiting(true);

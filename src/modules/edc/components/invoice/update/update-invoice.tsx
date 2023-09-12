@@ -65,7 +65,7 @@ import AppHandledDate from '../../../../../components/forms/date/handled-date';
 function UpdateInvoice() {
   const { id } = useParams();
   const userCompanyData = useSelector(
-    (state: RootState) => state.user.user.getLegalEntityDto
+    (state: RootState) => state?.user?.user?.getLegalEntityDto
   );
   const {
     control,
@@ -155,8 +155,8 @@ function UpdateInvoice() {
   }, [id, docsListOptions]);
 
   useEffect(() => {
-    setValue('SenderLegalEntityName', userCompanyData.Name);
-    setValue('SenderLegalEntityVoen', userCompanyData.Voen);
+    setValue('SenderLegalEntityName', userCompanyData?.Name);
+    setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
   }, [userCompanyData]);
 
   const { useToken } = theme;
@@ -721,7 +721,7 @@ function UpdateInvoice() {
         cancelText={dictionary.en.closeBtn}
         okText={dictionary.en.save}
         footer={[
-          <Button>{dictionary.en.closeBtn}</Button>,
+          <Button onClick={handleClose}>{dictionary.en.closeBtn}</Button>,
           <Button
             form="file-upload-modal-form"
             type="primary"

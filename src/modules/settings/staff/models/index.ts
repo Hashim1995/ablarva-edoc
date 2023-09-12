@@ -15,6 +15,7 @@ interface IStaffItem {
   Status?: string | null;
   LegalEntity?: string | null;
   IsFounder?: boolean | null;
+  File?: any;
 }
 
 interface IStaffFilter {
@@ -52,6 +53,7 @@ interface IAddStaffForm {
   PhoneNumber?: string;
   Permission?: selectOption | null;
   PermissionId?: number | string | null;
+  fileId?: number | string | null;
 }
 
 interface IGetPermissionResponse extends IGlobalResponse {

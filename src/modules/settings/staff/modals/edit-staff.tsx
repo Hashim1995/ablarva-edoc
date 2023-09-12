@@ -12,12 +12,16 @@ import {
   selectPlaceholderText
 } from '@/utils/constants/texts';
 
-import { Button, Col, Form, Modal, Row, Spin } from 'antd';
+import { Button, Col, Form, Modal, Row, Spin, UploadFile } from 'antd';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { IGlobalResponse, selectOption } from '@/models/common';
-import { showCloseConfirmationModal } from '@/utils/functions/functions';
+import {
+  showCloseConfirmationModal,
+  tokenizeImage
+} from '@/utils/functions/functions';
+import AppFileUpload from '@/components/forms/file-upload';
 import {
   IAddStaffForm,
   IGetSingleStaffResponse,
@@ -55,12 +59,14 @@ function UpdateStaff({
       Profession: '',
       Email: '',
       PhoneNumber: '',
-      Permission: null
+      Permission: null,
+      fileId: null
     }
   });
 
   const [skeleton, setSkeleton] = useState(true);
   const [isFormSubmiting, setIsFormSubmiting] = useState<boolean>(false);
+  const [fileList, setFileList] = useState<any>([]);
 
   const getStaffItemById = async (id: number) => {
     setIsFormSubmiting(true);
@@ -76,6 +82,11 @@ function UpdateStaff({
       setValue('Profession', res?.Data?.Profession ?? '');
       setValue('PhoneNumber', res?.Data?.PhoneNumber ?? '');
       setValue('Permission', res?.Data?.Permission ?? null);
+      const file = res?.Data?.File;
+      if (file) {
+        const tokenizedFile = await tokenizeImage(file);
+        setFileList([tokenizedFile]);
+      }
       setSkeleton(false);
     }
     setIsFormSubmiting(false);
@@ -87,6 +98,10 @@ function UpdateStaff({
 
     setIsFormSubmiting(true);
     const payload = {
+      Name: data.Name ?? '',
+      Surname: data.Surname ?? '',
+      FathersName: data.FathersName ?? '',
+      FinCode: data.FinCode ?? '',
       Profession: data.Profession ?? '',
       Email: data.Email ?? '',
       PhoneNumber: data.PhoneNumber ?? '',
@@ -178,7 +193,6 @@ function UpdateStaff({
                   }}
                   required
                   control={control}
-                  inputProps={{ disabled: true }}
                   inputType="text"
                   placeholder={inputPlaceholderText(dictionary.en.finCode)}
                   errors={errors}
@@ -197,7 +211,6 @@ function UpdateStaff({
                     }
                   }}
                   required
-                  inputProps={{ disabled: true }}
                   control={control}
                   inputType="text"
                   placeholder={inputPlaceholderText(dictionary.en.name)}
@@ -217,7 +230,6 @@ function UpdateStaff({
                     }
                   }}
                   required
-                  inputProps={{ disabled: true }}
                   control={control}
                   inputType="text"
                   placeholder={inputPlaceholderText(dictionary.en.surname)}
@@ -237,12 +249,29 @@ function UpdateStaff({
                     }
                   }}
                   required
-                  inputProps={{ disabled: true }}
                   control={control}
                   inputType="text"
                   placeholder={inputPlaceholderText(dictionary.en.FathersName)}
                   errors={errors}
                 />
+                <Form.Item label={dictionary.en.profilePhoto}>
+                  <AppFileUpload
+                    listType="picture-circle"
+                    accept=".jpg, .jpeg, .png, .webp"
+                    length={1}
+                    defaultFileList={fileList}
+                    getValues={(e: UploadFile[]) => {
+                      if (e && e.length > 0) {
+                        const selectedFile = e[0];
+                        const fileData = selectedFile?.response?.Data;
+                        fileData && setValue('fileId', fileData?.id);
+                      } else {
+                        setValue('fileId', null);
+                      }
+                    }}
+                    folderType={2}
+                  />
+                </Form.Item>
               </Col>
               <Col span={12}>
                 <AppHandledInput

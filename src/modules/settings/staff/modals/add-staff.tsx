@@ -12,12 +12,13 @@ import {
   selectPlaceholderText
 } from '@/utils/constants/texts';
 
-import { Button, Col, Form, Modal, Row } from 'antd';
+import { Button, Col, Form, Modal, Row, UploadFile } from 'antd';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { IGlobalResponse, selectOption } from '@/models/common';
 import { showCloseConfirmationModal } from '@/utils/functions/functions';
+import AppFileUpload from '@/components/forms/file-upload';
 import { IAddStaffForm } from '../models';
 
 type IAddStaffProps = {
@@ -36,6 +37,7 @@ function AddStaff({
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<IAddStaffForm>({
     mode: 'onChange',
@@ -47,7 +49,8 @@ function AddStaff({
       Profession: '',
       Email: '',
       PhoneNumber: '',
-      PermissionId: null
+      PermissionId: null,
+      fileId: null
     }
   });
 
@@ -214,6 +217,23 @@ function AddStaff({
                 placeholder={inputPlaceholderText(dictionary.en.FathersName)}
                 errors={errors}
               />
+              <Form.Item label={dictionary.en.profilePhoto}>
+                <AppFileUpload
+                  listType="picture-circle"
+                  accept=".jpg, .jpeg, .png, .webp"
+                  length={1}
+                  getValues={(e: UploadFile[]) => {
+                    if (e && e.length > 0) {
+                      const selectedFile = e[0];
+                      const fileData = selectedFile?.response?.Data;
+                      fileData && setValue('fileId', fileData?.id);
+                    } else {
+                      setValue('fileId', null);
+                    }
+                  }}
+                  folderType={2}
+                />
+              </Form.Item>
             </Col>
             <Col span={12}>
               <AppHandledInput
@@ -243,11 +263,17 @@ function AddStaff({
                   required: {
                     value: true,
                     message: inputValidationText(dictionary.en.contactNumber)
+                  },
+                  validate: {
+                    checkPhoneNumber: value =>
+                      /([0-9\s-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/.test(
+                        value
+                      ) || 'Please enter a valid phone number'
                   }
                 }}
                 required
                 control={control}
-                inputType="text"
+                inputType="number"
                 placeholder={inputPlaceholderText(dictionary.en.contactNumber)}
                 errors={errors}
               />

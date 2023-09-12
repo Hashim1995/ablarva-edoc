@@ -67,7 +67,7 @@ function UpdateAct() {
   const { useBreakpoint } = Grid;
   const { lg } = useBreakpoint();
   const userCompanyData = useSelector(
-    (state: RootState) => state.user.user.getLegalEntityDto
+    (state: RootState) => state?.user?.user?.getLegalEntityDto
   );
   const {
     control,
@@ -154,8 +154,8 @@ function UpdateAct() {
   }, [id, docsListOptions]);
 
   useEffect(() => {
-    setValue('SenderLegalEntityName', userCompanyData.Name);
-    setValue('SenderLegalEntityVoen', userCompanyData.Voen);
+    setValue('SenderLegalEntityName', userCompanyData?.Name);
+    setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
@@ -717,7 +717,7 @@ function UpdateAct() {
         cancelText={dictionary.en.closeBtn}
         okText={dictionary.en.save}
         footer={[
-          <Button>{dictionary.en.closeBtn}</Button>,
+          <Button onClick={handleClose}>{dictionary.en.closeBtn}</Button>,
           <Button
             form="file-upload-modal-form"
             type="primary"

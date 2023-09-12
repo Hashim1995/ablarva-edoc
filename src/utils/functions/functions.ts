@@ -7,6 +7,8 @@ import { IHTTPSParams } from '@/services/adapter-config/config';
 // import { noTxt, sureModalDescription, sureModalTitle, yesTxt } from '../constants/texts';
 import { dictionary } from '../constants/dictionary';
 
+const userToken: any = localStorage.getItem('userToken');
+
 /* eslint-disable no-restricted-syntax */
 function convertFormDataToQueryParams<T>(formData: T): IHTTPSParams[] {
   const z: IHTTPSParams[] = [];
@@ -117,11 +119,38 @@ function generateOptionListPerNumber(num: number): selectOption[] {
   return data;
 }
 
+const tokenizeImage = async (file: any): Promise<any> => {
+  file.status = 'done';
+  const src = file.fileUrl;
+  const cache = await caches.open('imageCache');
+  const cachedResponse = await cache.match(src);
+  if (cachedResponse) {
+    const blob = await cachedResponse.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    file.url = objectUrl;
+  } else {
+    const response = await fetch(src, {
+      headers: {
+        AuthPerson: userToken?.replace(/['"]+/g, '')
+      }
+    });
+    if (response.ok) {
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+
+      src && (await cache.put(src, new Response(blob)));
+      file.url = objectUrl;
+    }
+  }
+  return file;
+};
+
 export {
   convertFormDataToQueryParams,
   generateOptionListPerNumber,
   convertBytesToReadableSize,
   showCloseConfirmationModal,
   formatDateToWords,
+  tokenizeImage,
   formatDate
 };
