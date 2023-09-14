@@ -588,8 +588,7 @@ function ViewInvoice() {
                         ellipsis={{
                           rows: 2,
                           tooltip:
-                            edcViewItem?.Description ??
-                            dictionary.en.noDasdasataText
+                            edcViewItem?.Description ?? dictionary.en.noDataText
                         }}
                         strong
                       >
