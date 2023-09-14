@@ -579,7 +579,7 @@ function ViewInvoice() {
                         }}
                         strong
                       >
-                        {dictionary.en.summary ?? dictionary.en.noDataTwerweet}:
+                        {dictionary.en.summary ?? dictionary.en.noDataText}:
                       </Typography.Paragraph>
                     </Col>
                     <Col span={10} offset={2}>
@@ -588,7 +588,8 @@ function ViewInvoice() {
                         ellipsis={{
                           rows: 2,
                           tooltip:
-                            edcViewItem?.Description ?? dictionary.en.noDataText
+                            edcViewItem?.Description ??
+                            dictionary.en.noDasdasataText
                         }}
                         strong
                       >
