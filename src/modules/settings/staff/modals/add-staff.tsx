@@ -60,6 +60,7 @@ function AddStaff({
   ) => {
     setIsFormSubmiting(true);
     console.log(isFormSubmiting);
+    console.log(data);
 
     const payload = {
       Name: data.Name,
@@ -69,7 +70,8 @@ function AddStaff({
       Profession: data.Profession,
       Email: data.Email,
       PhoneNumber: data.PhoneNumber,
-      PermissionId: data.PermissionId
+      PermissionId: data.PermissionId,
+      FileId: data.fileId
     };
 
     const res: IGlobalResponse = await StaffServies.getInstance().addStaff(

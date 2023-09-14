@@ -39,7 +39,12 @@ export class EdcServies {
     params: IHTTPSParams[],
     onError?: ErrorCallBack
   ): Promise<IGetEdcListResponse> {
-    const res = await HttpUtil.get('/uniondocuments', params, false, onError);
+    const res = await HttpUtil.get(
+      '/legalentity/uniondocuments',
+      params,
+      false,
+      onError
+    );
     return res;
   }
 
@@ -61,7 +66,12 @@ export class EdcServies {
     voen: string,
     onError?: ErrorCallBack
   ): Promise<ICompanyDetailResponse> {
-    const res = await HttpUtil.get(`/getByVoen/${voen}`, null, false, onError);
+    const res = await HttpUtil.get(
+      `/legalentity/getByVoen/${voen}`,
+      null,
+      false,
+      onError
+    );
     return res;
   }
 
@@ -126,7 +136,12 @@ export class EdcServies {
   public async getDocsListOptions(
     onError?: ErrorCallBack
   ): Promise<IEdcDocsListOptionsResponse> {
-    const res = await HttpUtil.get('/contracts', null, false, onError);
+    const res = await HttpUtil.get(
+      '/legalentity/contracts',
+      null,
+      false,
+      onError
+    );
     return res;
   }
 

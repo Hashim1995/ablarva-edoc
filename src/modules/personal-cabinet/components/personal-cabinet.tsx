@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { dictionary } from '@/utils/constants/dictionary';
 import {
   Breadcrumb,
@@ -17,54 +18,67 @@ import { useEffect, useState } from 'react';
 import AppHandledInput from '@/components/forms/input/handled-input';
 import {
   inputValidationText,
+  maxLengthCheck,
   minLengthCheck
 } from '@/utils/constants/validations';
 import { inputPlaceholderText } from '@/utils/constants/texts';
 import { tokenizeImage } from '@/utils/functions/functions';
 import { IGlobalResponse } from '@/models/common';
 import { toast } from 'react-toastify';
-import { PersonalServies } from '@/services/personal-service/personal-service';
-import AppFileUpload from '@/components/forms/file-upload';
-import { IGetuserDataResponse, IUserData } from '../models';
 
-function Personal() {
+import AppFileUpload from '@/components/forms/file-upload';
+
+import { useDispatch } from 'react-redux';
+import {
+  AuthService,
+  IAuthResponse
+} from '@/services/auth-services/auth-services';
+import { PersonalCabinetServies } from '@/services/personal-cabinet-services/personal-cabinet-services';
+import { setUser } from '@/redux/auth/auth-slice';
+import { IPersonalData } from '../models';
+
+function PersonalCabinet() {
   const {
     control,
     handleSubmit,
     setValue,
     formState: { errors }
-  } = useForm<Partial<IUserData>>({
+  } = useForm<Partial<IPersonalData>>({
     mode: 'onChange',
     defaultValues: {
       Name: '',
-      Voen: '',
+      Surname: '',
+      FathersName: '',
+      FinCode: '',
+      Profession: '',
       Email: '',
       PhoneNumber: '',
-      ActivityField: '',
-      Address: '',
-      fileId: null,
-      File: null
+      fileId: null
     }
   });
 
-  const [skeleton, setSkeleton] = useState<boolean>(true);
+  const dispatch = useDispatch();
+
+  const [skeleton, setSkeleton] = useState<boolean>(false);
   const [isFormSubmiting, setIsFormSubmiting] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState<boolean>(false);
   const [fileList, setFileList] = useState<any>([]);
 
   const getUserData = async () => {
     setIsFormSubmiting(true);
-    const res: IGetuserDataResponse =
-      await PersonalServies.getInstance().getUserData();
+    const res: IAuthResponse = await AuthService.getInstance().getUserData();
 
     if (res?.IsSuccess) {
+      dispatch(setUser(res?.Data));
       setValue('Name', res?.Data?.Name ?? '');
       setValue('Email', res?.Data?.Email ?? '');
-      setValue('Voen', res?.Data?.Voen ?? '');
-      setValue('ActivityField', res?.Data?.ActivityField ?? '');
+      setValue('Surname', res?.Data?.Surname ?? '');
+      setValue('FathersName', res?.Data?.FathersName ?? '');
+      setValue('FinCode', res?.Data?.FinCode ?? '');
+      setValue('Profession', res?.Data?.Profession ?? '');
       setValue('PhoneNumber', res?.Data?.PhoneNumber ?? '');
-      setValue('Address', res?.Data?.Address ?? '');
-      setValue('fileId', res?.Data?.File?.id ?? null);
-      const file = res?.Data?.File;
+      setValue('fileId', res?.Data?.getFile?.id ?? null);
+      const file = res?.Data?.getFile;
       if (file) {
         const tokenizedFile = await tokenizeImage(file);
         setFileList([tokenizedFile]);
@@ -75,33 +89,38 @@ function Personal() {
     setIsFormSubmiting(false);
   };
 
-  const onSubmit: SubmitHandler<Partial<IUserData>> = async (
-    data: Partial<IUserData>
+  useEffect(() => {
+    getUserData();
+  }, [refresh]);
+
+  const onSubmit: SubmitHandler<Partial<IPersonalData>> = async (
+    data: Partial<IPersonalData>
   ) => {
     setIsFormSubmiting(true);
 
     const payload = {
-      Email: data?.Email ?? '',
-      PhoneNumber: data?.PhoneNumber ?? '',
-      ActivityField: data?.ActivityField ?? '',
-      Address: data?.Address ?? '',
-      fileId: data?.fileId ?? null
+      Name: data.Name ?? '',
+      Surname: data.Surname ?? '',
+      FathersName: data.FathersName ?? '',
+      FinCode: data.FinCode ?? '',
+      Profession: data.Profession ?? '',
+      Email: data.Email ?? '',
+      PhoneNumber: data.PhoneNumber ?? '',
+      fileId: data.fileId ?? null
     };
 
     const res: IGlobalResponse =
-      await PersonalServies.getInstance().updateUserData(payload, () =>
-        setIsFormSubmiting(false)
+      await PersonalCabinetServies.getInstance().updatePersonalData(
+        payload,
+        () => setIsFormSubmiting(false)
       );
 
     if (res.IsSuccess) {
       toast.success(dictionary.en.successTxt);
+      setRefresh(t => !t);
     }
     setIsFormSubmiting(false);
   };
-
-  useEffect(() => {
-    getUserData();
-  }, []);
 
   return (
     <div>
@@ -118,7 +137,7 @@ function Personal() {
                   )
                 },
                 {
-                  title: dictionary.en.personal
+                  title: dictionary.en.personalCabinet
                 }
               ]}
             />
@@ -149,8 +168,46 @@ function Personal() {
                   <Row gutter={24}>
                     <Col span={24}>
                       <AppHandledInput
+                        label={dictionary.en.finCode}
+                        name="FinCode"
+                        formItemProps={{
+                          id: 'FinCode'
+                        }}
+                        rules={{
+                          required: {
+                            value: true,
+                            message: inputValidationText(dictionary.en.finCode)
+                          },
+                          minLength: {
+                            value: 7,
+                            message: minLengthCheck(dictionary.en.finCode, '7')
+                          },
+                          maxLength: {
+                            value: 7,
+                            message: maxLengthCheck(dictionary.en.finCode, '7')
+                          },
+                          validate: {
+                            checkOnlyEnglishChars: (value: string) =>
+                              /^[a-zA-Z0-9]+$/.test(value) ||
+                              'FinCode field should contain only english characters.'
+                          }
+                        }}
+                        required
+                        control={control}
+                        inputType="text"
+                        placeholder={inputPlaceholderText(
+                          dictionary.en.finCode
+                        )}
+                        errors={errors}
+                      />
+                    </Col>
+                    <Col span={24}>
+                      <AppHandledInput
                         label={dictionary.en.name}
                         name="Name"
+                        inputProps={{
+                          id: 'name'
+                        }}
                         rules={{
                           required: {
                             value: true,
@@ -162,10 +219,6 @@ function Personal() {
                           }
                         }}
                         required
-                        inputProps={{ disabled: true }}
-                        formItemProps={{
-                          labelAlign: 'left'
-                        }}
                         control={control}
                         inputType="text"
                         placeholder={inputPlaceholderText(dictionary.en.name)}
@@ -174,59 +227,75 @@ function Personal() {
                     </Col>
                     <Col span={24}>
                       <AppHandledInput
-                        label={dictionary.en.voen}
-                        name="Voen"
+                        label={dictionary.en.surname}
+                        name="Surname"
                         rules={{
                           required: {
                             value: true,
-                            message: inputValidationText(dictionary.en.voen)
+                            message: inputValidationText(dictionary.en.surname)
                           },
                           minLength: {
                             value: 3,
-                            message: minLengthCheck(dictionary.en.voen, '10')
+                            message: minLengthCheck(dictionary.en.surname, '3')
                           }
                         }}
-                        formItemProps={{
-                          labelAlign: 'left'
-                        }}
                         required
-                        inputProps={{ disabled: true }}
                         control={control}
                         inputType="text"
-                        placeholder={inputPlaceholderText(dictionary.en.voen)}
+                        placeholder={inputPlaceholderText(
+                          dictionary.en.surname
+                        )}
                         errors={errors}
                       />
                     </Col>
                     <Col span={24}>
                       <AppHandledInput
-                        label={dictionary.en.activityField}
-                        name="ActivityField"
+                        label={dictionary.en.FathersName}
+                        name="FathersName"
                         rules={{
                           required: {
                             value: true,
                             message: inputValidationText(
-                              dictionary.en.activityField
+                              dictionary.en.FathersName
                             )
                           },
                           minLength: {
                             value: 3,
                             message: minLengthCheck(
-                              dictionary.en.activityField,
+                              dictionary.en.FathersName,
                               '3'
                             )
                           }
                         }}
                         required
-                        formItemProps={{
-                          labelAlign: 'left'
-                        }}
                         control={control}
                         inputType="text"
                         placeholder={inputPlaceholderText(
-                          dictionary.en.activityField
+                          dictionary.en.FathersName
                         )}
                         errors={errors}
                       />
+                    </Col>
+                    <Col span={24}>
+                      <Form.Item label={dictionary.en.profilePhoto}>
+                        <AppFileUpload
+                          isProfile
+                          listType="picture-circle"
+                          accept=".jpg, .jpeg, .png, .webp"
+                          length={1}
+                          defaultFileList={fileList}
+                          getValues={(e: UploadFile[]) => {
+                            if (e && e.length > 0) {
+                              const selectedFile = e[0];
+                              const fileData = selectedFile?.response?.Data;
+                              fileData && setValue('fileId', fileData?.id);
+                            } else {
+                              setValue('fileId', null);
+                            }
+                          }}
+                          folderType={2}
+                        />
+                      </Form.Item>
                     </Col>
                   </Row>
                 </Col>
@@ -243,15 +312,12 @@ function Personal() {
                             message: inputValidationText(dictionary.en.email)
                           },
                           validate: {
-                            checkOnlyEnglishChars: value =>
+                            checkOnlyEnglishChars: (value: string) =>
                               /^[\w\\.-]+@[\w\\.-]+\.\w+$/.test(value) ||
-                              'Zəhmət olmasa düzgün bir e-poçt ünvanı daxil edin.'
+                              'Please enter a valid email address.'
                           }
                         }}
                         required
-                        formItemProps={{
-                          labelAlign: 'left'
-                        }}
                         control={control}
                         inputType="text"
                         placeholder={inputPlaceholderText(dictionary.en.email)}
@@ -268,14 +334,17 @@ function Personal() {
                             message: inputValidationText(
                               dictionary.en.contactNumber
                             )
+                          },
+                          validate: {
+                            checkPhoneNumber: value =>
+                              /([0-9\s-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/.test(
+                                value
+                              ) || 'Please enter a valid phone number'
                           }
                         }}
                         required
-                        formItemProps={{
-                          labelAlign: 'left'
-                        }}
                         control={control}
-                        inputType="text"
+                        inputType="number"
                         placeholder={inputPlaceholderText(
                           dictionary.en.contactNumber
                         )}
@@ -284,51 +353,28 @@ function Personal() {
                     </Col>
                     <Col span={24}>
                       <AppHandledInput
-                        label={dictionary.en.address}
-                        name="Address"
+                        label={dictionary.en.position}
+                        name="Profession"
                         rules={{
                           required: {
                             value: true,
-                            message: inputValidationText(dictionary.en.address)
+                            message: inputValidationText(dictionary.en.position)
                           },
                           minLength: {
                             value: 3,
-                            message: minLengthCheck(dictionary.en.address, '3')
+                            message: minLengthCheck(dictionary.en.position, '3')
                           }
                         }}
                         required
-                        formItemProps={{
-                          labelAlign: 'left'
-                        }}
                         control={control}
                         inputType="text"
                         placeholder={inputPlaceholderText(
-                          dictionary.en.address
+                          dictionary.en.position
                         )}
                         errors={errors}
                       />
                     </Col>
                   </Row>
-                </Col>
-                <Col span={12}>
-                  <Form.Item label={dictionary.en.profilePhoto}>
-                    <AppFileUpload
-                      listType="picture-circle"
-                      accept=".jpg, .jpeg, .png, .webp"
-                      length={1}
-                      defaultFileList={fileList}
-                      getValues={(e: UploadFile[]) => {
-                        if (e && e.length > 0) {
-                          const selectedFile = e[0];
-                          const fileData = selectedFile?.response?.Data;
-                          fileData && setValue('fileId', fileData?.id);
-                        } else {
-                          setValue('fileId', null);
-                        }
-                      }}
-                      folderType={2}
-                    />
-                  </Form.Item>
                 </Col>
               </Row>
             </Form>
@@ -341,4 +387,4 @@ function Personal() {
   );
 }
 
-export default Personal;
+export default PersonalCabinet;

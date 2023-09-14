@@ -80,7 +80,7 @@ export class StaffServies {
     onError?: ErrorCallBack
   ): Promise<IGetStaffResponse> {
     const res = await HttpUtil.get(
-      '/authorizedpersons',
+      '/legalentity/authorizedpersons',
       params,
       false,
       onError

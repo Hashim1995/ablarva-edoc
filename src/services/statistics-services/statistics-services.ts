@@ -26,7 +26,12 @@ export class StatisticsServies {
     params: IHTTPSParams[],
     onError?: ErrorCallBack
   ): Promise<IGetStatisticsListResponse> {
-    const res = await HttpUtil.get('/docreportcommon', params, false, onError);
+    const res = await HttpUtil.get(
+      '/legalentity/docreportcommon',
+      params,
+      false,
+      onError
+    );
     return res;
   }
 }

@@ -1,6 +1,6 @@
 import { IFileServerResponse, IGlobalResponse } from '@/models/common';
 
-interface IUserData {
+interface ILegalEntityData {
   Id: number;
   Name: string;
   Voen: string;
@@ -9,7 +9,7 @@ interface IUserData {
   StatusId: number;
   ActivityField: string;
   Address: string;
-  File: any;
+  file: any;
   fileId?: number | null;
 }
 
@@ -28,8 +28,8 @@ interface IImageDataResponse extends IGlobalResponse {
   Data: ImageData;
 }
 
-interface IGetuserDataResponse extends IGlobalResponse {
-  Data: IUserData;
+interface IGetLegalEntityDataResponse extends IGlobalResponse {
+  Data: ILegalEntityData;
 }
 
 interface IPersonalImageFile extends IFileServerResponse {
@@ -37,8 +37,8 @@ interface IPersonalImageFile extends IFileServerResponse {
 }
 
 export type {
-  IUserData,
-  IGetuserDataResponse,
+  ILegalEntityData,
+  IGetLegalEntityDataResponse,
   IPersonalImageFile,
   IImageDataResponse
 };

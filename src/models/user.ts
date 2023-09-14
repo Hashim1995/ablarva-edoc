@@ -33,7 +33,7 @@ export interface IAuth {
   Permission: string;
   IsFounder: boolean;
   getLegalEntityDto: ILegalEntityDto;
-  getLegalEntityProfilPhoto: ILegalEntityPhoto;
+  getFile: ILegalEntityPhoto;
 }
 
 export interface ILogin {

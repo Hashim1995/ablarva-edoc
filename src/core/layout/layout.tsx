@@ -10,8 +10,8 @@ import {
 } from 'antd';
 import { useLocalStorage } from 'usehooks-ts';
 import { useState } from 'react';
-import { FaMoon, FaSun } from 'react-icons/fa';
-import { BiLogOut, BiUserCircle } from 'react-icons/bi';
+import { FaMoon, FaSun, FaUsers } from 'react-icons/fa';
+import { BiLogOut, BiUser } from 'react-icons/bi';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -37,12 +37,15 @@ function LayoutPage() {
 
   const handleMenuClick: MenuProps['onClick'] = e => {
     if (e.key === '0') {
-      navigate('personal');
+      navigate('personal-cabinet');
     }
     if (e.key === '1') {
-      toggleTheme();
+      navigate('legal-cabinet');
     }
     if (e.key === '2') {
+      toggleTheme();
+    }
+    if (e.key === '3') {
       setUserToken(null);
     }
   };
@@ -55,10 +58,18 @@ function LayoutPage() {
     {
       label: (
         <Row>
-          <BiUserCircle /> <Text>{dictionary.en.personalCabinet}</Text>
+          <BiUser /> <Text>{dictionary.en.personalCabinet}</Text>
         </Row>
       ),
       key: '0'
+    },
+    {
+      label: (
+        <Row>
+          <FaUsers /> <Text>{dictionary.en.legalCabinet}</Text>
+        </Row>
+      ),
+      key: '1'
     },
     {
       label: (
@@ -74,7 +85,7 @@ function LayoutPage() {
           )}
         </Row>
       ),
-      key: '1'
+      key: '2'
     },
     {
       label: (
@@ -82,7 +93,7 @@ function LayoutPage() {
           <BiLogOut /> <Text>{dictionary.en.logout}</Text>
         </Row>
       ),
-      key: '2'
+      key: '3'
     }
   ];
 
@@ -144,7 +155,7 @@ function LayoutPage() {
                     tokenized
                     circle
                     style={{ width: 40, height: 40, borderRadius: '50%' }}
-                    src={user?.getLegalEntityProfilPhoto?.fileUrl}
+                    src={user?.getFile?.fileUrl}
                   />
                 </Dropdown>
               </Col>

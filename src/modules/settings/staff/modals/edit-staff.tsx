@@ -108,7 +108,8 @@ function UpdateStaff({
       PermissionId:
         typeof data?.Permission === 'object'
           ? data?.Permission?.value
-          : data?.Permission
+          : data?.Permission,
+      FileId: data.fileId
     };
 
     const res: IGlobalResponse = await StaffServies.getInstance().updateStaff(

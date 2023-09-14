@@ -4,8 +4,7 @@ import { ViewAdditionPage } from '@/modules/edc/pages/view-addition-page';
 import React, { Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import LoginPage from '@core/static-pages/login-page';
-
+const LoginPage = React.lazy(() => import('@core/static-pages/login-page'));
 const HomePage = React.lazy(() => import('@/modules/home/pages/index'));
 const CreateContractPage = React.lazy(
   () => import('@/modules/edc/pages/create-contract-page')
@@ -56,7 +55,11 @@ const ViewInvoicePage = React.lazy(
 const UpdateInvoicePage = React.lazy(
   () => import('@/modules/edc/pages/update-invoice-page')
 );
-const Personal = React.lazy(() => import('@/modules/personal/pages'));
+const LegalCabinet = React.lazy(() => import('@/modules/legal-cabinet/pages'));
+
+const PersonalCabinet = React.lazy(
+  () => import('@/modules/personal-cabinet/components/personal-cabinet')
+);
 
 const routes = [
   {
@@ -74,11 +77,20 @@ const routes = [
         )
       },
       {
-        path: '/personal',
+        path: '/legal-cabinet',
         index: true,
         element: (
           <Suspense fallback={<FallbackSpinner />}>
-            <Personal />
+            <LegalCabinet />
+          </Suspense>
+        )
+      },
+      {
+        path: '/personal-cabinet',
+        index: true,
+        element: (
+          <Suspense fallback={<FallbackSpinner />}>
+            <PersonalCabinet />
           </Suspense>
         )
       },

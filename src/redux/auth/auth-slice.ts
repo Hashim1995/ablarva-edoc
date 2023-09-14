@@ -34,13 +34,14 @@ const initialState = {
       ActivityField: '',
       Address: ''
     },
-    getLegalEntityProfilPhoto: {
+    getFile: {
       id: null,
       mimeType: '',
       uploadDate: '',
       size: null,
       name: '',
-      fileUrl: ''
+      fileUrl: '',
+      fileNameOnDisk: ''
     }
   },
 

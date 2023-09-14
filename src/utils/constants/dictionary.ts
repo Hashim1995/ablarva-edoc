@@ -1,6 +1,7 @@
 export const dictionary = {
   az: {
     personalCabinet: 'Şəxsi kabinet',
+    legalCabinet: 'Şirkət məlumatları',
     lightMode: 'Gündüz rejimi',
     nightMode: 'Gecə rejimi',
     logout: 'Çıxış',
@@ -140,7 +141,6 @@ export const dictionary = {
     login: 'Daxil ol',
     settings: 'Tənzimləmələr',
     edcCreateInvoice: 'Faktura tərtibi',
-    personal: 'Şəxsi Kabinet',
     voen: 'VÖEN',
     activityField: 'Fəaliyyət sahəsi',
     address: 'Ünvan',
@@ -158,6 +158,7 @@ export const dictionary = {
   },
   en: {
     personalCabinet: 'Personal Cabinet',
+    legalCabinet: 'Company Cabinet',
     lightMode: 'Day Mode',
     nightMode: 'Night Mode',
     logout: 'Logout',
@@ -297,7 +298,6 @@ export const dictionary = {
     docStartdate: 'Document start date',
     edcCreateAct: 'Create act',
     edcCreateInvoice: 'Create invoice',
-    personal: 'Personal cabinet',
     voen: 'VOEN',
     activityField: 'Activity field',
     address: 'Address',

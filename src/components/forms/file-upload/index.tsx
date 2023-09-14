@@ -32,6 +32,7 @@ interface IProps {
     errorText?: string;
   };
   defaultFileList?: any;
+  isProfile?: boolean;
 }
 
 function AppFileUpload({
@@ -43,7 +44,8 @@ function AppFileUpload({
   loadingText,
   size,
   dimension,
-  defaultFileList
+  defaultFileList,
+  isProfile
 }: IProps) {
   const userToken = JSON.parse(localStorage.getItem('userToken') || '{}');
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -106,11 +108,18 @@ function AppFileUpload({
   return (
     <>
       <div
-        style={{
-          background: 'rgba(0, 0, 0, 0.02)',
-          padding: 10,
-          border: '1px dashed #d9d9d9'
-        }}
+        style={
+          isProfile
+            ? {
+                background: 'transparent',
+                border: 'none'
+              }
+            : {
+                background: 'rgba(0, 0, 0, 0.02)',
+                padding: 10,
+                border: '1px dashed #d9d9d9'
+              }
+        }
       >
         <Upload
           beforeUpload={async file => {
@@ -156,7 +165,7 @@ function AppFileUpload({
           onPreview={handlePreview}
           onChange={handleChange}
           accept={accept}
-          action={`${import.meta.env.VITE_ASAN_URL}/fileupload/${folderType}`}
+          action={`${import.meta.env.VITE_BASE_URL}/file/${folderType}`}
           headers={{
             AuthPerson: userToken
           }}
