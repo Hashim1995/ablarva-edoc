@@ -155,7 +155,7 @@ function LayoutPage() {
                     tokenized
                     circle
                     style={{ width: 40, height: 40, borderRadius: '50%' }}
-                    src={user?.getFile?.fileUrl}
+                    src={user?.getFile?.fileUrl ?? null}
                   />
                 </Dropdown>
               </Col>

@@ -93,6 +93,8 @@ function PersonalCabinet() {
     getUserData();
   }, [refresh]);
 
+  console.log(fileList);
+
   const onSubmit: SubmitHandler<Partial<IPersonalData>> = async (
     data: Partial<IPersonalData>
   ) => {
@@ -117,6 +119,7 @@ function PersonalCabinet() {
 
     if (res.IsSuccess) {
       toast.success(dictionary.en.successTxt);
+      window.location.reload();
       setRefresh(t => !t);
     }
     setIsFormSubmiting(false);

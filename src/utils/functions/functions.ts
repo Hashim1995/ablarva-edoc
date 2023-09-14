@@ -120,14 +120,18 @@ function generateOptionListPerNumber(num: number): selectOption[] {
 }
 
 const tokenizeImage = async (file: any): Promise<any> => {
-  file.status = 'done';
-  const src = file.fileUrl;
+  const newFile = {
+    ...file,
+    status: 'done'
+  };
+
+  const src = newFile.fileUrl;
   const cache = await caches.open('imageCache');
   const cachedResponse = await cache.match(src);
   if (cachedResponse) {
     const blob = await cachedResponse.blob();
     const objectUrl = URL.createObjectURL(blob);
-    file.url = objectUrl;
+    newFile.url = objectUrl;
   } else {
     const response = await fetch(src, {
       headers: {
@@ -139,10 +143,10 @@ const tokenizeImage = async (file: any): Promise<any> => {
       const objectUrl = URL.createObjectURL(blob);
 
       src && (await cache.put(src, new Response(blob)));
-      file.url = objectUrl;
+      newFile.url = objectUrl;
     }
   }
-  return file;
+  return newFile;
 };
 
 export {

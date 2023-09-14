@@ -54,7 +54,7 @@ function AppFileUpload({
   const handleCancel = () => {
     setPreviewOpen(false);
   };
-  const [fileList, setFileList] = useState<any[]>(defaultFileList);
+  const [fileList, setFileList] = useState<any[]>([]);
 
   const handlePreview = async (file: UploadFile) => {
     if (file?.response?.Data) {
@@ -100,6 +100,10 @@ function AppFileUpload({
         }
       };
     });
+
+  useEffect(() => {
+    setFileList(defaultFileList);
+  }, [defaultFileList]);
 
   useEffect(() => {
     getValues(fileList);
