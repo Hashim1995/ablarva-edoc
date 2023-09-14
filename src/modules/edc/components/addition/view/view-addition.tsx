@@ -11,7 +11,8 @@ import {
   Divider,
   theme,
   Skeleton,
-  Grid
+  Grid,
+  Table
 } from 'antd';
 import {
   HomeOutlined,
@@ -42,6 +43,7 @@ import ReturnModal from '@/components/feedback/return-modal';
 import { toastOptions } from '@/configs/global-configs';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '@/components/display/DeleteConfirmationModal';
+import { ColumnGroupType, ColumnType } from 'antd/es/table';
 import ChangeLog from '../../change-log/change-log';
 
 function ViewAddition() {
@@ -180,6 +182,33 @@ function ViewAddition() {
     }
   };
 
+  const columns: (
+    | ColumnType<IEdcItemRelationDoc>
+    | ColumnGroupType<IEdcItemRelationDoc>
+  )[] = [
+    {
+      title: dictionary.en.documentType,
+      dataIndex: 'DocumentType',
+      key: 'DocumentType',
+      align: 'center'
+    },
+    {
+      title: dictionary.en.documentNumber,
+      dataIndex: 'DocumentCode',
+      key: 'DocumentCode',
+      align: 'center'
+    },
+    {
+      title: dictionary.en.date,
+      dataIndex: 'docCreatedate',
+      key: 'docCreatedate',
+      width: '33%',
+      align: 'center'
+    }
+  ] as (
+    | ColumnType<IEdcItemRelationDoc>
+    | ColumnGroupType<IEdcItemRelationDoc>
+  )[];
   return (
     <div>
       {!skeleton ? (
@@ -263,11 +292,11 @@ function ViewAddition() {
               <Card
                 size="small"
                 className="box box-margin-y"
-                style={{ minHeight: '53%' }}
+                style={{ minHeight: '49%' }}
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.generalInfo.toLocaleUpperCase('en-EN')}
+                  {dictionary.en.generalInfo.toLocaleUpperCase('tr-TR')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -577,7 +606,7 @@ function ViewAddition() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.documents.toLocaleUpperCase('en-EN')}
+                  {dictionary.en.documents.toLocaleUpperCase('tr-TR')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -635,14 +664,14 @@ function ViewAddition() {
                 size="small"
                 className="box box-margin-y"
                 style={{
-                  minHeight: '39%',
+                  // minHeight: '43%',
                   maxHeight: '39%',
                   overflowY: 'auto'
                 }}
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.relatedDocs.toLocaleUpperCase('en-EN')}
+                  {dictionary.en.relatedDocs.toLocaleUpperCase('tr-TR')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -652,110 +681,45 @@ function ViewAddition() {
                 />
                 {edcViewItem?.RelationDocs?.length ? (
                   <div>
-                    {edcViewItem?.RelationDocs?.map(
-                      (z: IEdcItemRelationDoc) => (
-                        <div>
-                          <Row
-                            onClick={() => {
-                              if (z?.DocumentTypeId === 1) {
-                                z?.isDraft
-                                  ? window.open(
-                                      `/edc/view-contract/draft/${z?.Id}`,
-                                      '_blank'
-                                    )
-                                  : window.open(
-                                      `/edc/view-contract/${z?.Id}`,
-                                      '_blank'
-                                    );
-                              }
-                              if (z?.DocumentTypeId === 2) {
-                                z?.isDraft
-                                  ? window.open(
-                                      `/edc/view-addition/draft/${z?.Id}`,
-                                      '_blank'
-                                    )
-                                  : window.open(
-                                      `/edc/view-addition/${z?.Id}`,
-                                      '_blank'
-                                    );
-                              }
-                              if (z?.DocumentTypeId === 3) {
-                                z?.isDraft
-                                  ? window.open(
-                                      `/edc/view-invoice/draft/${z?.Id}`,
-                                      '_blank'
-                                    )
-                                  : window.open(
-                                      `/edc/view-invoice/${z?.Id}`,
-                                      '_blank'
-                                    );
-                              }
-                              if (z?.DocumentTypeId === 4) {
-                                z?.isDraft
-                                  ? window.open(
-                                      `/edc/view-act/draft/${z?.Id}`,
-                                      '_blank'
-                                    )
-                                  : window.open(
-                                      `/edc/view-act/${z?.Id}`,
-                                      '_blank'
-                                    );
-                              }
-                            }}
-                            style={{
-                              cursor: 'pointer'
-                            }}
-                            // onClick={() => setActivePdfOnStage(z)}
-                          >
-                            {/* <Col span={3}>
-                          <Typography.Paragraph
-                            style={{
-                              color: token.colorTextSecondary
-                            }}
-                            strong
-                          >
-                            <FilePdfOutlined
-                              style={{
-                                fontSize: token.fontSizeXL,
-                                color: token.red
-                              }}
-                              rev={undefined}
-                            />
-                          </Typography.Paragraph>
-                        </Col> */}
-                            <Col span={10}>
-                              <Typography.Paragraph
-                                ellipsis={{
-                                  rows: 2,
-                                  tooltip:
-                                    z?.DocumentType ?? dictionary.en.noDataText
-                                }}
-                                strong
-                              >
-                                {z?.DocumentType ?? dictionary.en.noDataText}
-                              </Typography.Paragraph>
-                            </Col>
-                            <Col span={11}>
-                              <Typography.Paragraph
-                                ellipsis={{
-                                  rows: 2,
-                                  tooltip:
-                                    z?.DocumentCode ?? dictionary.en.noDataText
-                                }}
-                                strong
-                              >
-                                {z?.DocumentCode ?? dictionary.en.noDataText}
-                              </Typography.Paragraph>
-                            </Col>
-                          </Row>
-                          <Divider
-                            style={{
-                              marginTop: token.marginXXS
-                            }}
-                          />
-                        </div>
-                      )
-                    )}
+                    <Table
+                      onRow={record => ({
+                        onClick: () => {
+                          let url = '';
+                          if (record.DocumentTypeId === 1) {
+                            url = record.isDraft
+                              ? `/edc/view-contract/draft/${record.Id}`
+                              : `/edc/view-contract/${record.Id}`;
+                          } else if (record.DocumentTypeId === 2) {
+                            url = record.isDraft
+                              ? `/edc/view-addition/draft/${record.Id}`
+                              : `/edc/view-addition/${record.Id}`;
+                          } else if (record.DocumentTypeId === 3) {
+                            url = record.isDraft
+                              ? `/edc/view-invoice/draft/${record.Id}`
+                              : `/edc/view-invoice/${record.Id}`;
+                          } else if (record.DocumentTypeId === 4) {
+                            url = record.isDraft
+                              ? `/edc/view-act/draft/${record.Id}`
+                              : `/edc/view-act/${record.Id}`;
+                          }
+                          if (url) {
+                            window.open(url, '_blank');
+                          }
+                        }
+                      })}
+                      size="small"
+                      pagination={false}
+                      locale={{
+                        emptyText: <AppEmpty />
+                      }}
+                      scroll={{ x: 300 }}
+                      columns={columns}
+                      dataSource={
+                        edcViewItem?.RelationDocs !== null
+                          ? edcViewItem?.RelationDocs
+                          : []
+                      }
+                    />
                   </div>
                 ) : (
                   <AppEmpty />
@@ -772,7 +736,7 @@ function ViewAddition() {
               <Card size="small" className="box box-margin-y">
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.file.toLocaleUpperCase('en-EN')}
+                  {dictionary.en.file.toLocaleUpperCase('tr-TR')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -818,7 +782,7 @@ function ViewAddition() {
                   {!versionLoading ? (
                     <TokenizedIframe
                       style={{
-                        height: '900px'
+                        height: '862px'
                       }}
                       tokenized
                       src={activePdfOnStage?.fileUrl ?? ''}
@@ -835,7 +799,7 @@ function ViewAddition() {
               </Card>
             </Col>
           </Row>
-          <Row>
+          <Row style={{ marginTop: token.marginXL }}>
             {!isDraft && (
               <ChangeLog id={id} refreshComponent={refreshComponent} />
             )}

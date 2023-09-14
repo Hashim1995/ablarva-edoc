@@ -24,7 +24,10 @@ import {
   DeleteOutlined,
   SearchOutlined,
   FilePdfOutlined,
-  PlusCircleOutlined
+  PlusCircleOutlined,
+  SwapOutlined,
+  FileAddOutlined,
+  RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -110,7 +113,12 @@ function UpdateContract() {
   const [draftSubmitLoading, setDraftSubmitLoading] = useState<boolean>(false);
   const [skeleton, setSkeleton] = useState<boolean>(true);
   const [blockRoute, setBlockRoute] = useState(true);
-
+  const [senderLegalEntityVoen, setSenderLegalEntityVoen] = useState<
+    string | null
+  >('');
+  const [circulationOptions, setCirculationOptions] = useState<any[]>();
+  const [circulationOptionsLoading, setCirculationOptionsLoading] =
+    useState<boolean>(true);
   const getByID = async (docId: string) => {
     const isDraft: boolean = pathname?.includes('draft');
 
@@ -120,6 +128,7 @@ function UpdateContract() {
     if (res.IsSuccess) {
       setSkeleton(false);
       const { Data } = res;
+      setSenderLegalEntityVoen(Data?.SenderLegalEntityVoen ?? '');
       setValue('Description', Data?.Description ?? '');
       setValue('SenderLegalEntityVoen', Data?.SenderLegalEntityVoen ?? '');
       setValue('SenderLegalEntityName', Data?.SenderLegalEntity ?? '');
@@ -156,6 +165,8 @@ function UpdateContract() {
 
   useEffect(() => {
     id && getByID(id);
+    setCirculationOptions([]);
+    setCirculationOptionsLoading(true);
     window.scrollTo(0, 0);
   }, [id]);
 
@@ -198,6 +209,9 @@ function UpdateContract() {
     if (res.IsSuccess) {
       toast.success(dictionary.en.successTxt, toastOptions);
       navigate(`/edc/view-contract/${res?.Data?.id}`);
+    } else {
+      toast.error(res.Errors[0], toastOptions);
+      setMainSubmitLoading(false);
     }
     setMainSubmitLoading(false);
   };
@@ -218,6 +232,9 @@ function UpdateContract() {
     if (res.IsSuccess) {
       toast.success(dictionary.en.successTxt, toastOptions);
       navigate(`/edc/view-contract/draft/${res?.Data?.id}`);
+    } else {
+      toast.error(res.Errors[0], toastOptions);
+      setDraftSubmitLoading(false);
     }
     setDraftSubmitLoading(false);
   };
@@ -285,7 +302,7 @@ function UpdateContract() {
 
   const columns: ColumnsType<IEdcContractTableFileListItem> = [
     {
-      title: 'Document Type',
+      title: 'Sənədin tipi',
       dataIndex: 'type',
       key: 'name',
       render: (record: number) =>
@@ -294,7 +311,7 @@ function UpdateContract() {
           : dictionary.en.fileTypeIsPrivate
     },
     {
-      title: 'Document name',
+      title: 'Sənədin adı',
       dataIndex: 'name',
       key: 'age'
     },
@@ -343,22 +360,26 @@ function UpdateContract() {
   ];
 
   const getByVoen = async () => {
-    setVoenInputLoading(true);
-    const res: ICompanyDetailResponse =
-      await EdcServies.getInstance().getByVoen(
-        watch('RecieverLegalEntityVoen'),
-        () => {
-          setVoenInputLoading(false);
-          setValue('RecieverLegalEntityName', '');
-        }
-      );
+    if (senderLegalEntityVoen === watch('RecieverLegalEntityVoen')) {
+      toast.error(dictionary.en.voenMustBeDifferent, toastOptions);
+    } else {
+      setVoenInputLoading(true);
+      const res: ICompanyDetailResponse =
+        await EdcServies.getInstance().getByVoen(
+          watch('RecieverLegalEntityVoen'),
+          () => {
+            setVoenInputLoading(false);
+            setValue('RecieverLegalEntityName', '');
+          }
+        );
 
-    if (res.IsSuccess) {
-      setValue('RecieverLegalEntityName', res?.Data?.Name);
-      setdisableRecieverVoen(true);
-      toast.success(dictionary.en.successTxt, toastOptions);
+      if (res.IsSuccess) {
+        setValue('RecieverLegalEntityName', res?.Data?.Name);
+        setdisableRecieverVoen(true);
+        toast.success(dictionary.en.successTxt, toastOptions);
+      }
+      setVoenInputLoading(false);
     }
-    setVoenInputLoading(false);
   };
 
   const suffix = watch('RecieverLegalEntityName') ? (
@@ -473,7 +494,7 @@ function UpdateContract() {
             >
               <Timeline.Item
                 dot={
-                  <InfoCircleOutlined
+                  <SwapOutlined
                     rev={undefined}
                     onClick={() => handleDotClick('1')}
                     style={getTimeLineStyle(token)}
@@ -649,6 +670,60 @@ function UpdateContract() {
               </Timeline.Item>
               <Timeline.Item
                 dot={
+                  <RetweetOutlined
+                    rev={undefined}
+                    onClick={() => handleDotClick('2')}
+                    style={getTimeLineStyle(token)}
+                  />
+                }
+                color="blue"
+              >
+                <div aria-hidden onClick={() => handleDotClick('2')}>
+                  <Collapse
+                    activeKey={activeKeys}
+                    style={{ marginLeft: token.marginMD }}
+                  >
+                    <Collapse.Panel header={dictionary.en.circulation} key="2">
+                      <div onClick={e => e.stopPropagation()} aria-hidden>
+                        <Row gutter={16}>
+                          <Col className="gutter-row" span={24}>
+                            <AppHandledSelect
+                              label={dictionary.en.templateName}
+                              name="contractNumber"
+                              control={control}
+                              required
+                              placeholder={inputPlaceholderText(
+                                dictionary.en.templateName
+                              )}
+                              getLabelOnChange
+                              errors={errors}
+                              selectProps={{
+                                loading: circulationOptionsLoading,
+                                disabled: circulationOptionsLoading,
+                                showSearch: true,
+                                id: 'contractNumber',
+                                placeholder: selectPlaceholderText(
+                                  dictionary.en.templateName
+                                ),
+                                className: 'w-full',
+                                options: circulationOptions,
+                                size: 'large'
+                              }}
+                              formItemProps={{
+                                labelAlign: 'left',
+                                labelCol: { span: 8, sm: 12, md: 10, lg: 8 },
+                                style: { fontWeight: 'bolder' }
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    </Collapse.Panel>
+                  </Collapse>
+                </div>
+              </Timeline.Item>
+              <Timeline.Item
+                dot={
                   <InfoCircleOutlined
                     rev={undefined}
                     onClick={() => handleDotClick('2')}
@@ -812,7 +887,7 @@ function UpdateContract() {
               </Timeline.Item>
               <Timeline.Item
                 dot={
-                  <InfoCircleOutlined
+                  <FileAddOutlined
                     rev={undefined}
                     onClick={() => handleDotClick('3')}
                     style={getTimeLineStyle(token)}
@@ -833,7 +908,7 @@ function UpdateContract() {
                               watch('tableFileList')?.length < 2
                                 ? setShowUploadFileModal(true)
                                 : toast.warn(
-                                    'You can upload only two document',
+                                    'Yalnız 2 sənəd əlavə edə bilərsiniz',
                                     toastOptions
                                   );
                               e.stopPropagation();

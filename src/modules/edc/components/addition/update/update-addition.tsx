@@ -23,7 +23,10 @@ import {
   InfoCircleOutlined,
   DeleteOutlined,
   FilePdfOutlined,
-  PlusCircleOutlined
+  PlusCircleOutlined,
+  SwapOutlined,
+  FileAddOutlined,
+  RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -104,7 +107,9 @@ function UpdateAddition() {
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
   const [skeleton, setSkeleton] = useState<boolean>(true);
-
+  const [circulationOptions, setCirculationOptions] = useState<any[]>();
+  const [circulationOptionsLoading, setCirculationOptionsLoading] =
+    useState<boolean>(true);
   const getDocsListOptions = async () => {
     const res: IEdcDocsListOptionsResponse =
       await EdcServies.getInstance().getDocsListOptions();
@@ -147,6 +152,8 @@ function UpdateAddition() {
   };
   useEffect(() => {
     getDocsListOptions();
+    setCirculationOptions([]);
+    setCirculationOptionsLoading(true);
   }, []);
 
   useEffect(() => {
@@ -226,7 +233,6 @@ function UpdateAddition() {
     data: IEdcAdditionForm
   ) => {
     setBlockRoute(false);
-    console.log(dayjs(data?.StartDate)?.format(), 'muddet');
     const startDate = new Date(
       data.StartDate.$y,
       data.StartDate.$M,
@@ -237,7 +243,7 @@ function UpdateAddition() {
       contractNumber:
         typeof data?.contractNumber === 'object'
           ? data?.contractNumber?.value
-          : null,
+          : data?.contractNumber,
       RecieverLegalEntityName: data?.RecieverLegalEntityName,
       RecieverLegalEntityVoen: data?.RecieverLegalEntityVoen,
       Description: data?.Description,
@@ -269,13 +275,13 @@ function UpdateAddition() {
 
   const columns: ColumnsType<IEdcContractTableFileListItem> = [
     {
-      title: 'Document Type',
+      title: 'Sənədin tipi',
       dataIndex: 'type',
       key: 'name',
       render: () => dictionary.en.fileTypeIsMain
     },
     {
-      title: 'Document name',
+      title: 'Sənədin adı',
       dataIndex: 'name',
       key: 'age'
     },
@@ -405,7 +411,7 @@ function UpdateAddition() {
             >
               <Timeline.Item
                 dot={
-                  <InfoCircleOutlined
+                  <SwapOutlined
                     rev={undefined}
                     onClick={() => handleDotClick('1')}
                     style={getTimeLineStyle(token)}
@@ -565,7 +571,7 @@ function UpdateAddition() {
               </Timeline.Item>
               <Timeline.Item
                 dot={
-                  <InfoCircleOutlined
+                  <RetweetOutlined
                     rev={undefined}
                     onClick={() => handleDotClick('2')}
                     style={getTimeLineStyle(token)}
@@ -578,7 +584,61 @@ function UpdateAddition() {
                     activeKey={activeKeys}
                     style={{ marginLeft: token.marginMD }}
                   >
-                    <Collapse.Panel header={dictionary.en.docInfo} key="2">
+                    <Collapse.Panel header={dictionary.en.circulation} key="2">
+                      <div onClick={e => e.stopPropagation()} aria-hidden>
+                        <Row gutter={16}>
+                          <Col className="gutter-row" span={24}>
+                            <AppHandledSelect
+                              label={dictionary.en.templateName}
+                              name="contractNumber"
+                              control={control}
+                              required
+                              placeholder={inputPlaceholderText(
+                                dictionary.en.templateName
+                              )}
+                              getLabelOnChange
+                              errors={errors}
+                              selectProps={{
+                                loading: circulationOptionsLoading,
+                                disabled: circulationOptionsLoading,
+                                showSearch: true,
+                                id: 'contractNumber',
+                                placeholder: selectPlaceholderText(
+                                  dictionary.en.templateName
+                                ),
+                                className: 'w-full',
+                                options: circulationOptions,
+                                size: 'large'
+                              }}
+                              formItemProps={{
+                                labelAlign: 'left',
+                                labelCol: { span: 8, sm: 12, md: 10, lg: 8 },
+                                style: { fontWeight: 'bolder' }
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    </Collapse.Panel>
+                  </Collapse>
+                </div>
+              </Timeline.Item>
+              <Timeline.Item
+                dot={
+                  <InfoCircleOutlined
+                    rev={undefined}
+                    onClick={() => handleDotClick('3')}
+                    style={getTimeLineStyle(token)}
+                  />
+                }
+                color="blue"
+              >
+                <div aria-hidden onClick={() => handleDotClick('3')}>
+                  <Collapse
+                    activeKey={activeKeys}
+                    style={{ marginLeft: token.marginMD }}
+                  >
+                    <Collapse.Panel header={dictionary.en.docInfo} key="3">
                       <div onClick={e => e.stopPropagation()} aria-hidden>
                         <Row gutter={16}>
                           <Col className="gutter-row" span={24}>
@@ -641,15 +701,15 @@ function UpdateAddition() {
               </Timeline.Item>
               <Timeline.Item
                 dot={
-                  <InfoCircleOutlined
+                  <FileAddOutlined
                     rev={undefined}
-                    onClick={() => handleDotClick('3')}
+                    onClick={() => handleDotClick('4')}
                     style={getTimeLineStyle(token)}
                   />
                 }
                 color="blue"
               >
-                <div aria-hidden onClick={() => handleDotClick('3')}>
+                <div aria-hidden onClick={() => handleDotClick('4')}>
                   <Collapse
                     activeKey={activeKeys}
                     style={{ marginLeft: token.marginMD }}
@@ -662,7 +722,7 @@ function UpdateAddition() {
                               watch('tableFileList')?.length < 1
                                 ? setShowUploadFileModal(true)
                                 : toast.warn(
-                                    'You can upload only one document',
+                                    'Yalnız 1 sənəd əlavə edə bilərsiniz',
                                     toastOptions
                                   );
                               e.stopPropagation();
@@ -675,7 +735,7 @@ function UpdateAddition() {
                         </Tooltip>
                       }
                       header={dictionary.en.docInfo}
-                      key="3"
+                      key="4"
                     >
                       <div onClick={e => e.stopPropagation()} aria-hidden>
                         {watch('tableFileList')?.length ? (

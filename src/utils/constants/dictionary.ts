@@ -154,7 +154,20 @@ export const dictionary = {
     appointment: 'Təyinat',
     date: 'Tarix',
     reason: 'Səbəb',
-    empty: 'Məlumat yoxdur'
+    empty: 'Məlumat yoxdur',
+    internal: 'Daxili',
+    external: 'Xarici',
+    circulation: 'Dövriyyə',
+    templateName: 'Şablon adı',
+    voenMustBeDifferent: 'Daxil edilən VÖEN fərqli olmalıdır',
+    internalStructure: 'Daxili struktur',
+    circulationType: 'Dövriyyə növü',
+    parallel: 'Paralel',
+    successive: 'Ardıcıl',
+    information: 'Məlumat',
+    approve: 'Təsdiq',
+    sign: 'İmza',
+    addTemplate: 'Şablon əlavə edin'
   },
   en: {
     personalCabinet: 'Personal Cabinet',
@@ -311,6 +324,19 @@ export const dictionary = {
     appointment: 'Appointment',
     date: 'Date',
     reason: 'Reason',
-    empty: 'No data'
+    empty: 'No data',
+    internalStructure: 'Internal structure',
+    circulationType: 'Circulation type',
+    templateName: 'Template name',
+    parallel: 'Parallel',
+    successive: 'Successive',
+    information: 'Information',
+    approve: 'Approve',
+    sign: 'Sign',
+    addTemplate: 'Add template',
+    internal: 'Internal',
+    external: 'External',
+    circulation: 'Circulation',
+    voenMustBeDifferent: 'Voen must be different'
   }
 };

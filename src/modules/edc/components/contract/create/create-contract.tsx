@@ -23,7 +23,10 @@ import {
   DeleteOutlined,
   SearchOutlined,
   FilePdfOutlined,
-  PlusCircleOutlined
+  PlusCircleOutlined,
+  SwapOutlined,
+  FileAddOutlined,
+  RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -105,10 +108,15 @@ function CreateContract() {
   const [mainSubmitLoading, setMainSubmitLoading] = useState<boolean>(false);
   const [draftSubmitLoading, setDraftSubmitLoading] = useState<boolean>(false);
   const [blockRoute, setBlockRoute] = useState(true);
+  const [circulationOptions, setCirculationOptions] = useState<any[]>();
+  const [circulationOptionsLoading, setCirculationOptionsLoading] =
+    useState<boolean>(true);
 
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
     setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
+    setCirculationOptions([]);
+    setCirculationOptionsLoading(true);
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
@@ -223,7 +231,7 @@ function CreateContract() {
 
   const columns: ColumnsType<IEdcContractTableFileListItem> = [
     {
-      title: 'Document Type',
+      title: 'Sənədin tipi',
       dataIndex: 'type',
       key: 'name',
       render: (record: number) =>
@@ -232,7 +240,7 @@ function CreateContract() {
           : dictionary.en.fileTypeIsPrivate
     },
     {
-      title: 'Document name',
+      title: 'Sənədin adı',
       dataIndex: 'name',
       key: 'age'
     },
@@ -281,22 +289,26 @@ function CreateContract() {
   ];
 
   const getByVoen = async () => {
-    setVoenInputLoading(true);
-    const res: ICompanyDetailResponse =
-      await EdcServies.getInstance().getByVoen(
-        watch('RecieverLegalEntityVoen'),
-        () => {
-          setVoenInputLoading(false);
-          setValue('RecieverLegalEntityName', '');
-        }
-      );
+    if (userCompanyData?.Voen === watch('RecieverLegalEntityVoen')) {
+      toast.error(dictionary.en.voenMustBeDifferent, toastOptions);
+    } else {
+      setVoenInputLoading(true);
+      const res: ICompanyDetailResponse =
+        await EdcServies.getInstance().getByVoen(
+          watch('RecieverLegalEntityVoen'),
+          () => {
+            setVoenInputLoading(false);
+            setValue('RecieverLegalEntityName', '');
+          }
+        );
 
-    if (res.IsSuccess) {
-      setValue('RecieverLegalEntityName', res?.Data?.Name);
-      setdisableRecieverVoen(true);
-      toast.success(dictionary.en.successTxt, toastOptions);
+      if (res.IsSuccess) {
+        setValue('RecieverLegalEntityName', res?.Data?.Name);
+        setdisableRecieverVoen(true);
+        toast.success(dictionary.en.successTxt, toastOptions);
+      }
+      setVoenInputLoading(false);
     }
-    setVoenInputLoading(false);
   };
 
   const suffix = watch('RecieverLegalEntityName') ? (
@@ -412,7 +424,7 @@ function CreateContract() {
           >
             <Timeline.Item
               dot={
-                <InfoCircleOutlined
+                <SwapOutlined
                   rev={undefined}
                   onClick={() => handleDotClick('1')}
                   style={getTimeLineStyle(token)}
@@ -587,7 +599,7 @@ function CreateContract() {
             </Timeline.Item>
             <Timeline.Item
               dot={
-                <InfoCircleOutlined
+                <RetweetOutlined
                   rev={undefined}
                   onClick={() => handleDotClick('2')}
                   style={getTimeLineStyle(token)}
@@ -600,7 +612,61 @@ function CreateContract() {
                   activeKey={activeKeys}
                   style={{ marginLeft: token.marginMD }}
                 >
-                  <Collapse.Panel header={dictionary.en.docInfo} key="2">
+                  <Collapse.Panel header={dictionary.en.circulation} key="2">
+                    <div onClick={e => e.stopPropagation()} aria-hidden>
+                      <Row gutter={16}>
+                        <Col className="gutter-row" span={24}>
+                          <AppHandledSelect
+                            label={dictionary.en.templateName}
+                            name="contractNumber"
+                            control={control}
+                            required
+                            placeholder={inputPlaceholderText(
+                              dictionary.en.templateName
+                            )}
+                            getLabelOnChange
+                            errors={errors}
+                            selectProps={{
+                              loading: circulationOptionsLoading,
+                              disabled: circulationOptionsLoading,
+                              showSearch: true,
+                              id: 'contractNumber',
+                              placeholder: selectPlaceholderText(
+                                dictionary.en.templateName
+                              ),
+                              className: 'w-full',
+                              options: circulationOptions,
+                              size: 'large'
+                            }}
+                            formItemProps={{
+                              labelAlign: 'left',
+                              labelCol: { span: 8, sm: 12, md: 10, lg: 8 },
+                              style: { fontWeight: 'bolder' }
+                            }}
+                          />
+                        </Col>
+                      </Row>
+                    </div>
+                  </Collapse.Panel>
+                </Collapse>
+              </div>
+            </Timeline.Item>
+            <Timeline.Item
+              dot={
+                <InfoCircleOutlined
+                  rev={undefined}
+                  onClick={() => handleDotClick('3')}
+                  style={getTimeLineStyle(token)}
+                />
+              }
+              color="blue"
+            >
+              <div aria-hidden onClick={() => handleDotClick('3')}>
+                <Collapse
+                  activeKey={activeKeys}
+                  style={{ marginLeft: token.marginMD }}
+                >
+                  <Collapse.Panel header={dictionary.en.docInfo} key="3">
                     <div onClick={e => e.stopPropagation()} aria-hidden>
                       <Row gutter={16}>
                         <Col className="gutter-row" span={24}>
@@ -750,15 +816,15 @@ function CreateContract() {
             </Timeline.Item>
             <Timeline.Item
               dot={
-                <InfoCircleOutlined
+                <FileAddOutlined
                   rev={undefined}
-                  onClick={() => handleDotClick('3')}
+                  onClick={() => handleDotClick('4')}
                   style={getTimeLineStyle(token)}
                 />
               }
               color="blue"
             >
-              <div aria-hidden onClick={() => handleDotClick('3')}>
+              <div aria-hidden onClick={() => handleDotClick('4')}>
                 <Collapse
                   activeKey={activeKeys}
                   style={{ marginLeft: token.marginMD }}
@@ -771,7 +837,7 @@ function CreateContract() {
                             watch('tableFileList')?.length < 2
                               ? setShowUploadFileModal(true)
                               : toast.warn(
-                                  'You can upload only two document',
+                                  'Yalnız 2 sənəd əlavə edə bilərsiniz',
                                   toastOptions
                                 );
                             e.stopPropagation();
@@ -784,7 +850,7 @@ function CreateContract() {
                       </Tooltip>
                     }
                     header={dictionary.en.docInfo}
-                    key="3"
+                    key="4"
                   >
                     <div onClick={e => e.stopPropagation()} aria-hidden>
                       {watch('tableFileList')?.length ? (

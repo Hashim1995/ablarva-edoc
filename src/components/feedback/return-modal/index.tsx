@@ -8,6 +8,10 @@ import { inputPlaceholderText } from '@/utils/constants/texts';
 import { EdcServies } from '@/services/edc-services/edc-services';
 import { toast } from 'react-toastify';
 import { toastOptions } from '@/configs/global-configs';
+import {
+  inputValidationText,
+  minLengthCheck
+} from '@/utils/constants/validations';
 
 interface FormData {
   Message: string | null;
@@ -78,12 +82,28 @@ function ReturnModal({
         </Button>
       ]}
     >
-      <Form onFinish={handleSubmit(onSubmit)} id="Message-return-form">
+      <Form
+        onFinish={handleSubmit(onSubmit)}
+        id="Message-return-form"
+        layout="vertical"
+      >
         <AppHandledTextArea
+          label={dictionary.en.reason}
           name="Message"
           control={control}
           placeholder={inputPlaceholderText(dictionary.en.returnReason)}
           errors={errors}
+          rules={{
+            required: {
+              value: true,
+              message: inputValidationText(dictionary.en.returnReason)
+            },
+            minLength: {
+              value: 5,
+              message: minLengthCheck(dictionary.en.finCode, '7')
+            }
+          }}
+          required
           formItemProps={{
             labelAlign: 'left',
             labelCol: { span: 8, sm: 12, md: 10, lg: 8 },
