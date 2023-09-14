@@ -579,8 +579,7 @@ function ViewInvoice() {
                         }}
                         strong
                       >
-                        {dictionary.en.summary ?? dictionary.en.noDataTwerweext}
-                        :
+                        {dictionary.en.summary ?? dictionary.en.noDataTwerweet}:
                       </Typography.Paragraph>
                     </Col>
                     <Col span={10} offset={2}>
