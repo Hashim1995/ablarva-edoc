@@ -17,6 +17,7 @@ interface IAppHandledSelect {
   selectProps?: SelectProps;
   formItemProps?: FormItemProps;
   getLabelOnChange?: boolean;
+  IsDynamic?: boolean;
 }
 
 function AppHandledSelect({
@@ -30,15 +31,37 @@ function AppHandledSelect({
   onChangeApp,
   selectProps,
   formItemProps,
+  IsDynamic,
   getLabelOnChange = false
 }: IAppHandledSelect) {
+  let tooltip: string;
+  let status: 'error' | 'warning' | undefined;
+  if (IsDynamic) {
+    const dynamicNameArray = name.split('.');
+    const dynamicName = dynamicNameArray[0];
+    const index = Number(dynamicNameArray[1]);
+    const key = dynamicNameArray[2];
+
+    status =
+      required && errors[dynamicName] && errors[dynamicName][index]
+        ? 'error'
+        : undefined;
+    tooltip =
+      errors[dynamicName] &&
+      errors[dynamicName][index] &&
+      errors[dynamicName][index][key]?.message;
+  } else {
+    status = required && errors[name] ? 'error' : undefined;
+    tooltip = errors[name] ? errors[name].message : '';
+  }
+
   return (
     <Form.Item
       label={<span style={{ whiteSpace: 'nowrap' }}>{label}</span>}
       // labelCol={{ span: 24 }}
       required={required}
       htmlFor={name}
-      tooltip={errors[name] ? errors[name].message : ''}
+      tooltip={tooltip}
       name={name}
       {...formItemProps}
     >
@@ -49,7 +72,7 @@ function AppHandledSelect({
         render={({ field: { onChange, value } }) => (
           <AppSelect
             value={value}
-            status={required && errors[name] ? 'error' : undefined}
+            status={status}
             onChange={(e, a) => {
               onChange(e);
               if (onChangeApp) {

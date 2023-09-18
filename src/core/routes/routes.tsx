@@ -61,6 +61,10 @@ const PersonalCabinet = React.lazy(
   () => import('@/modules/personal-cabinet/components/personal-cabinet')
 );
 
+const CirculationTemplatesPage = React.lazy(
+  () => import('@/modules/settings/circulation-templates/pages')
+);
+
 const routes = [
   {
     path: '/',
@@ -311,6 +315,14 @@ const routes = [
         element: (
           <Suspense fallback={<FallbackSpinner />}>
             <StaffPage />
+          </Suspense>
+        )
+      },
+      {
+        path: '/settings/circulation-templates',
+        element: (
+          <Suspense fallback={<FallbackSpinner />}>
+            <CirculationTemplatesPage />
           </Suspense>
         )
       },
