@@ -9,24 +9,26 @@ import {
   inputPlaceholderText,
   selectPlaceholderText
 } from '@/utils/constants/texts';
-import { circulationTypeOptions } from '@/utils/constants/options';
 import { inputValidationText } from '@/utils/constants/validations';
-import { TemplateAddModalFormData } from '../modals/add-template';
+import { selectOption } from '@/models/common';
+import { ITemplateAddForm } from '../models';
 
 interface UserFieldArrayProps {
   control: any;
   name: any;
   errors: any;
   multiple?: boolean;
+  users: selectOption[];
 }
 
 function UserFieldArray({
   control,
   errors,
   name,
-  multiple
+  multiple,
+  users
 }: UserFieldArrayProps) {
-  const { fields, append, remove } = useFieldArray<TemplateAddModalFormData>({
+  const { fields, append, remove } = useFieldArray<ITemplateAddForm>({
     control,
     name
   });
@@ -55,9 +57,7 @@ function UserFieldArray({
                         message: inputValidationText(label())
                       }
                     }}
-                    name={
-                      `${name}.${index}.userId` as keyof TemplateAddModalFormData
-                    }
+                    name={`${name}.${index}.userId` as keyof ITemplateAddForm}
                     IsDynamic
                     control={control}
                     placeholder={inputPlaceholderText(label())}
@@ -69,7 +69,7 @@ function UserFieldArray({
                       id: `${name}${index}userId`,
                       placeholder: selectPlaceholderText(label()),
                       className: 'w-full',
-                      options: circulationTypeOptions
+                      options: users
                     }}
                   />
                 </Col>

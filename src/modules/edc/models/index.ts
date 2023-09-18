@@ -55,6 +55,7 @@ interface IEdcItemRelationDoc {
   DocumentTypeId?: number;
   Id?: number;
   isDraft?: boolean;
+  CreatedDate?: string | Date;
 }
 
 interface Permission {

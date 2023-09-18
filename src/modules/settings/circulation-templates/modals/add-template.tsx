@@ -18,43 +18,26 @@ import { Button, Col, Form, Modal, RadioChangeEvent, Row } from 'antd';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { IGlobalResponse } from '@/models/common';
+import { IGlobalResponse, selectOption } from '@/models/common';
 import { showCloseConfirmationModal } from '@/utils/functions/functions';
 import { circulationTypeOptions } from '@/utils/constants/options';
 import AppHandledRadio from '@/components/forms/radio/handled-radio';
-
+import { CirculationTemplateServies } from '@/services/circulation-template-services/circulation-template-service';
 import UserFieldArray from '../components/circulation-template-user-filed-array';
+import { ICycleMemberItem, ITemplateAddForm } from '../models';
 
 interface IAddTemplateProps {
   showAddTemplateModal: boolean;
   setShowTemplateAddModal: Dispatch<SetStateAction<boolean>>;
   setRefreshComponent: Dispatch<SetStateAction<boolean>>;
-}
-
-export interface cycleMemberItem {
-  userId: number;
-  memberType: number;
-  order: number;
-  group: number | null;
-}
-
-export interface TemplateAddModalFormData {
-  name: string;
-  type: number;
-  cycleCompilers: number[];
-  cycleMembers: cycleMemberItem[];
-  approve: {
-    userId: number | number[] | null;
-  }[];
-  sign: {
-    userId: number | number[] | null;
-  }[];
+  users: selectOption[];
 }
 
 function AddTemplate({
   setShowTemplateAddModal,
   setRefreshComponent,
-  showAddTemplateModal
+  showAddTemplateModal,
+  users
 }: IAddTemplateProps) {
   const [type, setType] = useState(1);
   const {
@@ -62,13 +45,13 @@ function AddTemplate({
     handleSubmit,
     resetField,
     formState: { errors }
-  } = useForm<TemplateAddModalFormData>({
+  } = useForm<ITemplateAddForm>({
     mode: 'onChange',
     defaultValues: {
       name: '',
       type: 1,
 
-      cycleCompilers: [],
+      forInfos: [],
       approve: [
         {
           userId: null
@@ -83,11 +66,11 @@ function AddTemplate({
   });
 
   const [isFormSubmiting, setIsFormSubmiting] = useState<boolean>(false);
-  const onSubmit: SubmitHandler<TemplateAddModalFormData> = async (
-    data: TemplateAddModalFormData
+  const onSubmit: SubmitHandler<ITemplateAddForm> = async (
+    data: ITemplateAddForm
   ) => {
-    // setIsFormSubmiting(true);
-    const cycleMembers: cycleMemberItem[] = [];
+    setIsFormSubmiting(true);
+    const cycleMembers: ICycleMemberItem[] = [];
 
     if (data.type === 1) {
       let order: number = 0;
@@ -96,7 +79,7 @@ function AddTemplate({
         t.userId !== null &&
           typeof t.userId === 'number' &&
           cycleMembers.push({
-            userId: t.userId,
+            authPersonId: t.userId,
             memberType: 1,
             order,
             group: null
@@ -107,7 +90,7 @@ function AddTemplate({
         t.userId !== null &&
           typeof t.userId === 'number' &&
           cycleMembers.push({
-            userId: t.userId,
+            authPersonId: t.userId,
             memberType: 2,
             order,
             group: null
@@ -121,7 +104,7 @@ function AddTemplate({
           order += 1;
           if (t.userId.length === 1) {
             cycleMembers.push({
-              userId: t.userId[0],
+              authPersonId: t.userId[0],
               memberType: 1,
               order,
               group: null
@@ -130,7 +113,7 @@ function AddTemplate({
             group += 1;
             t.userId.map((y: number) => {
               cycleMembers.push({
-                userId: y,
+                authPersonId: y,
                 memberType: 1,
                 order,
                 group
@@ -145,7 +128,7 @@ function AddTemplate({
           order += 1;
           if (t.userId.length === 1) {
             cycleMembers.push({
-              userId: t.userId[0],
+              authPersonId: t.userId[0],
               memberType: 2,
               order,
               group: null
@@ -154,7 +137,7 @@ function AddTemplate({
             group += 1;
             t.userId.map((y: number) => {
               cycleMembers.push({
-                userId: y,
+                authPersonId: y,
                 memberType: 2,
                 order,
                 group
@@ -168,29 +151,29 @@ function AddTemplate({
     const payload = {
       name: data.name,
       type: data.type,
-      cycleCompilers: data.cycleCompilers,
+      forInfos: data.forInfos,
       cycleMembers
     };
     console.log(payload);
 
-    // const res: IGlobalResponse = await StaffServies.getInstance().addStaff(
-    //   payload,
-    //   () => setIsFormSubmiting(false)
-    // );
+    const res: IGlobalResponse =
+      await CirculationTemplateServies.getInstance().addTemplate(payload, () =>
+        setIsFormSubmiting(false)
+      );
 
-    // if (res.IsSuccess) {
-    //   toast.success(dictionary.en.successTxt);
-    //   setShowTemplateAddModal(false);
-    //   setRefreshComponent(z => !z);
-    // }
-    // setShowTemplateAddModal(false);
-    // setIsFormSubmiting(false);
+    if (res.IsSuccess) {
+      toast.success(dictionary.en.successTxt);
+      setShowTemplateAddModal(false);
+      setRefreshComponent(z => !z);
+    }
+    setShowTemplateAddModal(false);
+    setIsFormSubmiting(false);
   };
 
   const handleTypeChange = (value: number) => {
     setType(value);
     resetField('name');
-    resetField('cycleCompilers');
+    resetField('forInfos');
     if (value === 1) {
       resetField('approve', { defaultValue: [{ userId: null }] });
       resetField('sign', { defaultValue: [{ userId: null }] });
@@ -294,7 +277,7 @@ function AddTemplate({
               />
               <AppHandledSelect
                 label={dictionary.en.information}
-                name="cycleCompilers"
+                name="forInfos"
                 control={control}
                 rules={{
                   required: {
@@ -308,10 +291,10 @@ function AddTemplate({
                 selectProps={{
                   mode: 'multiple',
                   showSearch: true,
-                  id: 'cycleCompilers',
+                  id: 'forInfos',
                   placeholder: selectPlaceholderText(dictionary.en.information),
                   className: 'w-full',
-                  options: circulationTypeOptions
+                  options: users
                 }}
                 formItemProps={{
                   labelAlign: 'left',
@@ -324,11 +307,13 @@ function AddTemplate({
                   <UserFieldArray
                     errors={errors}
                     control={control}
+                    users={users}
                     name="approve"
                   />
                   <UserFieldArray
                     errors={errors}
                     control={control}
+                    users={users}
                     name="sign"
                   />
                 </>
@@ -340,12 +325,14 @@ function AddTemplate({
                     multiple
                     errors={errors}
                     control={control}
+                    users={users}
                     name="approve"
                   />
                   <UserFieldArray
                     multiple
                     errors={errors}
                     control={control}
+                    users={users}
                     name="sign"
                   />
                 </>

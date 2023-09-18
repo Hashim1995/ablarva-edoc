@@ -1,4 +1,4 @@
-import { selectOption } from '@/models/common';
+import { IGlobalResponse, selectOption } from '@/models/common';
 
 interface ICirculationTemplateFilter {
   Name: string;
@@ -11,4 +11,44 @@ interface ICirculationTemplateItem {
   CirculationType?: string | null;
 }
 
-export type { ICirculationTemplateFilter, ICirculationTemplateItem };
+interface IGetUsersResponse extends IGlobalResponse {
+  Data: {
+    TotalCount: number;
+    Datas: selectOption[];
+  };
+}
+
+interface ICycleMemberItem {
+  authPersonId: number;
+  memberType: number;
+  order: number;
+  group: number | null;
+}
+
+interface ITemplateAddForm {
+  name: string;
+  type: number;
+  forInfos: number[];
+  approve: {
+    userId: number | number[] | null;
+  }[];
+  sign: {
+    userId: number | number[] | null;
+  }[];
+}
+
+interface ITemplateAddPayload {
+  name: string;
+  type: number;
+  forInfos: number[];
+  cycleMembers: ICycleMemberItem[];
+}
+
+export type {
+  ICirculationTemplateFilter,
+  ICirculationTemplateItem,
+  IGetUsersResponse,
+  ITemplateAddForm,
+  ITemplateAddPayload,
+  ICycleMemberItem
+};

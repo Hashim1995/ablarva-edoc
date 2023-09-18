@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { dictionary } from '@/utils/constants/dictionary';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Breadcrumb,
   Button,
@@ -33,9 +33,12 @@ import { circulationTypeOptions } from '@/utils/constants/options';
 import AppEmpty from '@/components/display/empty';
 import AppPagination from '@/components/display/pagination';
 import { ColumnsType } from 'antd/es/table';
+import { CirculationTemplateServies } from '@/services/circulation-template-services/circulation-template-service';
+import { selectOption } from '@/models/common';
 import {
   ICirculationTemplateFilter,
-  ICirculationTemplateItem
+  ICirculationTemplateItem,
+  IGetUsersResponse
 } from '../models';
 import AddTemplate from '../modals/add-template';
 
@@ -58,6 +61,8 @@ function CirculationTemplates() {
 
   const [page, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
+  const [usersLoading, setUsersLoading] = useState<boolean>(false);
+  const [usersList, setUsersList] = useState<selectOption[]>([]);
   // const [templateData, setTemplateData] = useState<IGetCirculationTemplatesResponse>();
   const [selectedItem, setSelectedItem] = useState<ICirculationTemplateItem>();
   const [showTemplateUpdateModal, setShowTemplateUpdateModal] =
@@ -87,6 +92,14 @@ function CirculationTemplates() {
       setSelectedItem(raw);
       setShowTemplateUpdateModal(true);
     }
+  };
+
+  const fetchUsers = async () => {
+    setUsersLoading(true);
+    const res: IGetUsersResponse =
+      await CirculationTemplateServies.getInstance().getUsers();
+    setUsersList(res.Data.Datas);
+    setUsersLoading(false);
   };
 
   const onSubmit: SubmitHandler<ICirculationTemplateFilter> = async (
@@ -171,6 +184,10 @@ function CirculationTemplates() {
       )
     }
   ];
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div>
@@ -326,6 +343,7 @@ function CirculationTemplates() {
       )}
       {showAddTemplateModal && (
         <AddTemplate
+          users={usersList}
           setShowTemplateAddModal={setShowTemplateAddModal}
           setRefreshComponent={setRefreshComponent}
           showAddTemplateModal={showAddTemplateModal}

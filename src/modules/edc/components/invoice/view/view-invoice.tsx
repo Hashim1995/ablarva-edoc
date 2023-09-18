@@ -44,6 +44,7 @@ import { toastOptions } from '@/configs/global-configs';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '@/components/display/DeleteConfirmationModal';
 import { ColumnGroupType, ColumnType } from 'antd/es/table';
+import dayjs from 'dayjs';
 import ChangeLog from '../../change-log/change-log';
 
 function ViewInvoice() {
@@ -198,10 +199,14 @@ function ViewInvoice() {
     },
     {
       title: dictionary.en.date,
-      dataIndex: 'docCreatedate',
-      key: 'docCreatedate',
+      dataIndex: 'CreatedDate',
+      key: 'CreatedDate',
       width: '33%',
-      align: 'center'
+      align: 'center',
+      render: (date: string) => {
+        const formattedDate = dayjs(date).format('DD.MM.YYYY');
+        return <span>{formattedDate}</span>;
+      }
     }
   ] as (
     | ColumnType<IEdcItemRelationDoc>
