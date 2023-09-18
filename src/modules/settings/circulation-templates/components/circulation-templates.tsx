@@ -69,15 +69,15 @@ function CirculationTemplates() {
 
   const items: MenuProps['items'] = [
     {
-      label: <Typography.Text>{dictionary.az.editBtn}</Typography.Text>,
+      label: <Typography.Text>{dictionary.en.editBtn}</Typography.Text>,
       key: '0'
     },
     {
-      label: <Typography.Text>{dictionary.az.view}</Typography.Text>,
+      label: <Typography.Text>{dictionary.en.view}</Typography.Text>,
       key: '1'
     },
     {
-      label: <Typography.Text>{dictionary.az.delete}</Typography.Text>,
+      label: <Typography.Text>{dictionary.en.delete}</Typography.Text>,
       key: '2'
     }
   ];
@@ -114,7 +114,7 @@ function CirculationTemplates() {
 
   const columns: ColumnsType<ICirculationTemplateItem> = [
     {
-      title: dictionary.az.templateName,
+      title: dictionary.en.templateName,
       dataIndex: 'Name',
       key: 'Name',
 
@@ -133,7 +133,7 @@ function CirculationTemplates() {
       )
     },
     {
-      title: dictionary.az.circulationType,
+      title: dictionary.en.circulationType,
       dataIndex: 'CirculationType',
       key: 'CirculationType',
 
@@ -187,7 +187,7 @@ function CirculationTemplates() {
                 )
               },
               {
-                title: dictionary.az.internalStructure
+                title: dictionary.en.internalStructure
               }
             ]}
           />
@@ -198,7 +198,7 @@ function CirculationTemplates() {
             }}
             type="primary"
           >
-            <Space>{dictionary.az.addBtn}</Space>
+            <Space>{dictionary.en.addBtn}</Space>
           </Button>
         </Row>
       </Card>
@@ -217,7 +217,7 @@ function CirculationTemplates() {
               key={1}
               header={
                 <Typography.Text type="secondary">
-                  {dictionary.az.filter}
+                  {dictionary.en.filter}
                 </Typography.Text>
               }
             >
@@ -225,7 +225,7 @@ function CirculationTemplates() {
                 <Row gutter={16}>
                   <Col span={6}>
                     <AppHandledInput
-                      label={dictionary.az.templateName}
+                      label={dictionary.en.templateName}
                       name="Name"
                       inputProps={{
                         id: 'name'
@@ -234,7 +234,7 @@ function CirculationTemplates() {
                       required={false}
                       inputType="text"
                       placeholder={inputPlaceholderText(
-                        dictionary.az.templateName
+                        dictionary.en.templateName
                       )}
                       errors={errors}
                     />
@@ -242,12 +242,12 @@ function CirculationTemplates() {
 
                   <Col span={6}>
                     <AppHandledSelect
-                      label={dictionary.az.circulationType}
+                      label={dictionary.en.circulationType}
                       required={false}
                       name="CirculationTypeId"
                       control={control}
                       placeholder={inputPlaceholderText(
-                        dictionary.az.circulationType
+                        dictionary.en.circulationType
                       )}
                       errors={errors}
                       selectProps={{
@@ -255,7 +255,7 @@ function CirculationTemplates() {
                         showSearch: true,
                         id: 'circulationTypeId',
                         placeholder: selectPlaceholderText(
-                          dictionary.az.circulationType
+                          dictionary.en.circulationType
                         ),
                         className: 'w-full',
                         options: circulationTypeOptions
@@ -266,7 +266,7 @@ function CirculationTemplates() {
                 <Row justify="end">
                   <div style={{ textAlign: 'right' }}>
                     <Space size="small">
-                      <Tooltip title={dictionary.az.resetTxt}>
+                      <Tooltip title={dictionary.en.resetTxt}>
                         <Button
                           onClick={() => {
                             reset();
@@ -279,7 +279,7 @@ function CirculationTemplates() {
                         />
                       </Tooltip>
                       <Button type="primary" htmlType="submit">
-                        {dictionary.az.searchTxt}
+                        {dictionary.en.searchTxt}
                       </Button>
                     </Space>
                   </div>

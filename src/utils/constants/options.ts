@@ -73,11 +73,11 @@ const genderOptions: selectOption[] = [
 const circulationTypeOptions: selectOption[] = [
   {
     value: 1,
-    label: dictionary.az.successive
+    label: dictionary.en.successive
   },
   {
     value: 2,
-    label: dictionary.az.parallel
+    label: dictionary.en.parallel
   }
 ];
 export {

@@ -179,7 +179,7 @@ function AddTemplate({
     // );
 
     // if (res.IsSuccess) {
-    //   toast.success(dictionary.az.successTxt);
+    //   toast.success(dictionary.en.successTxt);
     //   setShowTemplateAddModal(false);
     //   setRefreshComponent(z => !z);
     // }
@@ -212,11 +212,11 @@ function AddTemplate({
     <Modal
       width={700}
       destroyOnClose
-      title={dictionary.az.addTemplate}
+      title={dictionary.en.addTemplate}
       open={showAddTemplateModal}
       onCancel={handleClose}
-      cancelText={dictionary.az.closeBtn}
-      okText={dictionary.az.save}
+      cancelText={dictionary.en.closeBtn}
+      okText={dictionary.en.save}
       footer={[
         <Button
           form="add-template-modal-form"
@@ -226,7 +226,7 @@ function AddTemplate({
           disabled={isFormSubmiting}
           loading={isFormSubmiting}
         >
-          {dictionary.az.save}
+          {dictionary.en.save}
         </Button>
       ]}
     >
@@ -241,7 +241,7 @@ function AddTemplate({
               <AppHandledRadio
                 radioGroupProps={{ defaultValue: 1 }}
                 isGroup
-                label={dictionary.az.circulationType}
+                label={dictionary.en.circulationType}
                 name="type"
                 radioProps={{
                   id: 'type'
@@ -249,7 +249,7 @@ function AddTemplate({
                 rules={{
                   required: {
                     value: true,
-                    message: inputValidationText(dictionary.az.circulationType)
+                    message: inputValidationText(dictionary.en.circulationType)
                   }
                 }}
                 onChangeApp={(event: RadioChangeEvent) =>
@@ -259,11 +259,19 @@ function AddTemplate({
                 control={control}
                 errors={errors}
               >
-                <AppHandledRadio name="successive" val={1} label="Ardıcıl" />
-                <AppHandledRadio name="parallel" val={2} label="Paralel" />
+                <AppHandledRadio
+                  name="successive"
+                  val={1}
+                  label={dictionary.en.successive}
+                />
+                <AppHandledRadio
+                  name="parallel"
+                  val={2}
+                  label={dictionary.en.parallel}
+                />
               </AppHandledRadio>
               <AppHandledInput
-                label={dictionary.az.templateName}
+                label={dictionary.en.templateName}
                 name="name"
                 inputProps={{
                   id: 'name'
@@ -271,37 +279,37 @@ function AddTemplate({
                 rules={{
                   required: {
                     value: true,
-                    message: inputValidationText(dictionary.az.templateName)
+                    message: inputValidationText(dictionary.en.templateName)
                   },
                   minLength: {
                     value: 3,
-                    message: minLengthCheck(dictionary.az.templateName, '3')
+                    message: minLengthCheck(dictionary.en.templateName, '3')
                   }
                 }}
                 required
                 control={control}
                 inputType="text"
-                placeholder={inputPlaceholderText(dictionary.az.templateName)}
+                placeholder={inputPlaceholderText(dictionary.en.templateName)}
                 errors={errors}
               />
               <AppHandledSelect
-                label={dictionary.az.information}
+                label={dictionary.en.information}
                 name="cycleCompilers"
                 control={control}
                 rules={{
                   required: {
                     value: true,
-                    message: inputValidationText(dictionary.az.information)
+                    message: inputValidationText(dictionary.en.information)
                   }
                 }}
                 required
-                placeholder={inputPlaceholderText(dictionary.az.information)}
+                placeholder={inputPlaceholderText(dictionary.en.information)}
                 errors={errors}
                 selectProps={{
                   mode: 'multiple',
                   showSearch: true,
                   id: 'cycleCompilers',
-                  placeholder: selectPlaceholderText(dictionary.az.information),
+                  placeholder: selectPlaceholderText(dictionary.en.information),
                   className: 'w-full',
                   options: circulationTypeOptions
                 }}

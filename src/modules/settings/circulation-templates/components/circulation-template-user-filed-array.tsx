@@ -33,9 +33,9 @@ function UserFieldArray({
 
   const label = () => {
     if (name === 'approve') {
-      return dictionary.az.approve;
+      return dictionary.en.approve;
     }
-    return dictionary.az.sign;
+    return dictionary.en.sign;
   };
 
   return (
