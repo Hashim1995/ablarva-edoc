@@ -51,6 +51,10 @@ interface ITemplateAddPayload {
   cycleMembers: ICycleMemberItem[];
 }
 
+interface IGetSingleTemplateResponse extends IGlobalResponse {
+  Data: ITemplateAddPayload;
+}
+
 export type {
   ICirculationTemplateFilter,
   ICirculationTemplateItem,
@@ -58,5 +62,6 @@ export type {
   ITemplateAddForm,
   ITemplateAddPayload,
   ICycleMemberItem,
-  IGetCirculationTemplatesResponse
+  IGetCirculationTemplatesResponse,
+  IGetSingleTemplateResponse
 };

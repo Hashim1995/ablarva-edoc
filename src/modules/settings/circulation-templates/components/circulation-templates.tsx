@@ -42,6 +42,7 @@ import {
   IGetUsersResponse
 } from '../models';
 import AddTemplate from '../modals/add-template';
+import EditTemplate from '../modals/edit-template';
 
 function CirculationTemplates() {
   const {
@@ -66,7 +67,7 @@ function CirculationTemplates() {
   const [usersList, setUsersList] = useState<selectOption[]>([]);
   const [templateData, setTemplateData] =
     useState<IGetCirculationTemplatesResponse>();
-  const [selectedItem, setSelectedItem] = useState<ICirculationTemplateItem>();
+  const [selectedItem, setSelectedItem] = useState<number>();
   const [showTemplateUpdateModal, setShowTemplateUpdateModal] =
     useState<boolean>(false);
   const [showAddTemplateModal, setShowTemplateAddModal] =
@@ -89,9 +90,9 @@ function CirculationTemplates() {
     // }
   ];
 
-  const handleMenuClick = (e: any, raw: any) => {
+  const handleMenuClick = (e: any, raw: ICirculationTemplateItem) => {
     if (e?.key === '0') {
-      setSelectedItem(raw);
+      setSelectedItem(raw.id);
       setShowTemplateUpdateModal(true);
     }
   };
@@ -358,6 +359,15 @@ function CirculationTemplates() {
           setShowTemplateAddModal={setShowTemplateAddModal}
           setRefreshComponent={setRefreshComponent}
           showAddTemplateModal={showAddTemplateModal}
+        />
+      )}
+      {showTemplateUpdateModal && selectedItem && (
+        <EditTemplate
+          users={usersList}
+          setShowTemplateUpdateModal={setShowTemplateUpdateModal}
+          setRefreshComponent={setRefreshComponent}
+          showTemplateUpdateModal={showTemplateUpdateModal}
+          selectedItem={selectedItem}
         />
       )}
     </div>

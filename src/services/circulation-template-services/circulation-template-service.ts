@@ -5,6 +5,7 @@
 import { IGlobalResponse } from '@/models/common';
 import {
   IGetCirculationTemplatesResponse,
+  IGetSingleTemplateResponse,
   IGetUsersResponse,
   ITemplateAddPayload
 } from '@/modules/settings/circulation-templates/models';
@@ -39,6 +40,19 @@ export class CirculationTemplateServies {
   public async getUsers(onError?: ErrorCallBack): Promise<IGetUsersResponse> {
     const res = await HttpUtil.get(
       '/legalentity/authorizedpersonsfordocumentcycle',
+      null,
+      false,
+      onError
+    );
+    return res;
+  }
+
+  public async getSingleTemplate(
+    id: number,
+    onError?: ErrorCallBack
+  ): Promise<IGetSingleTemplateResponse> {
+    const res = await HttpUtil.get(
+      `/documentapprovalcycle/${id}`,
       null,
       false,
       onError
