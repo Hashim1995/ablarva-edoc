@@ -301,7 +301,7 @@ function ViewAddition() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.generalInfo.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.generalInfo.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -611,7 +611,7 @@ function ViewAddition() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.documents.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.documents.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -669,14 +669,14 @@ function ViewAddition() {
                 size="small"
                 className="box box-margin-y"
                 style={{
-                  // minHeight: '43%',
+                  minHeight: '39%',
                   maxHeight: '39%',
                   overflowY: 'auto'
                 }}
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.relatedDocs.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.relatedDocs.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -741,7 +741,7 @@ function ViewAddition() {
               <Card size="small" className="box box-margin-y">
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.file.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.file.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
