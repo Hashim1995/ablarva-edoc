@@ -167,7 +167,10 @@ export const dictionary = {
     information: 'Məlumat',
     approve: 'Təsdiq',
     sign: 'İmza',
-    addTemplate: 'Şablon əlavə edin'
+    addTemplate: 'Şablon əlavə edin',
+    docDate: 'Sənədin tarixi',
+    receiver: 'Qəbul edən şəxs',
+    forInfo: 'Məlumat üçün',
   },
   en: {
     personalCabinet: 'Personal Cabinet',
@@ -337,6 +340,9 @@ export const dictionary = {
     internal: 'Internal',
     external: 'External',
     circulation: 'Circulation',
-    voenMustBeDifferent: 'Voen must be different'
+    voenMustBeDifferent: 'Voen must be different',
+    docDate: 'Document Date',
+    receiver: 'Recipient',
+    forInfo: 'For Information',
   }
 };

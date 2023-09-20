@@ -149,6 +149,16 @@ const tokenizeImage = async (file: any): Promise<any> => {
   return newFile;
 };
 
+function toCapitalize(str: string): string {
+  const words: string[] = str.split(' ');
+  const capitalizedWords: string[] = words.map(
+    (word: string) =>
+      word.charAt(0).toUpperCase() +
+      word.slice(1).toLowerCase()
+  );
+  return capitalizedWords.join(' ');
+}
+
 export {
   convertFormDataToQueryParams,
   generateOptionListPerNumber,
@@ -156,5 +166,6 @@ export {
   showCloseConfirmationModal,
   formatDateToWords,
   tokenizeImage,
-  formatDate
+  formatDate,
+  toCapitalize
 };

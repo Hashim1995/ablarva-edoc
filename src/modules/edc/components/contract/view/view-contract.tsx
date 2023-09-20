@@ -43,7 +43,6 @@ import { toastOptions } from '@/configs/global-configs';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '@/components/display/DeleteConfirmationModal';
 import { ColumnGroupType, ColumnType } from 'antd/es/table';
-import dayjs from 'dayjs';
 import ChangeLog from '../../change-log/change-log';
 
 function ViewContract() {
@@ -195,15 +194,11 @@ function ViewContract() {
       align: 'center'
     },
     {
-      title: dictionary.en.date,
-      dataIndex: 'CreatedDate',
-      key: 'CreatedDate',
+      title: dictionary.en.docDate,
+      dataIndex: 'docCreatedate',
+      key: 'docCreatedate',
       width: '33%',
-      align: 'center',
-      render: (date: string) => {
-        const formattedDate = dayjs(date).format('DD.MM.YYYY');
-        return <span>{formattedDate}</span>;
-      }
+      align: 'center'
     }
   ] as (
     | ColumnType<IEdcItemRelationDoc>
@@ -297,7 +292,7 @@ function ViewContract() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.generalInfo.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.generalInfo.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -640,7 +635,7 @@ function ViewContract() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.documents.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.documents.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -710,14 +705,14 @@ function ViewContract() {
                 size="small"
                 className="box box-margin-y"
                 style={{
-                  // minHeight: '27%',
+                  minHeight: '27%',
                   maxHeight: '27%',
                   overflowY: 'auto'
                 }}
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.relatedDocs.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.relatedDocs.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -782,7 +777,7 @@ function ViewContract() {
               <Card size="small" className="box box-margin-y">
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.file.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.file.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
