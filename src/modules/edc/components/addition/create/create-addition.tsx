@@ -357,7 +357,7 @@ function CreateAddition() {
                 <SwapOutlined
                   rev={undefined}
                   onClick={() => handleDotClick('1')}
-                  style={{ ...getTimeLineStyle(token)}}
+                  style={{ ...getTimeLineStyle(token) }}
                 />
               }
               color="blue"
