@@ -25,6 +25,12 @@ interface IGetUsersResponse extends IGlobalResponse {
   };
 }
 
+interface IGroupedCycleMemberItem {
+  users: number[];
+  memberType: number;
+  group: number | null;
+}
+
 interface ICycleMemberItem {
   authPersonId: number;
   memberType: number;
@@ -63,5 +69,6 @@ export type {
   ITemplateAddPayload,
   ICycleMemberItem,
   IGetCirculationTemplatesResponse,
-  IGetSingleTemplateResponse
+  IGetSingleTemplateResponse,
+  IGroupedCycleMemberItem
 };
