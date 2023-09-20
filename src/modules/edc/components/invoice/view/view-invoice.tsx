@@ -300,7 +300,7 @@ function ViewInvoice() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.generalInfo.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.generalInfo.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -610,7 +610,7 @@ function ViewInvoice() {
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.documents.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.documents.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -668,14 +668,14 @@ function ViewInvoice() {
                 size="small"
                 className="box box-margin-y"
                 style={{
-                  // minHeight: '39%',
+                  minHeight: '39%',
                   maxHeight: '39%',
                   overflowY: 'auto'
                 }}
               >
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.relatedDocs.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.relatedDocs.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{
@@ -740,7 +740,7 @@ function ViewInvoice() {
               <Card size="small" className="box box-margin-y">
                 <Typography.Text>
                   {' '}
-                  {dictionary.en.file.toLocaleUpperCase('tr-TR')}
+                  {dictionary.en.file.toLocaleUpperCase('en-EN')}
                 </Typography.Text>
                 <Divider
                   style={{

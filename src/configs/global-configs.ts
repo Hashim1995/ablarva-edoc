@@ -13,10 +13,11 @@ const toastOptions: ToastOptions = {
 
 const getTimeLineStyle = (token: GlobalToken) => ({
   fontSize: token.fontSizeHeading4,
-  marginTop: token.marginXS,
+  marginBottom: token.marginXS,
+  marginTop: '7px',
   padding: token.paddingXS,
   borderColor: token.colorPrimary,
-  borderWidth: token.lineWidthBold,
+  borderWidth: token.lineWidth,
   borderStyle: 'solid',
   borderRadius: token.borderRadius,
   color: token.colorPrimary

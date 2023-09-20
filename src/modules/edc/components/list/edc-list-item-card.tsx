@@ -22,6 +22,7 @@ import { EdcServies } from '@/services/edc-services/edc-services';
 import { toast } from 'react-toastify';
 import { toastOptions } from '@/configs/global-configs';
 import { Dispatch, SetStateAction } from 'react';
+import { toCapitalize } from '@/utils/functions/functions';
 
 interface IEdcListItemCardProps extends IEdcListItem {
   setSelectedItem?: Dispatch<SetStateAction<null | IEdcListItem>>;
@@ -69,7 +70,7 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
     {
       label: (
         <Typography.Text>
-          {dictionary.en.view.toLocaleUpperCase()}
+          {toCapitalize(dictionary.en.view)}
         </Typography.Text>
       ),
       key: ButtonConfig.viewButton
@@ -80,7 +81,8 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
       actions.push({
         label: (
           <Typography.Text>
-            {dictionary.en.editBtn.toLocaleUpperCase()}
+ 
+            {toCapitalize(dictionary.en.editBtn)}
           </Typography.Text>
         ),
         key: ButtonConfig.editButton
@@ -91,7 +93,7 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
       actions.push({
         label: (
           <Typography.Text>
-            {dictionary.en.delete.toLocaleUpperCase()}
+            {toCapitalize(dictionary.en.delete)}
           </Typography.Text>
         ),
         key: ButtonConfig.deleteButton
@@ -102,7 +104,7 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
       actions.push({
         label: (
           <Typography.Text>
-            {dictionary.en.confirm.toLocaleUpperCase()}
+            {toCapitalize(dictionary.en.confirm)}
           </Typography.Text>
         ),
         key: ButtonConfig.approveButton
@@ -113,7 +115,7 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
       actions.push({
         label: (
           <Typography.Text>
-            {dictionary.en.reject.toLocaleUpperCase()}
+            {toCapitalize(dictionary.en.reject)}
           </Typography.Text>
         ),
         key: ButtonConfig.rejectButton
@@ -124,7 +126,7 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
       actions.push({
         label: (
           <Typography.Text>
-            {dictionary.en.sendBack.toLocaleUpperCase()}
+            {toCapitalize(dictionary.en.sendBack)}
           </Typography.Text>
         ),
         key: ButtonConfig.returnButton
@@ -366,8 +368,8 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
               }}
               color="warning"
             >
-              {DocumentStatus?.toLocaleUpperCase('tr-TR') ??
-                noDataText?.toLocaleUpperCase('tr-TR')}
+              {DocumentStatus?.toLocaleUpperCase('en-EN') ??
+                noDataText?.toLocaleUpperCase('en-EN')}
             </Tag> */}
           </div>
         </Col>

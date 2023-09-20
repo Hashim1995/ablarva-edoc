@@ -637,6 +637,60 @@ function UpdateContract() {
                           </Col>
                           <Col className="gutter-row" span={24}>
                             <AppHandledSelect
+                              label={dictionary.en.receiver}
+                              name="Receiver"
+                              control={control}
+                              required
+                              placeholder={inputPlaceholderText(
+                                dictionary.en.receiver
+                              )}
+                              errors={errors}
+                              selectProps={{
+                                showSearch: true,
+                                id: 'Receiver',
+                                placeholder: selectPlaceholderText(
+                                  dictionary.en.receiver
+                                ),
+                                className: 'w-full',
+                                options: docStatusOptions,
+                                size: 'large'
+                              }}
+                              formItemProps={{
+                                labelAlign: 'left',
+                                labelCol: { span: 8, sm: 12, md: 10, lg: 8 },
+                                style: { fontWeight: 'bolder' }
+                              }}
+                            />
+                          </Col>
+                          <Col className="gutter-row" span={24}>
+                            <AppHandledSelect
+                              label={dictionary.en.forInfo}
+                              name="ForInfo"
+                              control={control}
+                              placeholder={inputPlaceholderText(
+                                dictionary.en.forInfo
+                              )}
+                              errors={errors}
+                              selectProps={{
+                                mode: 'multiple',
+                                showSearch: true,
+                                id: 'ForInfo',
+                                placeholder: selectPlaceholderText(
+                                  dictionary.en.forInfo
+                                ),
+                                className: 'w-full',
+                                options: docStatusOptions,
+                                size: 'large'
+                              }}
+                              formItemProps={{
+                                labelAlign: 'left',
+                                labelCol: { span: 8, sm: 12, md: 10, lg: 8 },
+                                style: { fontWeight: 'bolder' }
+                              }}
+                            />
+                          </Col>
+                          <Col className="gutter-row" span={24}>
+                            <AppHandledSelect
                               label={dictionary.en.docStatus}
                               name="ProssesType"
                               control={control}
@@ -726,18 +780,18 @@ function UpdateContract() {
                 dot={
                   <InfoCircleOutlined
                     rev={undefined}
-                    onClick={() => handleDotClick('2')}
+                    onClick={() => handleDotClick('3')}
                     style={getTimeLineStyle(token)}
                   />
                 }
                 color="blue"
               >
-                <div aria-hidden onClick={() => handleDotClick('2')}>
+                <div aria-hidden onClick={() => handleDotClick('3')}>
                   <Collapse
                     activeKey={activeKeys}
                     style={{ marginLeft: token.marginMD }}
                   >
-                    <Collapse.Panel header={dictionary.en.docInfo} key="2">
+                    <Collapse.Panel header={dictionary.en.docInfo} key="3">
                       <div onClick={e => e.stopPropagation()} aria-hidden>
                         <Row gutter={16}>
                           <Col className="gutter-row" span={24}>
@@ -889,13 +943,13 @@ function UpdateContract() {
                 dot={
                   <FileAddOutlined
                     rev={undefined}
-                    onClick={() => handleDotClick('3')}
+                    onClick={() => handleDotClick('4')}
                     style={getTimeLineStyle(token)}
                   />
                 }
                 color="blue"
               >
-                <div aria-hidden onClick={() => handleDotClick('3')}>
+                <div aria-hidden onClick={() => handleDotClick('4')}>
                   <Collapse
                     activeKey={activeKeys}
                     style={{ marginLeft: token.marginMD }}
@@ -921,7 +975,7 @@ function UpdateContract() {
                         </Tooltip>
                       }
                       header={dictionary.en.docInfo}
-                      key="3"
+                      key="4"
                     >
                       <div onClick={e => e.stopPropagation()} aria-hidden>
                         {watch('tableFileList')?.length ? (

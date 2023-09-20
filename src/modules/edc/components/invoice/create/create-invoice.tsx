@@ -51,6 +51,7 @@ import AppRouteBlocker from '@/components/display/blocker';
 import AppHandledSelect from '@/components/forms/select/handled-select';
 import SingleFileUpload from '@/modules/edc/modals/single-file-upload';
 import dayjs from 'dayjs';
+import { docStatusOptions } from '@/utils/constants/options';
 import {
   IEdcInvoiceForm,
   IEdcContractTableFileListItem,
@@ -272,6 +273,7 @@ function CreateInvoice() {
   useEffect(() => {
     getDocsListOptions();
   }, []);
+
   return (
     <div>
       <AppRouteBlocker open={blockRoute} />
@@ -502,6 +504,60 @@ function CreateInvoice() {
                             inputProps={{
                               size: 'large',
                               disabled: true
+                            }}
+                          />
+                        </Col>
+                        <Col className="gutter-row" span={24}>
+                          <AppHandledSelect
+                            label={dictionary.en.receiver}
+                            name="Receiver"
+                            control={control}
+                            required
+                            placeholder={inputPlaceholderText(
+                              dictionary.en.receiver
+                            )}
+                            errors={errors}
+                            selectProps={{
+                              showSearch: true,
+                              id: 'Receiver',
+                              placeholder: selectPlaceholderText(
+                                dictionary.en.receiver
+                              ),
+                              className: 'w-full',
+                              options: docStatusOptions,
+                              size: 'large'
+                            }}
+                            formItemProps={{
+                              labelAlign: 'left',
+                              labelCol: { span: 8, sm: 12, md: 10, lg: 8 },
+                              style: { fontWeight: 'bolder' }
+                            }}
+                          />
+                        </Col>
+                        <Col className="gutter-row" span={24}>
+                          <AppHandledSelect
+                            label={dictionary.en.forInfo}
+                            name="ForInfo"
+                            control={control}
+                            placeholder={inputPlaceholderText(
+                              dictionary.en.forInfo
+                            )}
+                            errors={errors}
+                            selectProps={{
+                              mode: 'multiple',
+                              showSearch: true,
+                              id: 'ForInfo',
+                              placeholder: selectPlaceholderText(
+                                dictionary.en.forInfo
+                              ),
+                              className: 'w-full',
+                              options: docStatusOptions,
+                              size: 'large'
+                            }}
+                            formItemProps={{
+                              labelAlign: 'left',
+                              labelCol: { span: 8, sm: 12, md: 10, lg: 8 },
+                              style: { fontWeight: 'bolder' }
                             }}
                           />
                         </Col>

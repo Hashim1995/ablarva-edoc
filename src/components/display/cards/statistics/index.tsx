@@ -1,4 +1,4 @@
-import { Card, Row, Space, Typography, theme } from 'antd';
+import { Card, Grid, Row, Space, Typography, theme } from 'antd';
 import { BiFile } from 'react-icons/bi';
 import React from 'react';
 import { IStatisticsListItem } from '@/modules/home/models';
@@ -14,6 +14,8 @@ function StatisticsCard({
 }: IStatisticsListItem) {
   const { useToken } = theme;
   const { token } = useToken();
+  const { useBreakpoint } = Grid;
+  const { lg } = useBreakpoint();
   return (
     <Card
       loading={loading ?? false}
@@ -21,7 +23,7 @@ function StatisticsCard({
       key={Id}
       title={Name ?? dictionary.en.noDataText}
     >
-      <Space size="middle">
+      <Space size="middle" direction={!lg ? 'vertical' : 'horizontal'}>
         <Row align="middle">{Icon ?? <BiFile />}</Row>
         <Typography.Text style={{ fontSize: token.fontSizeXL }}>
           {Count ?? 0}{' '}
