@@ -60,6 +60,19 @@ export class CirculationTemplateServies {
     return res;
   }
 
+  public async updateTemplate(
+    id: number,
+    body: ITemplateAddPayload,
+    onError?: ErrorCallBack
+  ): Promise<IGlobalResponse> {
+    const res = await HttpUtil.put(
+      `/documentapprovalcycle/${id}`,
+      body,
+      onError
+    );
+    return res;
+  }
+
   public async getTemplateList(
     params: IHTTPSParams[],
     onError?: ErrorCallBack

@@ -69,9 +69,7 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
   const actions: MenuProps['items'] = [
     {
       label: (
-        <Typography.Text>
-          {toCapitalize(dictionary.en.view)}
-        </Typography.Text>
+        <Typography.Text>{toCapitalize(dictionary.en.view)}</Typography.Text>
       ),
       key: ButtonConfig.viewButton
     }
@@ -81,7 +79,6 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
       actions.push({
         label: (
           <Typography.Text>
- 
             {toCapitalize(dictionary.en.editBtn)}
           </Typography.Text>
         ),

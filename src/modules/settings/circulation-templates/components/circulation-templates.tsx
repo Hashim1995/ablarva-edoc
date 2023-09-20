@@ -339,7 +339,7 @@ function CirculationTemplates() {
                 <AppPagination
                   style={{ marginTop: '20px', marginBottom: '20px' }}
                   current={page}
-                  total={2}
+                  total={templateData?.Data?.TotalDataCount}
                   onChange={(z: number) => setCurrentPage(z)}
                 />
               </Col>

@@ -26,6 +26,7 @@ import UserFieldArray from '../components/circulation-template-user-filed-array'
 import {
   ICycleMemberItem,
   IGetSingleTemplateResponse,
+  IGroupedCycleMemberItem,
   ITemplateAddForm
 } from '../models';
 
@@ -85,8 +86,8 @@ function EditTemplate({
       setValue('type', res?.Data?.type ?? '');
       setValue('forInfos', res?.Data?.forInfos ?? '');
       setType(res?.Data?.type);
-      const approve: any = [];
-      const sign: any = [];
+      const approve: ITemplateAddForm['approve'] = [];
+      const sign: ITemplateAddForm['sign'] = [];
       const cycleMembers: ICycleMemberItem[] = res?.Data?.cycleMembers.sort(
         (a, b) => a.order - b.order
       );
@@ -99,7 +100,7 @@ function EditTemplate({
           }
         });
       } else {
-        const groupedCycleMembers: any = [];
+        const groupedCycleMembers: IGroupedCycleMemberItem[] = [];
         cycleMembers.map(t => {
           if (t.group === null) {
             if (t.memberType === 1) {
@@ -108,20 +109,20 @@ function EditTemplate({
               sign.push({ userId: [t.authPersonId] });
             }
           } else {
-            if (!groupedCycleMembers.some((z: any) => z.group === t.group)) {
+            if (!groupedCycleMembers.some(z => z.group === t.group)) {
               groupedCycleMembers.push({
                 group: t.group,
                 users: [t.authPersonId],
                 memberType: t.memberType
               });
             } else {
-              groupedCycleMembers
-                .find((z: any) => z.group === t.group)
-                .users.push(t.authPersonId);
+              groupedCycleMembers.map(z => {
+                z.group === t.group && z.users.push(t.authPersonId);
+              });
             }
           }
         });
-        groupedCycleMembers.map((y: any) => {
+        groupedCycleMembers.map(y => {
           if (y.memberType === 1) {
             approve.push({ userId: y.users });
           } else {
@@ -227,8 +228,10 @@ function EditTemplate({
     };
 
     const res: IGlobalResponse =
-      await CirculationTemplateServies.getInstance().addTemplate(payload, () =>
-        setIsFormSubmiting(false)
+      await CirculationTemplateServies.getInstance().updateTemplate(
+        selectedItem,
+        payload,
+        () => setIsFormSubmiting(false)
       );
 
     if (res.IsSuccess) {

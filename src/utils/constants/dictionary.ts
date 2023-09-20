@@ -170,7 +170,7 @@ export const dictionary = {
     addTemplate: 'Şablon əlavə edin',
     docDate: 'Sənədin tarixi',
     receiver: 'Qəbul edən şəxs',
-    forInfo: 'Məlumat üçün',
+    forInfo: 'Məlumat üçün'
   },
   en: {
     personalCabinet: 'Personal Cabinet',
@@ -343,6 +343,6 @@ export const dictionary = {
     voenMustBeDifferent: 'Voen must be different',
     docDate: 'Document Date',
     receiver: 'Recipient',
-    forInfo: 'For Information',
+    forInfo: 'For Information'
   }
 };
