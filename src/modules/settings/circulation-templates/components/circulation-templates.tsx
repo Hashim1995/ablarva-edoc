@@ -38,6 +38,7 @@ import { selectOption } from '@/models/common';
 import {
   ICirculationTemplateFilter,
   ICirculationTemplateItem,
+  IGetCirculationTemplatesResponse,
   IGetUsersResponse
 } from '../models';
 import AddTemplate from '../modals/add-template';
@@ -51,8 +52,8 @@ function CirculationTemplates() {
   } = useForm<ICirculationTemplateFilter>({
     mode: 'onChange',
     defaultValues: {
-      Name: '',
-      CirculationTypeId: null
+      name: '',
+      type: null
     }
   });
 
@@ -63,7 +64,8 @@ function CirculationTemplates() {
   const [loading, setLoading] = useState<boolean>(false);
   const [usersLoading, setUsersLoading] = useState<boolean>(false);
   const [usersList, setUsersList] = useState<selectOption[]>([]);
-  // const [templateData, setTemplateData] = useState<IGetCirculationTemplatesResponse>();
+  const [templateData, setTemplateData] =
+    useState<IGetCirculationTemplatesResponse>();
   const [selectedItem, setSelectedItem] = useState<ICirculationTemplateItem>();
   const [showTemplateUpdateModal, setShowTemplateUpdateModal] =
     useState<boolean>(false);
@@ -80,11 +82,11 @@ function CirculationTemplates() {
     {
       label: <Typography.Text>{dictionary.en.view}</Typography.Text>,
       key: '1'
-    },
-    {
-      label: <Typography.Text>{dictionary.en.delete}</Typography.Text>,
-      key: '2'
     }
+    // {
+    //   label: <Typography.Text>{dictionary.en.delete}</Typography.Text>,
+    //   key: '2'
+    // }
   ];
 
   const handleMenuClick = (e: any, raw: any) => {
@@ -102,6 +104,22 @@ function CirculationTemplates() {
     setUsersLoading(false);
   };
 
+  const fetchTemplateList = async () => {
+    setLoading(true);
+    const res: IGetCirculationTemplatesResponse =
+      await CirculationTemplateServies.getInstance().getTemplateList([
+        ...queryParams,
+        { name: 'page', value: page }
+      ]);
+    setTemplateData(res);
+
+    if (res.IsSuccess) {
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
   const onSubmit: SubmitHandler<ICirculationTemplateFilter> = async (
     data: ICirculationTemplateFilter
   ) => {
@@ -112,24 +130,11 @@ function CirculationTemplates() {
     setRefreshComponent(!refreshComponent);
   };
 
-  const data = [
-    {
-      Id: 1,
-      CirculationType: 'Ardıcıl',
-      Name: 'Rəhbər'
-    },
-    {
-      Id: 2,
-      CirculationType: 'Paralel',
-      Name: 'Çoxsaylı'
-    }
-  ];
-
   const columns: ColumnsType<ICirculationTemplateItem> = [
     {
       title: dictionary.en.templateName,
-      dataIndex: 'Name',
-      key: 'Name',
+      dataIndex: 'name',
+      key: 'name',
 
       render: record => (
         <Typography.Paragraph
@@ -147,8 +152,8 @@ function CirculationTemplates() {
     },
     {
       title: dictionary.en.circulationType,
-      dataIndex: 'CirculationType',
-      key: 'CirculationType',
+      dataIndex: 'type',
+      key: 'type',
 
       render: record => (
         <Typography.Paragraph
@@ -160,13 +165,14 @@ function CirculationTemplates() {
             tooltip: record
           }}
         >
-          {record}
+          {record === 1 ? dictionary.en.successive : dictionary.en.parallel}
         </Typography.Paragraph>
       )
     },
     {
       title: '',
       key: 'actions',
+      align: 'end',
 
       render: (_, raw: ICirculationTemplateItem) => (
         <Space>
@@ -175,7 +181,7 @@ function CirculationTemplates() {
               items,
               onClick: e => handleMenuClick(e, raw)
             }}
-            key={raw?.Id}
+            key={raw?.id}
             trigger={['click']}
           >
             <Button icon={<MoreOutlined />} />
@@ -187,7 +193,8 @@ function CirculationTemplates() {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+    fetchTemplateList();
+  }, [page, refreshComponent]);
 
   return (
     <div>
@@ -243,7 +250,7 @@ function CirculationTemplates() {
                   <Col span={6}>
                     <AppHandledInput
                       label={dictionary.en.templateName}
-                      name="Name"
+                      name="name"
                       inputProps={{
                         id: 'name'
                       }}
@@ -261,7 +268,7 @@ function CirculationTemplates() {
                     <AppHandledSelect
                       label={dictionary.en.circulationType}
                       required={false}
-                      name="CirculationTypeId"
+                      name="type"
                       control={control}
                       placeholder={inputPlaceholderText(
                         dictionary.en.circulationType
@@ -270,7 +277,7 @@ function CirculationTemplates() {
                       selectProps={{
                         allowClear: true,
                         showSearch: true,
-                        id: 'circulationTypeId',
+                        id: 'type',
                         placeholder: selectPlaceholderText(
                           dictionary.en.circulationType
                         ),
@@ -306,7 +313,7 @@ function CirculationTemplates() {
           </Collapse>
         </div>
       </Card>
-      {data.length ? (
+      {templateData?.Data.Datas.length ? (
         <Card bodyStyle={{ padding: 0 }}>
           <Spin size="large" spinning={loading}>
             <Row style={{ padding: token.paddingXS }}>
@@ -318,7 +325,11 @@ function CirculationTemplates() {
                   }}
                   scroll={{ x: 768 }}
                   columns={columns}
-                  dataSource={data !== null ? data : []}
+                  dataSource={
+                    templateData?.Data.Datas !== null
+                      ? templateData?.Data.Datas
+                      : []
+                  }
                 />
               </Col>
             </Row>

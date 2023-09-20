@@ -19,6 +19,7 @@ interface UserFieldArrayProps {
   errors: any;
   multiple?: boolean;
   users: selectOption[];
+  selectedUsers: any[];
 }
 
 function UserFieldArray({
@@ -26,7 +27,8 @@ function UserFieldArray({
   errors,
   name,
   multiple,
-  users
+  users,
+  selectedUsers
 }: UserFieldArrayProps) {
   const { fields, append, remove } = useFieldArray<ITemplateAddForm>({
     control,
@@ -39,6 +41,8 @@ function UserFieldArray({
     }
     return dictionary.en.sign;
   };
+
+  // console.log(selectedUsers, 'leblebi');
 
   return (
     <Row align="top" justify="space-between">
@@ -66,10 +70,14 @@ function UserFieldArray({
                       allowClear: true,
                       showSearch: true,
                       mode: multiple ? 'multiple' : undefined,
-                      id: `${name}${index}userId`,
+                      id: `${name}.${index}.userId`,
                       placeholder: selectPlaceholderText(label()),
                       className: 'w-full',
-                      options: users
+                      options: users?.filter(
+                        z =>
+                          typeof z.value === 'number' &&
+                          !selectedUsers?.includes(z.value)
+                      )
                     }}
                   />
                 </Col>

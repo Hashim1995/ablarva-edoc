@@ -1,5 +1,4 @@
 /* eslint-disable array-callback-return */
-/* eslint-disable no-unused-vars */
 import AppHandledInput from '@/components/forms/input/handled-input';
 import AppHandledSelect from '@/components/forms/select/handled-select';
 
@@ -15,12 +14,11 @@ import {
 } from '@/utils/constants/texts';
 
 import { Button, Col, Form, Modal, RadioChangeEvent, Row } from 'antd';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { IGlobalResponse, selectOption } from '@/models/common';
 import { showCloseConfirmationModal } from '@/utils/functions/functions';
-import { circulationTypeOptions } from '@/utils/constants/options';
 import AppHandledRadio from '@/components/forms/radio/handled-radio';
 import { CirculationTemplateServies } from '@/services/circulation-template-services/circulation-template-service';
 import UserFieldArray from '../components/circulation-template-user-filed-array';
@@ -42,6 +40,7 @@ function AddTemplate({
   const [type, setType] = useState(1);
   const {
     control,
+    watch,
     handleSubmit,
     resetField,
     formState: { errors }
@@ -66,6 +65,7 @@ function AddTemplate({
   });
 
   const [isFormSubmiting, setIsFormSubmiting] = useState<boolean>(false);
+  const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
   const onSubmit: SubmitHandler<ITemplateAddForm> = async (
     data: ITemplateAddForm
   ) => {
@@ -154,7 +154,6 @@ function AddTemplate({
       forInfos: data.forInfos,
       cycleMembers
     };
-    console.log(payload);
 
     const res: IGlobalResponse =
       await CirculationTemplateServies.getInstance().addTemplate(payload, () =>
@@ -172,6 +171,7 @@ function AddTemplate({
 
   const handleTypeChange = (value: number) => {
     setType(value);
+    setSelectedUsers([]);
     resetField('name');
     resetField('forInfos');
     if (value === 1) {
@@ -190,6 +190,29 @@ function AddTemplate({
       }
     });
   };
+
+  useEffect(() => {
+    const forInfos = watch('forInfos');
+    if (type === 1) {
+      const approve = watch('approve')?.map(t => t.userId);
+      const sign = watch('sign')?.map(t => t.userId);
+      setSelectedUsers([...forInfos, ...approve, ...sign]);
+    } else if (type === 2) {
+      const approve: number[] = [];
+      watch('approve')?.map(t => {
+        Array.isArray(t.userId) && t.userId?.map(f => approve?.push(f));
+      });
+      const sign: number[] = [];
+      watch('sign')?.map(t => {
+        Array.isArray(t.userId) && t.userId?.map(f => sign?.push(f));
+      });
+      setSelectedUsers([...forInfos, ...approve, ...sign]);
+    }
+  }, [
+    useWatch({ control, name: 'approve' }),
+    useWatch({ control, name: 'sign' }),
+    watch('forInfos')
+  ]);
 
   return (
     <Modal
@@ -267,6 +290,10 @@ function AddTemplate({
                   minLength: {
                     value: 3,
                     message: minLengthCheck(dictionary.en.templateName, '3')
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: maxLengthCheck(dictionary.en.templateName, '20')
                   }
                 }}
                 required
@@ -294,7 +321,11 @@ function AddTemplate({
                   id: 'forInfos',
                   placeholder: selectPlaceholderText(dictionary.en.information),
                   className: 'w-full',
-                  options: users
+                  options: users?.filter(
+                    z =>
+                      typeof z.value === 'number' &&
+                      !selectedUsers?.includes(z.value)
+                  )
                 }}
                 formItemProps={{
                   labelAlign: 'left',
@@ -309,11 +340,13 @@ function AddTemplate({
                     control={control}
                     users={users}
                     name="approve"
+                    selectedUsers={selectedUsers}
                   />
                   <UserFieldArray
                     errors={errors}
                     control={control}
                     users={users}
+                    selectedUsers={selectedUsers}
                     name="sign"
                   />
                 </>
@@ -325,6 +358,7 @@ function AddTemplate({
                     multiple
                     errors={errors}
                     control={control}
+                    selectedUsers={selectedUsers}
                     users={users}
                     name="approve"
                   />
@@ -332,6 +366,7 @@ function AddTemplate({
                     multiple
                     errors={errors}
                     control={control}
+                    selectedUsers={selectedUsers}
                     users={users}
                     name="sign"
                   />

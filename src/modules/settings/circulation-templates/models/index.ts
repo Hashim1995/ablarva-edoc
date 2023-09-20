@@ -1,14 +1,21 @@
 import { IGlobalResponse, selectOption } from '@/models/common';
 
 interface ICirculationTemplateFilter {
-  Name: string;
-  CirculationTypeId: selectOption | null;
+  name: string;
+  type: selectOption | null;
 }
 
 interface ICirculationTemplateItem {
-  Id: number;
-  Name?: string | null;
-  CirculationType?: string | null;
+  id: number;
+  name?: string | null;
+  type?: string | null;
+}
+
+interface IGetCirculationTemplatesResponse extends IGlobalResponse {
+  Data: {
+    Datas: ICirculationTemplateItem[];
+    TotalDataCount: number;
+  };
 }
 
 interface IGetUsersResponse extends IGlobalResponse {
@@ -50,5 +57,6 @@ export type {
   IGetUsersResponse,
   ITemplateAddForm,
   ITemplateAddPayload,
-  ICycleMemberItem
+  ICycleMemberItem,
+  IGetCirculationTemplatesResponse
 };

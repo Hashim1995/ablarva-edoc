@@ -4,12 +4,14 @@
 
 import { IGlobalResponse } from '@/models/common';
 import {
+  IGetCirculationTemplatesResponse,
   IGetUsersResponse,
   ITemplateAddPayload
 } from '@/modules/settings/circulation-templates/models';
 import {
   ErrorCallBack,
-  HttpUtil
+  HttpUtil,
+  IHTTPSParams
   //   IHTTPSParams
 } from '../adapter-config/config';
 
@@ -38,6 +40,19 @@ export class CirculationTemplateServies {
     const res = await HttpUtil.get(
       '/legalentity/authorizedpersonsfordocumentcycle',
       null,
+      false,
+      onError
+    );
+    return res;
+  }
+
+  public async getTemplateList(
+    params: IHTTPSParams[],
+    onError?: ErrorCallBack
+  ): Promise<IGetCirculationTemplatesResponse> {
+    const res = await HttpUtil.get(
+      '/documentapprovalcycle/getall',
+      params,
       false,
       onError
     );
