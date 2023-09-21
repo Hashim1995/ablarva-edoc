@@ -23,7 +23,7 @@ import {
   FilePdfOutlined,
   PlusCircleOutlined,
   SwapOutlined,
-  FontColorsOutlined,
+  FileAddOutlined,
   RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
@@ -56,7 +56,8 @@ import {
   IEdcActForm,
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
-  IEdcDocsListOptionsResponse
+  IEdcDocsListOptionsResponse,
+  IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 
@@ -101,15 +102,11 @@ function CreateAct() {
     useState<IEdcDocsListOptions[]>();
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
-  const [circulationOptions, setCirculationOptions] = useState<any[]>();
-  const [circulationOptionsLoading, setCirculationOptionsLoading] =
-    useState<boolean>(true);
-
+  const [templatesListLoading, setTemplatesListLoading] = useState<boolean>(false);
+  const [templatesList, setTemplatesList] = useState<IGetTemplatesListResponse>();
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
     setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
-    setCirculationOptions([]);
-    setCirculationOptionsLoading(true);
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
@@ -130,6 +127,14 @@ function CreateAct() {
         setShowUploadFileModal(false);
       }
     });
+  };
+
+  const fetchTemplatesList = async () => {
+    setTemplatesListLoading(true);
+    const res: IGetTemplatesListResponse =
+      await EdcServies.getInstance().getTemplatesList();
+      setTemplatesList(res);
+    setTemplatesListLoading(false);
   };
 
   const createMainAct = async (data: IEdcActForm) => {
@@ -181,6 +186,7 @@ function CreateAct() {
       RecieverLegalEntityVoen: data?.RecieverLegalEntityVoen,
       Description: data?.Description,
       DocumentTypeId: 4,
+      documentApprovalCycleId: data?.documentApprovalCycleId,
       StartDate: data?.StartDate
         ? dayjs(startDate.toISOString()).format()
         : null,
@@ -274,6 +280,7 @@ function CreateAct() {
 
   useEffect(() => {
     getDocsListOptions();
+    fetchTemplatesList();
   }, []);
 
   return (
@@ -589,7 +596,7 @@ function CreateAct() {
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.templateName}
-                            name="contractNumber"
+                            name="documentApprovalCycleId"
                             control={control}
                             required
                             placeholder={inputPlaceholderText(
@@ -598,15 +605,15 @@ function CreateAct() {
                             getLabelOnChange
                             errors={errors}
                             selectProps={{
-                              loading: circulationOptionsLoading,
-                              disabled: circulationOptionsLoading,
+                              loading: templatesListLoading,
+                              disabled: templatesListLoading,
                               showSearch: true,
-                              id: 'contractNumber',
+                              id: 'documentApprovalCycleId',
                               placeholder: selectPlaceholderText(
                                 dictionary.en.templateName
                               ),
                               className: 'w-full',
-                              options: circulationOptions,
+                              options: templatesList?.Data.Datas,
                               size: 'large'
                             }}
                             formItemProps={{
@@ -700,7 +707,7 @@ function CreateAct() {
             </Timeline.Item>
             <Timeline.Item
               dot={
-                <FontColorsOutlined
+                <FileAddOutlined
                   rev={undefined}
                   onClick={() => handleDotClick('4')}
                   style={getTimeLineStyle(token)}

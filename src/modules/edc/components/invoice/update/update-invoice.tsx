@@ -62,7 +62,8 @@ import {
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
   IEdcDocsListOptionsResponse,
-  IGetEdcExtraByIdResponse
+  IGetEdcExtraByIdResponse,
+  IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 
@@ -108,10 +109,10 @@ function UpdateInvoice() {
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
   const [skeleton, setSkeleton] = useState<boolean>(true);
-  const [circulationOptions, setCirculationOptions] = useState<any[]>();
-  const [circulationOptionsLoading, setCirculationOptionsLoading] =
-    useState<boolean>(true);
 
+    const [templatesListLoading, setTemplatesListLoading] = useState<boolean>(false);
+    const [templatesList, setTemplatesList] = useState<IGetTemplatesListResponse>();
+  
   const getDocsListOptions = async () => {
     const res: IEdcDocsListOptionsResponse =
       await EdcServies.getInstance().getDocsListOptions();
@@ -152,10 +153,18 @@ function UpdateInvoice() {
       );
     }
   };
+
+  const fetchTemplatesList = async () => {
+    setTemplatesListLoading(true);
+    const res: IGetTemplatesListResponse =
+      await EdcServies.getInstance().getTemplatesList();
+      setTemplatesList(res);
+    setTemplatesListLoading(false);
+  };
+
   useEffect(() => {
     getDocsListOptions();
-    setCirculationOptions([]);
-    setCirculationOptionsLoading(true);
+   fetchTemplatesList();
   }, []);
 
   useEffect(() => {
@@ -646,7 +655,7 @@ function UpdateInvoice() {
                           <Col className="gutter-row" span={24}>
                             <AppHandledSelect
                               label={dictionary.en.templateName}
-                              name="contractNumber"
+                              name="documentApprovalCycleId"
                               control={control}
                               required
                               placeholder={inputPlaceholderText(
@@ -655,15 +664,15 @@ function UpdateInvoice() {
                               getLabelOnChange
                               errors={errors}
                               selectProps={{
-                                loading: circulationOptionsLoading,
-                                disabled: circulationOptionsLoading,
+                                loading: templatesListLoading,
+                                disabled: templatesListLoading,
                                 showSearch: true,
-                                id: 'contractNumber',
+                                id: 'documentApprovalCycleId',
                                 placeholder: selectPlaceholderText(
                                   dictionary.en.templateName
                                 ),
                                 className: 'w-full',
-                                options: circulationOptions,
+                                options: templatesList?.Data.Datas,
                                 size: 'large'
                               }}
                               formItemProps={{

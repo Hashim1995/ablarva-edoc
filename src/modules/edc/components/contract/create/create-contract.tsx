@@ -62,7 +62,8 @@ import {
   ICompanyDetailResponse,
   IEdcContractForm,
   IEdcContractPayload,
-  IEdcContractTableFileListItem
+  IEdcContractTableFileListItem,
+  IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 import FileUploadModal from '../../../modals/file-upload';
@@ -108,17 +109,10 @@ function CreateContract() {
   const [mainSubmitLoading, setMainSubmitLoading] = useState<boolean>(false);
   const [draftSubmitLoading, setDraftSubmitLoading] = useState<boolean>(false);
   const [blockRoute, setBlockRoute] = useState(true);
-  const [circulationOptions, setCirculationOptions] = useState<any[]>();
-  const [circulationOptionsLoading, setCirculationOptionsLoading] =
-    useState<boolean>(true);
-
-  useEffect(() => {
-    setValue('SenderLegalEntityName', userCompanyData?.Name);
-    setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
-    setCirculationOptions([]);
-    setCirculationOptionsLoading(true);
-    window.scrollTo(0, 0);
-  }, [userCompanyData]);
+  const [templatesListLoading, setTemplatesListLoading] =
+    useState<boolean>(false);
+  const [templatesList, setTemplatesList] =
+    useState<IGetTemplatesListResponse>();
 
   const { useToken } = theme;
   const { token } = useToken();
@@ -138,6 +132,21 @@ function CreateContract() {
       }
     });
   };
+
+  const fetchTemplatesList = async () => {
+    setTemplatesListLoading(true);
+    const res: IGetTemplatesListResponse =
+      await EdcServies.getInstance().getTemplatesList();
+    setTemplatesList(res);
+    setTemplatesListLoading(false);
+  };
+
+  useEffect(() => {
+    setValue('SenderLegalEntityName', userCompanyData?.Name);
+    setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
+    fetchTemplatesList();
+    window.scrollTo(0, 0);
+  }, [userCompanyData]);
 
   const createMainContract = async (data: IEdcContractPayload) => {
     if (data?.tableFileList?.length !== 2) {
@@ -196,6 +205,7 @@ function CreateContract() {
       RecieverLegalEntityVoen: data?.RecieverLegalEntityVoen,
       ProssesType: data?.ProssesType,
       Description: data?.Description,
+      documentApprovalCycleId: data?.documentApprovalCycleId,
       ExpireDate: data?.ExpireDate
         ? dayjs(expireDate.toISOString()).format()
         : null,
@@ -675,7 +685,7 @@ function CreateContract() {
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.templateName}
-                            name="contractNumber"
+                            name="documentApprovalCycleId"
                             control={control}
                             required
                             placeholder={inputPlaceholderText(
@@ -684,15 +694,15 @@ function CreateContract() {
                             getLabelOnChange
                             errors={errors}
                             selectProps={{
-                              loading: circulationOptionsLoading,
-                              disabled: circulationOptionsLoading,
+                              loading: templatesListLoading,
+                              disabled: templatesListLoading,
                               showSearch: true,
-                              id: 'contractNumber',
+                              id: 'documentApprovalCycleId',
                               placeholder: selectPlaceholderText(
                                 dictionary.en.templateName
                               ),
                               className: 'w-full',
-                              options: circulationOptions,
+                              options: templatesList?.Data.Datas,
                               size: 'large'
                             }}
                             formItemProps={{

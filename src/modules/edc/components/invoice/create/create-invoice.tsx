@@ -56,7 +56,8 @@ import {
   IEdcInvoiceForm,
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
-  IEdcDocsListOptionsResponse
+  IEdcDocsListOptionsResponse,
+  IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 
@@ -101,15 +102,23 @@ function CreateInvoice() {
     useState<IEdcDocsListOptions[]>();
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
-  const [circulationOptions, setCirculationOptions] = useState<any[]>();
-  const [circulationOptionsLoading, setCirculationOptionsLoading] =
-    useState<boolean>(true);
+  const [templatesListLoading, setTemplatesListLoading] =
+    useState<boolean>(false);
+  const [templatesList, setTemplatesList] =
+    useState<IGetTemplatesListResponse>();
+
+  const fetchTemplatesList = async () => {
+    setTemplatesListLoading(true);
+    const res: IGetTemplatesListResponse =
+      await EdcServies.getInstance().getTemplatesList();
+    setTemplatesList(res);
+    setTemplatesListLoading(false);
+  };
 
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
     setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
-    setCirculationOptions([]);
-    setCirculationOptionsLoading(true);
+    fetchTemplatesList();
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
@@ -179,6 +188,7 @@ function CreateInvoice() {
       RecieverLegalEntityVoen: data?.RecieverLegalEntityVoen,
       Description: data?.Description,
       DocumentTypeId: 3,
+      documentApprovalCycleId: data?.documentApprovalCycleId,
       StartDate: data?.StartDate
         ? dayjs(startDate.toISOString()).format()
         : null,
@@ -588,7 +598,7 @@ function CreateInvoice() {
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.templateName}
-                            name="contractNumber"
+                            name="documentApprovalCycleId"
                             control={control}
                             required
                             placeholder={inputPlaceholderText(
@@ -597,15 +607,15 @@ function CreateInvoice() {
                             getLabelOnChange
                             errors={errors}
                             selectProps={{
-                              loading: circulationOptionsLoading,
-                              disabled: circulationOptionsLoading,
+                              loading: templatesListLoading,
+                              disabled: templatesListLoading,
                               showSearch: true,
-                              id: 'contractNumber',
+                              id: 'documentApprovalCycleId',
                               placeholder: selectPlaceholderText(
                                 dictionary.en.templateName
                               ),
                               className: 'w-full',
-                              options: circulationOptions,
+                              options: templatesList?.Data?.Datas,
                               size: 'large'
                             }}
                             formItemProps={{

@@ -56,7 +56,8 @@ import {
   IEdcAdditionForm,
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
-  IEdcDocsListOptionsResponse
+  IEdcDocsListOptionsResponse,
+  IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 
@@ -101,14 +102,12 @@ function CreateAddition() {
     useState<IEdcDocsListOptions[]>();
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
-  const [circulationOptions, setCirculationOptions] = useState<any[]>();
-  const [circulationOptionsLoading, setCirculationOptionsLoading] =
-    useState<boolean>(true);
+  const [templatesListLoading, setTemplatesListLoading] = useState<boolean>(false);
+  const [templatesList, setTemplatesList] = useState<IGetTemplatesListResponse>();
+
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
     setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
-    setCirculationOptions([]);
-    setCirculationOptionsLoading(true);
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
@@ -131,13 +130,20 @@ function CreateAddition() {
     });
   };
 
+  const fetchTemplatesList = async () => {
+    setTemplatesListLoading(true);
+    const res: IGetTemplatesListResponse =
+      await EdcServies.getInstance().getTemplatesList();
+      setTemplatesList(res);
+    setTemplatesListLoading(false);
+  };
+
   const createMainAddition = async (data: IEdcAdditionForm) => {
     if (data?.tableFileList?.length !== 1) {
       toast.error(inputValidationText(dictionary.en.doc), toastOptions);
       return;
     }
     setMainSubmitLoading(true);
-
     const res: ICreateResponse =
       await EdcServies.getInstance().createAdditionMain(data, () => {
         setMainSubmitLoading(false);
@@ -178,6 +184,7 @@ function CreateAddition() {
       RecieverLegalEntityVoen: data?.RecieverLegalEntityVoen,
       Description: data?.Description,
       DocumentTypeId: 2,
+      documentApprovalCycleId: data?.documentApprovalCycleId,
       StartDate: data?.StartDate
         ? dayjs(startDate.toISOString()).format()
         : null,
@@ -271,6 +278,7 @@ function CreateAddition() {
 
   useEffect(() => {
     getDocsListOptions();
+    fetchTemplatesList();
   }, []);
 
   return (
@@ -587,7 +595,7 @@ function CreateAddition() {
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.templateName}
-                            name="contractNumber"
+                            name="documentApprovalCycleId"
                             control={control}
                             required
                             placeholder={inputPlaceholderText(
@@ -596,15 +604,15 @@ function CreateAddition() {
                             getLabelOnChange
                             errors={errors}
                             selectProps={{
-                              loading: circulationOptionsLoading,
-                              disabled: circulationOptionsLoading,
+                              loading: templatesListLoading,
+                              disabled: templatesListLoading,
                               showSearch: true,
-                              id: 'contractNumber',
+                              id: 'documentApprovalCycleId',
                               placeholder: selectPlaceholderText(
                                 dictionary.en.templateName
                               ),
                               className: 'w-full',
-                              options: circulationOptions,
+                              options: templatesList?.Data.Datas,
                               size: 'large'
                             }}
                             formItemProps={{

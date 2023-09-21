@@ -65,7 +65,8 @@ import {
   IEdcContractForm,
   IEdcContractPayload,
   IEdcContractTableFileListItem,
-  IGetEdcContractByIdResponse
+  IGetEdcContractByIdResponse,
+  IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 import FileUploadModal from '../../../modals/file-upload';
@@ -116,9 +117,9 @@ function UpdateContract() {
   const [senderLegalEntityVoen, setSenderLegalEntityVoen] = useState<
     string | null
   >('');
-  const [circulationOptions, setCirculationOptions] = useState<any[]>();
-  const [circulationOptionsLoading, setCirculationOptionsLoading] =
-    useState<boolean>(true);
+  const [templatesListLoading, setTemplatesListLoading] = useState<boolean>(false);
+  const [templatesList, setTemplatesList] = useState<IGetTemplatesListResponse>();
+
   const getByID = async (docId: string) => {
     const isDraft: boolean = pathname?.includes('draft');
 
@@ -163,10 +164,18 @@ function UpdateContract() {
     }
   };
 
+  const fetchTemplatesList = async () => {
+    setTemplatesListLoading(true);
+    const res: IGetTemplatesListResponse =
+      await EdcServies.getInstance().getTemplatesList();
+      setTemplatesList(res);
+    setTemplatesListLoading(false);
+  };
+
+
   useEffect(() => {
     id && getByID(id);
-    setCirculationOptions([]);
-    setCirculationOptionsLoading(true);
+    fetchTemplatesList();
     window.scrollTo(0, 0);
   }, [id]);
 
@@ -743,7 +752,7 @@ function UpdateContract() {
                           <Col className="gutter-row" span={24}>
                             <AppHandledSelect
                               label={dictionary.en.templateName}
-                              name="contractNumber"
+                              name="documentApprovalCycleId"
                               control={control}
                               required
                               placeholder={inputPlaceholderText(
@@ -752,15 +761,15 @@ function UpdateContract() {
                               getLabelOnChange
                               errors={errors}
                               selectProps={{
-                                loading: circulationOptionsLoading,
-                                disabled: circulationOptionsLoading,
+                                loading: templatesListLoading,
+                                disabled: templatesListLoading,
                                 showSearch: true,
-                                id: 'contractNumber',
+                                id: 'documentApprovalCycleId',
                                 placeholder: selectPlaceholderText(
                                   dictionary.en.templateName
                                 ),
                                 className: 'w-full',
-                                options: circulationOptions,
+                                options: templatesList?.Data?.Datas,
                                 size: 'large'
                               }}
                               formItemProps={{
