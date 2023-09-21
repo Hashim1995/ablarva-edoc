@@ -34,7 +34,7 @@ interface IAddTemplateProps {
   showTemplateUpdateModal: boolean;
   setShowTemplateUpdateModal: Dispatch<SetStateAction<boolean>>;
   setRefreshComponent: Dispatch<SetStateAction<boolean>>;
-  selectedItem: number;
+  selectedItem: string;
   users: selectOption[];
 }
 
@@ -76,7 +76,7 @@ function EditTemplate({
   const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
   const [skeleton, setSkeleton] = useState<boolean>(true);
 
-  const getTemplateItemById = async (id: number) => {
+  const getTemplateItemById = async (id: string) => {
     setIsFormSubmiting(true);
     const res: IGetSingleTemplateResponse =
       await CirculationTemplateServies.getInstance().getSingleTemplate(id);
