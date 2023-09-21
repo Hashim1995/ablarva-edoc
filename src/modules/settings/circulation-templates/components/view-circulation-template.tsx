@@ -7,6 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import { CirculationTemplateServies } from '@/services/circulation-template-services/circulation-template-service';
 import { selectOption } from '@/models/common';
 import TokenizedImage from '@/components/display/image';
+
 import {
   ICycleMemberItemView,
   IGetSingleTemplateViewResponse,
@@ -34,6 +35,8 @@ function ViewCirculationTemplate() {
   const [refreshComponent, setRefreshComponent] = useState<boolean>(false);
   const fetchUsers = async () => {
     setUsersLoading(true);
+    console.log('salam mahir');
+
     const res: IGetUsersResponse =
       await CirculationTemplateServies.getInstance().getUsers();
     setUsersList(res.Data.Datas);
