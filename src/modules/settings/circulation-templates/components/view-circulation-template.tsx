@@ -35,7 +35,7 @@ function ViewCirculationTemplate() {
   const [refreshComponent, setRefreshComponent] = useState<boolean>(false);
   const fetchUsers = async () => {
     setUsersLoading(true);
-    console.log('salam');
+    console.log('salam mahir');
 
     const res: IGetUsersResponse =
       await CirculationTemplateServies.getInstance().getUsers();
