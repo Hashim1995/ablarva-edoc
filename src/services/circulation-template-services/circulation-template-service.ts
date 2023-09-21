@@ -6,6 +6,7 @@ import { IGlobalResponse } from '@/models/common';
 import {
   IGetCirculationTemplatesResponse,
   IGetSingleTemplateResponse,
+  IGetSingleTemplateViewResponse,
   IGetUsersResponse,
   ITemplateAddPayload
 } from '@/modules/settings/circulation-templates/models';
@@ -48,7 +49,7 @@ export class CirculationTemplateServies {
   }
 
   public async getSingleTemplate(
-    id: number,
+    id: string,
     onError?: ErrorCallBack
   ): Promise<IGetSingleTemplateResponse> {
     const res = await HttpUtil.get(
@@ -60,8 +61,21 @@ export class CirculationTemplateServies {
     return res;
   }
 
+  public async getSingleTemplateView(
+    id: string,
+    onError?: ErrorCallBack
+  ): Promise<IGetSingleTemplateViewResponse> {
+    const res = await HttpUtil.get(
+      `/documentapprovalcycle/view/${id}`,
+      null,
+      false,
+      onError
+    );
+    return res;
+  }
+
   public async updateTemplate(
-    id: number,
+    id: string,
     body: ITemplateAddPayload,
     onError?: ErrorCallBack
   ): Promise<IGlobalResponse> {

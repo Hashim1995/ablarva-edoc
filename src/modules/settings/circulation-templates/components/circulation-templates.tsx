@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { dictionary } from '@/utils/constants/dictionary';
 import { useState, useEffect } from 'react';
 import {
@@ -19,7 +18,7 @@ import {
   theme
 } from 'antd';
 import { HomeOutlined, UndoOutlined, MoreOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AppHandledInput from '@/components/forms/input/handled-input';
 import { IHTTPSParams } from '@/services/adapter-config/config';
 import AppHandledSelect from '@/components/forms/select/handled-select';
@@ -60,6 +59,7 @@ function CirculationTemplates() {
 
   const { useToken } = theme;
   const { token } = useToken();
+  const navigate = useNavigate();
 
   const [page, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -67,7 +67,7 @@ function CirculationTemplates() {
   const [usersList, setUsersList] = useState<selectOption[]>([]);
   const [templateData, setTemplateData] =
     useState<IGetCirculationTemplatesResponse>();
-  const [selectedItem, setSelectedItem] = useState<number>();
+  const [selectedItem, setSelectedItem] = useState<string>();
   const [showTemplateUpdateModal, setShowTemplateUpdateModal] =
     useState<boolean>(false);
   const [showAddTemplateModal, setShowTemplateAddModal] =
@@ -78,7 +78,8 @@ function CirculationTemplates() {
   const items: MenuProps['items'] = [
     {
       label: <Typography.Text>{dictionary.en.editBtn}</Typography.Text>,
-      key: '0'
+      key: '0',
+      disabled: usersLoading
     },
     {
       label: <Typography.Text>{dictionary.en.view}</Typography.Text>,
@@ -92,8 +93,11 @@ function CirculationTemplates() {
 
   const handleMenuClick = (e: any, raw: ICirculationTemplateItem) => {
     if (e?.key === '0') {
-      setSelectedItem(raw.id);
+      setSelectedItem(raw.id.toString());
       setShowTemplateUpdateModal(true);
+    }
+    if (e?.key === '1') {
+      navigate(`/settings/circulation-templates/view/${raw.id}`);
     }
   };
 
@@ -221,6 +225,7 @@ function CirculationTemplates() {
             onClick={() => {
               setShowTemplateAddModal(true);
             }}
+            loading={usersLoading}
             type="primary"
           >
             <Space>{dictionary.en.addBtn}</Space>
@@ -315,7 +320,7 @@ function CirculationTemplates() {
         </div>
       </Card>
       {templateData?.Data.Datas.length ? (
-        <Card bodyStyle={{ padding: 0 }}>
+        <Card className="box box-margin-y ">
           <Spin size="large" spinning={loading}>
             <Row style={{ padding: token.paddingXS }}>
               <Col span={24}>

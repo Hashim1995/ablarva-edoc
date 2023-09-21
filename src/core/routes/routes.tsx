@@ -65,6 +65,13 @@ const CirculationTemplatesPage = React.lazy(
   () => import('@/modules/settings/circulation-templates/pages')
 );
 
+const ViewCirculationTemplatePage = React.lazy(
+  () =>
+    import(
+      '@/modules/settings/circulation-templates/pages/view-circulation-template-page'
+    )
+);
+
 const routes = [
   {
     path: '/',
@@ -323,6 +330,14 @@ const routes = [
         element: (
           <Suspense fallback={<FallbackSpinner />}>
             <CirculationTemplatesPage />
+          </Suspense>
+        )
+      },
+      {
+        path: '/settings/circulation-templates/view/:id',
+        element: (
+          <Suspense fallback={<FallbackSpinner />}>
+            <ViewCirculationTemplatePage />
           </Suspense>
         )
       },
