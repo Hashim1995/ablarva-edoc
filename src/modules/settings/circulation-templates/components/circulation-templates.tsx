@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { dictionary } from '@/utils/constants/dictionary';
 import { useState, useEffect } from 'react';
 import {
@@ -19,7 +18,7 @@ import {
   theme
 } from 'antd';
 import { HomeOutlined, UndoOutlined, MoreOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AppHandledInput from '@/components/forms/input/handled-input';
 import { IHTTPSParams } from '@/services/adapter-config/config';
 import AppHandledSelect from '@/components/forms/select/handled-select';
@@ -42,6 +41,7 @@ import {
   IGetUsersResponse
 } from '../models';
 import AddTemplate from '../modals/add-template';
+import EditTemplate from '../modals/edit-template';
 
 function CirculationTemplates() {
   const {
@@ -59,6 +59,7 @@ function CirculationTemplates() {
 
   const { useToken } = theme;
   const { token } = useToken();
+  const navigate = useNavigate();
 
   const [page, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -66,7 +67,7 @@ function CirculationTemplates() {
   const [usersList, setUsersList] = useState<selectOption[]>([]);
   const [templateData, setTemplateData] =
     useState<IGetCirculationTemplatesResponse>();
-  const [selectedItem, setSelectedItem] = useState<ICirculationTemplateItem>();
+  const [selectedItem, setSelectedItem] = useState<string>();
   const [showTemplateUpdateModal, setShowTemplateUpdateModal] =
     useState<boolean>(false);
   const [showAddTemplateModal, setShowTemplateAddModal] =
@@ -77,7 +78,8 @@ function CirculationTemplates() {
   const items: MenuProps['items'] = [
     {
       label: <Typography.Text>{dictionary.en.editBtn}</Typography.Text>,
-      key: '0'
+      key: '0',
+      disabled: usersLoading
     },
     {
       label: <Typography.Text>{dictionary.en.view}</Typography.Text>,
@@ -89,10 +91,13 @@ function CirculationTemplates() {
     // }
   ];
 
-  const handleMenuClick = (e: any, raw: any) => {
+  const handleMenuClick = (e: any, raw: ICirculationTemplateItem) => {
     if (e?.key === '0') {
-      setSelectedItem(raw);
+      setSelectedItem(raw.id.toString());
       setShowTemplateUpdateModal(true);
+    }
+    if (e?.key === '1') {
+      navigate(`/settings/circulation-templates/view/${raw.id}`);
     }
   };
 
@@ -220,6 +225,7 @@ function CirculationTemplates() {
             onClick={() => {
               setShowTemplateAddModal(true);
             }}
+            loading={usersLoading}
             type="primary"
           >
             <Space>{dictionary.en.addBtn}</Space>
@@ -314,7 +320,7 @@ function CirculationTemplates() {
         </div>
       </Card>
       {templateData?.Data.Datas.length ? (
-        <Card bodyStyle={{ padding: 0 }}>
+        <Card className="box box-margin-y ">
           <Spin size="large" spinning={loading}>
             <Row style={{ padding: token.paddingXS }}>
               <Col span={24}>
@@ -338,7 +344,7 @@ function CirculationTemplates() {
                 <AppPagination
                   style={{ marginTop: '20px', marginBottom: '20px' }}
                   current={page}
-                  total={2}
+                  total={templateData?.Data?.TotalDataCount}
                   onChange={(z: number) => setCurrentPage(z)}
                 />
               </Col>
@@ -358,6 +364,15 @@ function CirculationTemplates() {
           setShowTemplateAddModal={setShowTemplateAddModal}
           setRefreshComponent={setRefreshComponent}
           showAddTemplateModal={showAddTemplateModal}
+        />
+      )}
+      {showTemplateUpdateModal && selectedItem && (
+        <EditTemplate
+          users={usersList}
+          setShowTemplateUpdateModal={setShowTemplateUpdateModal}
+          setRefreshComponent={setRefreshComponent}
+          showTemplateUpdateModal={showTemplateUpdateModal}
+          selectedItem={selectedItem}
         />
       )}
     </div>

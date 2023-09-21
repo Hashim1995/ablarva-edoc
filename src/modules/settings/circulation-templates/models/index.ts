@@ -1,4 +1,5 @@
 import { IGlobalResponse, selectOption } from '@/models/common';
+import { ILegalEntityPhoto } from '@/models/user';
 
 interface ICirculationTemplateFilter {
   name: string;
@@ -23,6 +24,12 @@ interface IGetUsersResponse extends IGlobalResponse {
     TotalCount: number;
     Datas: selectOption[];
   };
+}
+
+interface IGroupedCycleMemberItem {
+  users: number[];
+  memberType: number;
+  group: number;
 }
 
 interface ICycleMemberItem {
@@ -51,6 +58,38 @@ interface ITemplateAddPayload {
   cycleMembers: ICycleMemberItem[];
 }
 
+interface IGetSingleTemplateResponse extends IGlobalResponse {
+  Data: ITemplateAddPayload;
+}
+
+interface ICycleMemberItemView {
+  AuthorizedPersonId: number;
+  name: string;
+  file?: ILegalEntityPhoto | null;
+  Profession: string;
+  memberType: number;
+  order: number;
+  group: number | null;
+}
+
+interface IGroupedCycleMemberItemView {
+  users: ICycleMemberItemView[];
+  group: number;
+}
+
+interface IGetSingleTemplateViewResponse extends IGlobalResponse {
+  Data: {
+    name: string;
+    type: number;
+    forInfo: {
+      id: number;
+      name: string;
+      file?: ILegalEntityPhoto | null;
+    }[];
+    documentApprovalCycleMembers: ICycleMemberItemView[];
+  };
+}
+
 export type {
   ICirculationTemplateFilter,
   ICirculationTemplateItem,
@@ -58,5 +97,10 @@ export type {
   ITemplateAddForm,
   ITemplateAddPayload,
   ICycleMemberItem,
-  IGetCirculationTemplatesResponse
+  IGetCirculationTemplatesResponse,
+  IGetSingleTemplateResponse,
+  IGroupedCycleMemberItem,
+  IGetSingleTemplateViewResponse,
+  ICycleMemberItemView,
+  IGroupedCycleMemberItemView
 };

@@ -152,9 +152,7 @@ const tokenizeImage = async (file: any): Promise<any> => {
 function toCapitalize(str: string): string {
   const words: string[] = str.split(' ');
   const capitalizedWords: string[] = words.map(
-    (word: string) =>
-      word.charAt(0).toUpperCase() +
-      word.slice(1).toLowerCase()
+    (word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
   );
   return capitalizedWords.join(' ');
 }

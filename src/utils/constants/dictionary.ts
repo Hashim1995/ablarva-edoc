@@ -159,6 +159,7 @@ export const dictionary = {
     external: 'Xarici',
     circulation: 'Dövriyyə',
     templateName: 'Şablon adı',
+    template: 'Şablon',
     voenMustBeDifferent: 'Daxil edilən VÖEN fərqli olmalıdır',
     internalStructure: 'Daxili struktur',
     circulationType: 'Dövriyyə növü',
@@ -170,7 +171,7 @@ export const dictionary = {
     addTemplate: 'Şablon əlavə edin',
     docDate: 'Sənədin tarixi',
     receiver: 'Qəbul edən şəxs',
-    forInfo: 'Məlumat üçün',
+    forInfo: 'Məlumat üçün'
   },
   en: {
     personalCabinet: 'Personal Cabinet',
@@ -331,6 +332,7 @@ export const dictionary = {
     internalStructure: 'Internal structure',
     circulationType: 'Circulation type',
     templateName: 'Template name',
+    template: 'Template',
     parallel: 'Parallel',
     successive: 'Successive',
     information: 'Information',
@@ -343,6 +345,6 @@ export const dictionary = {
     voenMustBeDifferent: 'Voen must be different',
     docDate: 'Document Date',
     receiver: 'Recipient',
-    forInfo: 'For Information',
+    forInfo: 'For Information'
   }
 };
