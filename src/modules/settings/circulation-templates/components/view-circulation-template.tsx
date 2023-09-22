@@ -153,8 +153,8 @@ function ViewCirculationTemplate() {
                           {i !== 0 &&
                             usersLength === previousUsersLength &&
                             nextUsersLength !== 1 &&
-                            previousUsersLength !== 1 &&
-                            i !== usersLength + 1 && (
+                            previousUsersLength !== 1 && (
+                              // i !== usersLength + 1 &&
                               <>
                                 {z === Math.floor(usersLength / 2) && (
                                   <Row
@@ -279,7 +279,8 @@ function ViewCirculationTemplate() {
                                     style={{
                                       width:
                                         (z === 0 || z === usersLength - 1) &&
-                                        usersLength >= nextUsersLength
+                                        usersLength >= nextUsersLength &&
+                                        usersLength !== 1
                                           ? '50%'
                                           : '100%',
                                       height: 2,
