@@ -319,7 +319,7 @@ function CirculationTemplates() {
           </Collapse>
         </div>
       </Card>
-      {templateData?.Data.Datas.length ? (
+      {templateData?.Data?.Datas.length ? (
         <Card className="box box-margin-y ">
           <Spin size="large" spinning={loading}>
             <Row style={{ padding: token.paddingXS }}>
@@ -332,8 +332,8 @@ function CirculationTemplates() {
                   scroll={{ x: 768 }}
                   columns={columns}
                   dataSource={
-                    templateData?.Data.Datas !== null
-                      ? templateData?.Data.Datas
+                    templateData?.Data?.Datas !== null
+                      ? templateData?.Data?.Datas
                       : []
                   }
                 />
