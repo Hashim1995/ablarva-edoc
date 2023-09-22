@@ -74,7 +74,7 @@ interface ICycleMemberItemView {
 
 interface IGroupedCycleMemberItemView {
   users: ICycleMemberItemView[];
-  group: number;
+  order: number;
 }
 
 interface IGetSingleTemplateViewResponse extends IGlobalResponse {
