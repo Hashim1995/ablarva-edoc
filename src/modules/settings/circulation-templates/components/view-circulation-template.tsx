@@ -262,13 +262,8 @@ function ViewCirculationTemplate() {
                                     width:
                                       usersLength < nextUsersLength
                                         ? `${
-                                            nextUsersLength % usersLength !== 0
-                                              ? Math.floor(
-                                                  nextUsersLength / usersLength
-                                                ) * 100
-                                              : (nextUsersLength / usersLength -
-                                                  1) *
-                                                100
+                                            (nextUsersLength - usersLength) *
+                                            100
                                           }%`
                                         : '100%'
                                   }}
