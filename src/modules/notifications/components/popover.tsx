@@ -96,7 +96,10 @@ function NotificationsPopover() {
 
   const notifPopoverContetn: ReactNode = (
     <div>
-      <div style={{ width: 450, maxHeight: 369, overflow: 'auto' }}>
+      <div
+        className="notification"
+        style={{ width: 450, maxHeight: 369, overflow: 'auto' }}
+      >
         {loading ? (
           <Skeleton />
         ) : (
