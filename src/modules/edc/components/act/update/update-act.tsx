@@ -340,7 +340,8 @@ function UpdateAct() {
     <div>
       <AppRouteBlocker open={blockRoute} />
       <Card size="small" className="box box-margin-y">
-        <Row justify="space-between">
+        <Row justify="space-between" gutter={[24,24]} align='middle'>
+          <Col>
           <Space>
             <Breadcrumb
               items={[
@@ -365,7 +366,9 @@ function UpdateAct() {
               ]}
             />
           </Space>
-          <Space>
+          </Col>
+        <Col>
+         <Space>
             <Tooltip title={dictionary.en.navigateToBack}>
               <Button
                 onClick={() => {
@@ -404,6 +407,8 @@ function UpdateAct() {
               <Space>{dictionary.en.send}</Space>
             </Button>
           </Space>
+        </Col>
+         
         </Row>
       </Card>
       <Card size="small" className="box box-margin-y">

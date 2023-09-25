@@ -102,8 +102,10 @@ function CreateAddition() {
     useState<IEdcDocsListOptions[]>();
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
-  const [templatesListLoading, setTemplatesListLoading] = useState<boolean>(false);
-  const [templatesList, setTemplatesList] = useState<IGetTemplatesListResponse>();
+  const [templatesListLoading, setTemplatesListLoading] =
+    useState<boolean>(false);
+  const [templatesList, setTemplatesList] =
+    useState<IGetTemplatesListResponse>();
 
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
@@ -134,7 +136,7 @@ function CreateAddition() {
     setTemplatesListLoading(true);
     const res: IGetTemplatesListResponse =
       await EdcServies.getInstance().getTemplatesList();
-      setTemplatesList(res);
+    setTemplatesList(res);
     setTemplatesListLoading(false);
   };
 
@@ -285,70 +287,74 @@ function CreateAddition() {
     <div>
       <AppRouteBlocker open={blockRoute} />
       <Card size="small" className="box box-margin-y">
-        <Row justify="space-between">
-          <Space>
-            <Breadcrumb
-              items={[
-                {
-                  title: (
-                    <Link to="/home">
-                      <HomeOutlined rev={undefined} />
-                    </Link>
-                  )
-                },
+        <Row justify="space-between" gutter={[24, 24]} align="middle">
+          <Col>
+            <Space>
+              <Breadcrumb
+                items={[
+                  {
+                    title: (
+                      <Link to="/home">
+                        <HomeOutlined rev={undefined} />
+                      </Link>
+                    )
+                  },
 
-                {
-                  title: (
-                    <Link to="/edc">
-                      {dictionary.en.electronicDocumentCycle}
-                    </Link>
-                  )
-                },
-                {
-                  title: dictionary.en.edcCreateAddition
-                }
-              ]}
-            />
-          </Space>
-          <Space>
-            <Tooltip title={dictionary.en.navigateToBack}>
+                  {
+                    title: (
+                      <Link to="/edc">
+                        {dictionary.en.electronicDocumentCycle}
+                      </Link>
+                    )
+                  },
+                  {
+                    title: dictionary.en.edcCreateAddition
+                  }
+                ]}
+              />
+            </Space>
+          </Col>
+          <Col>
+            <Space>
+              <Tooltip title={dictionary.en.navigateToBack}>
+                <Button
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                  type="default"
+                >
+                  <Space>
+                    <CloseOutlined rev={undefined} />
+                  </Space>
+                </Button>
+              </Tooltip>
+
               <Button
                 onClick={() => {
-                  navigate(-1);
+                  setFormIsRequired(false);
                 }}
+                htmlType="submit"
+                form="create-contract-form"
                 type="default"
+                loading={draftSubmitLoading}
+                disabled={draftSubmitLoading}
               >
-                <Space>
-                  <CloseOutlined rev={undefined} />
-                </Space>
+                <Space>{dictionary.en.save}</Space>
               </Button>
-            </Tooltip>
-
-            <Button
-              onClick={() => {
-                setFormIsRequired(false);
-              }}
-              htmlType="submit"
-              form="create-contract-form"
-              type="default"
-              loading={draftSubmitLoading}
-              disabled={draftSubmitLoading}
-            >
-              <Space>{dictionary.en.save}</Space>
-            </Button>
-            <Button
-              onClick={() => {
-                setFormIsRequired(true);
-              }}
-              form="create-contract-form"
-              htmlType="submit"
-              loading={mainSubmitLoading}
-              disabled={mainSubmitLoading}
-              type="primary"
-            >
-              <Space>{dictionary.en.send}</Space>
-            </Button>
-          </Space>
+              <Button
+                onClick={() => {
+                  setFormIsRequired(true);
+                }}
+                form="create-contract-form"
+                htmlType="submit"
+                loading={mainSubmitLoading}
+                disabled={mainSubmitLoading}
+                type="primary"
+              >
+                <Space>{dictionary.en.send}</Space>
+              </Button>
+            </Space>
+          </Col>
         </Row>
       </Card>
       <Card size="small" className="box box-margin-y">
@@ -739,7 +745,7 @@ function CreateAddition() {
                         />
                       </Tooltip>
                     }
-                    header={dictionary.en.docInfo}
+                    header={dictionary.en.uploadFile}
                     key="4"
                   >
                     <div onClick={e => e.stopPropagation()} aria-hidden>
