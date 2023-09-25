@@ -29,7 +29,7 @@ interface IGetUsersResponse extends IGlobalResponse {
 interface IGroupedCycleMemberItem {
   users: number[];
   memberType: number;
-  group: number;
+  group: number | null;
 }
 
 interface ICycleMemberItem {

@@ -91,6 +91,7 @@ function EditTemplate({
       const cycleMembers: ICycleMemberItem[] = res?.Data?.cycleMembers.sort(
         (a, b) => a.order - b.order
       );
+
       if (res.Data.type === 1) {
         cycleMembers.map(t => {
           if (t.memberType === 1) {
@@ -102,24 +103,19 @@ function EditTemplate({
       } else {
         const groupedCycleMembers: IGroupedCycleMemberItem[] = [];
         cycleMembers.map(t => {
-          if (t.group === null) {
-            if (t.memberType === 1) {
-              approve.push({ userId: [t.authPersonId] });
-            } else {
-              sign.push({ userId: [t.authPersonId] });
-            }
+          if (
+            !groupedCycleMembers.some(z => z.group === t.group) ||
+            t.group === null
+          ) {
+            groupedCycleMembers.push({
+              group: t.group,
+              users: [t.authPersonId],
+              memberType: t.memberType
+            });
           } else {
-            if (!groupedCycleMembers.some(z => z.group === t.group)) {
-              groupedCycleMembers.push({
-                group: t.group,
-                users: [t.authPersonId],
-                memberType: t.memberType
-              });
-            } else {
-              groupedCycleMembers.map(z => {
-                z.group === t.group && z.users.push(t.authPersonId);
-              });
-            }
+            groupedCycleMembers.map(z => {
+              z.group === t.group && z.users.push(t.authPersonId);
+            });
           }
         });
         groupedCycleMembers.map(y => {
