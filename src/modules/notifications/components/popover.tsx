@@ -15,7 +15,6 @@ import {
   theme
 } from 'antd';
 
-import '@/modules/notifications/styles/style.scss';
 import { dictionary } from '@/utils/constants/dictionary';
 import { toastOptions } from '@/configs/global-configs';
 import { NotificationServices } from '@/services/notification-services/notification-services';
@@ -96,7 +95,10 @@ function NotificationsPopover() {
 
   const notifPopoverContetn: ReactNode = (
     <div>
-      <div style={{ width: 450, maxHeight: 369, overflow: 'auto' }}>
+      <div
+        className="notification"
+        style={{ width: 450, maxHeight: 369, overflow: 'auto' }}
+      >
         {loading ? (
           <Skeleton />
         ) : (

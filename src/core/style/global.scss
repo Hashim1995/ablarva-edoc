@@ -95,3 +95,19 @@ body {
 .ant-tabs-nav-wrap {
   justify-content: flex-end;
 }
+
+div.notification::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+div.notification::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+div.notification::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 5px;
+}
