@@ -10,7 +10,7 @@ interface IStaffItem {
   CreatedDate?: string | null;
   Email?: string | null;
   PhoneNumber?: string | null;
-  Permission?: selectOption | null;
+  Permission?: selectOption | selectOption[] | null;
   PermissionId?: number | null;
   Status?: string | null;
   LegalEntity?: string | null;
@@ -51,8 +51,8 @@ interface IAddStaffForm {
   Profession?: string;
   Email?: string;
   PhoneNumber?: string;
-  Permission?: selectOption | null;
-  PermissionId?: number | string | null;
+  Permission?: (number | string)[] | null;
+  Permissions?: (number | string)[] | null;
   fileId?: number | string | null;
 }
 

@@ -371,7 +371,7 @@ function EdcListItemCard(props: IEdcListItemCardProps) {
           </div>
         </Col>
         <Col md={6} lg={2} xl={2}>
-          <div className="center h-full">
+          <div className="center h-full" style={{alignItems: !lg ? 'start' : 'center'}}>
             <Dropdown menu={menuProps} trigger={['click']}>
               <Button icon={<MoreOutlined rev={undefined} />} />
             </Dropdown>

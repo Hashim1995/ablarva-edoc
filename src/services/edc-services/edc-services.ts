@@ -13,6 +13,7 @@ import {
   IGetEdcContractByIdResponse,
   IGetEdcExtraByIdResponse,
   IGetEdcListResponse,
+  IGetTemplatesListResponse,
   IPermissionResponse,
   RejectMessage
 } from '@/modules/edc/models';
@@ -346,4 +347,15 @@ export class EdcServies {
     const res = await HttpUtil.put(`/document/return/${id}`, body, onError);
     return res;
   }
+
+  public async getTemplatesList(onError?: ErrorCallBack): Promise<IGetTemplatesListResponse> {
+    const res = await HttpUtil.get(
+      '/documentapprovalcycle/getallfordocument',
+      null,
+      false,
+      onError
+    );
+    return res;
+  }
+
 }

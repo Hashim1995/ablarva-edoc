@@ -49,7 +49,7 @@ function AddStaff({
       Profession: '',
       Email: '',
       PhoneNumber: '',
-      PermissionId: null,
+      Permissions: [],
       fileId: null
     }
   });
@@ -70,7 +70,7 @@ function AddStaff({
       Profession: data.Profession,
       Email: data.Email,
       PhoneNumber: data.PhoneNumber,
-      PermissionId: data.PermissionId,
+      Permissions: data.Permissions,
       FileId: data.fileId
     };
 
@@ -300,7 +300,7 @@ function AddStaff({
               />
               <AppHandledSelect
                 label={dictionary.en.permissions}
-                name="PermissionId"
+                name="Permissions"
                 rules={{
                   required: {
                     value: true,
@@ -312,9 +312,10 @@ function AddStaff({
                 placeholder={inputPlaceholderText(dictionary.en.permissions)}
                 errors={errors}
                 selectProps={{
+                  mode: 'multiple',
                   allowClear: true,
                   showSearch: true,
-                  id: 'PermissionId',
+                  id: 'Permissions',
                   placeholder: selectPlaceholderText(dictionary.en.permissions),
                   className: 'w-full',
                   options: permissions

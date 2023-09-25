@@ -227,53 +227,57 @@ function EdcList() {
   return (
     <div>
       <Card size="small" className="box box-margin-y">
-        <Row justify="space-between">
-          <Space>
-            <Breadcrumb
-              items={[
-                {
-                  title: (
-                    <Link to="/home">
-                      <HomeOutlined rev={undefined} />
-                    </Link>
-                  )
-                },
-                {
-                  title: dictionary.en.electronicDocumentCycle
-                }
-              ]}
-            />
-          </Space>
+        <Row justify="space-between" gutter={[24, 24]} align="middle">
+          <Col>
+            <Space>
+              <Breadcrumb
+                items={[
+                  {
+                    title: (
+                      <Link to="/home">
+                        <HomeOutlined rev={undefined} />
+                      </Link>
+                    )
+                  },
+                  {
+                    title: dictionary.en.electronicDocumentCycle
+                  }
+                ]}
+              />
+            </Space>
+          </Col>
 
-          <Space>
-            <Dropdown menu={menuProps} trigger={['click']}>
-              <Button
-                style={{
-                  borderColor: token.colorPrimary,
-                  color: token.colorPrimary
-                }}
-                type="default"
-              >
-                <Space>
-                  {dictionary.en.additionalDocuments}
-                  <DownOutlined rev={undefined} />
-                </Space>
-              </Button>
-            </Dropdown>
-            <div>
-              <Button
-                onClick={() => {
-                  navigate('create-contract');
-                }}
-                type="primary"
-              >
-                <Space>
-                  <FileAddOutlined rev={undefined} />
-                  {dictionary.en.contract}
-                </Space>
-              </Button>
-            </div>
-          </Space>
+          <Col>
+            <Space>
+              <Dropdown menu={menuProps} trigger={['click']}>
+                <Button
+                  style={{
+                    borderColor: token.colorPrimary,
+                    color: token.colorPrimary
+                  }}
+                  type="default"
+                >
+                  <Space>
+                    {dictionary.en.additionalDocuments}
+                    <DownOutlined rev={undefined} />
+                  </Space>
+                </Button>
+              </Dropdown>
+              <div>
+                <Button
+                  onClick={() => {
+                    navigate('create-contract');
+                  }}
+                  type="primary"
+                >
+                  <Space>
+                    <FileAddOutlined rev={undefined} />
+                    {dictionary.en.contract}
+                  </Space>
+                </Button>
+              </div>
+            </Space>
+          </Col>
         </Row>
       </Card>
       <Card size="small" className="box box-margin-y ">

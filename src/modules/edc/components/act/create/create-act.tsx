@@ -23,7 +23,7 @@ import {
   FilePdfOutlined,
   PlusCircleOutlined,
   SwapOutlined,
-  FontColorsOutlined,
+  FileAddOutlined,
   RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
@@ -56,7 +56,8 @@ import {
   IEdcActForm,
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
-  IEdcDocsListOptionsResponse
+  IEdcDocsListOptionsResponse,
+  IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 
@@ -101,15 +102,13 @@ function CreateAct() {
     useState<IEdcDocsListOptions[]>();
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
-  const [circulationOptions, setCirculationOptions] = useState<any[]>();
-  const [circulationOptionsLoading, setCirculationOptionsLoading] =
-    useState<boolean>(true);
-
+  const [templatesListLoading, setTemplatesListLoading] =
+    useState<boolean>(false);
+  const [templatesList, setTemplatesList] =
+    useState<IGetTemplatesListResponse>();
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
     setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
-    setCirculationOptions([]);
-    setCirculationOptionsLoading(true);
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
@@ -130,6 +129,14 @@ function CreateAct() {
         setShowUploadFileModal(false);
       }
     });
+  };
+
+  const fetchTemplatesList = async () => {
+    setTemplatesListLoading(true);
+    const res: IGetTemplatesListResponse =
+      await EdcServies.getInstance().getTemplatesList();
+    setTemplatesList(res);
+    setTemplatesListLoading(false);
   };
 
   const createMainAct = async (data: IEdcActForm) => {
@@ -181,6 +188,7 @@ function CreateAct() {
       RecieverLegalEntityVoen: data?.RecieverLegalEntityVoen,
       Description: data?.Description,
       DocumentTypeId: 4,
+      documentApprovalCycleId: data?.documentApprovalCycleId,
       StartDate: data?.StartDate
         ? dayjs(startDate.toISOString()).format()
         : null,
@@ -274,76 +282,81 @@ function CreateAct() {
 
   useEffect(() => {
     getDocsListOptions();
+    fetchTemplatesList();
   }, []);
 
   return (
     <div>
       <AppRouteBlocker open={blockRoute} />
       <Card size="small" className="box box-margin-y">
-        <Row justify="space-between">
-          <Space>
-            <Breadcrumb
-              items={[
-                {
-                  title: (
-                    <Link to="/home">
-                      <HomeOutlined rev={undefined} />
-                    </Link>
-                  )
-                },
+        <Row justify="space-between" gutter={[24, 24]} align="middle">
+          <Col>
+            <Space>
+              <Breadcrumb
+                items={[
+                  {
+                    title: (
+                      <Link to="/home">
+                        <HomeOutlined rev={undefined} />
+                      </Link>
+                    )
+                  },
 
-                {
-                  title: (
-                    <Link to="/edc">
-                      {dictionary.en.electronicDocumentCycle}
-                    </Link>
-                  )
-                },
-                {
-                  title: dictionary.en.edcCreateAct
-                }
-              ]}
-            />
-          </Space>
-          <Space>
-            <Tooltip title={dictionary.en.navigateToBack}>
+                  {
+                    title: (
+                      <Link to="/edc">
+                        {dictionary.en.electronicDocumentCycle}
+                      </Link>
+                    )
+                  },
+                  {
+                    title: dictionary.en.edcCreateAct
+                  }
+                ]}
+              />
+            </Space>
+          </Col>
+          <Col>
+            <Space>
+              <Tooltip title={dictionary.en.navigateToBack}>
+                <Button
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                  type="default"
+                >
+                  <Space>
+                    <CloseOutlined rev={undefined} />
+                  </Space>
+                </Button>
+              </Tooltip>
+
               <Button
                 onClick={() => {
-                  navigate(-1);
+                  setFormIsRequired(false);
                 }}
+                htmlType="submit"
+                form="create-contract-form"
                 type="default"
+                loading={draftSubmitLoading}
+                disabled={draftSubmitLoading}
               >
-                <Space>
-                  <CloseOutlined rev={undefined} />
-                </Space>
+                <Space>{dictionary.en.save}</Space>
               </Button>
-            </Tooltip>
-
-            <Button
-              onClick={() => {
-                setFormIsRequired(false);
-              }}
-              htmlType="submit"
-              form="create-contract-form"
-              type="default"
-              loading={draftSubmitLoading}
-              disabled={draftSubmitLoading}
-            >
-              <Space>{dictionary.en.save}</Space>
-            </Button>
-            <Button
-              onClick={() => {
-                setFormIsRequired(true);
-              }}
-              form="create-contract-form"
-              htmlType="submit"
-              loading={mainSubmitLoading}
-              disabled={mainSubmitLoading}
-              type="primary"
-            >
-              <Space>{dictionary.en.send}</Space>
-            </Button>
-          </Space>
+              <Button
+                onClick={() => {
+                  setFormIsRequired(true);
+                }}
+                form="create-contract-form"
+                htmlType="submit"
+                loading={mainSubmitLoading}
+                disabled={mainSubmitLoading}
+                type="primary"
+              >
+                <Space>{dictionary.en.send}</Space>
+              </Button>
+            </Space>
+          </Col>
         </Row>
       </Card>
       <Card size="small" className="box box-margin-y">
@@ -589,7 +602,7 @@ function CreateAct() {
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.templateName}
-                            name="contractNumber"
+                            name="documentApprovalCycleId"
                             control={control}
                             required
                             placeholder={inputPlaceholderText(
@@ -598,15 +611,15 @@ function CreateAct() {
                             getLabelOnChange
                             errors={errors}
                             selectProps={{
-                              loading: circulationOptionsLoading,
-                              disabled: circulationOptionsLoading,
+                              loading: templatesListLoading,
+                              disabled: templatesListLoading,
                               showSearch: true,
-                              id: 'contractNumber',
+                              id: 'documentApprovalCycleId',
                               placeholder: selectPlaceholderText(
                                 dictionary.en.templateName
                               ),
                               className: 'w-full',
-                              options: circulationOptions,
+                              options: templatesList?.Data.Datas,
                               size: 'large'
                             }}
                             formItemProps={{
@@ -700,7 +713,7 @@ function CreateAct() {
             </Timeline.Item>
             <Timeline.Item
               dot={
-                <FontColorsOutlined
+                <FileAddOutlined
                   rev={undefined}
                   onClick={() => handleDotClick('4')}
                   style={getTimeLineStyle(token)}
@@ -733,7 +746,7 @@ function CreateAct() {
                         />
                       </Tooltip>
                     }
-                    header={dictionary.en.docInfo}
+                    header={dictionary.en.uploadFile}
                     key="4"
                   >
                     <div onClick={e => e.stopPropagation()} aria-hidden>
