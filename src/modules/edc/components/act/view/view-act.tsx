@@ -218,8 +218,9 @@ function ViewAct() {
       {!skeleton ? (
         <div>
           <Card size="small" className="box box-margin-y">
-            <Row justify="space-between">
-              <Space>
+            <Row justify="space-between" gutter={[24,24]} align='middle'>
+              <Col>
+                 <Space>
                 <Breadcrumb
                   items={[
                     {
@@ -243,7 +244,9 @@ function ViewAct() {
                   ]}
                 />
               </Space>
-              <Space>
+              </Col>
+              <Col>
+               <Space>
                 <Tooltip title={dictionary.en.navigateToBack}>
                   <Button
                     onClick={() => {
@@ -289,6 +292,8 @@ function ViewAct() {
                   </Button>
                 )}
               </Space>
+              </Col>
+             
             </Row>
           </Card>
           <Row gutter={15} justify="space-between">
@@ -303,7 +308,7 @@ function ViewAct() {
               <Card
                 size="small"
                 className="box box-margin-y"
-                style={{ minHeight: '49%' }}
+                style={{ minHeight: '49%', maxHeight: '49%', overflowY: 'auto'}}
               >
                 <Typography.Text>
                   {' '}
@@ -598,7 +603,7 @@ function ViewAct() {
                       <Typography.Paragraph
                         className="custom-text"
                         ellipsis={{
-                          rows: 2,
+                          rows: !lg ? 4 : 2,
                           tooltip:
                             edcViewItem?.Description ?? dictionary.en.noDataText
                         }}

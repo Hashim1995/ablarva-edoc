@@ -59,7 +59,7 @@ function UpdateStaff({
       Profession: '',
       Email: '',
       PhoneNumber: '',
-      Permission: null,
+      Permission: [],
       fileId: null
     }
   });
@@ -73,6 +73,10 @@ function UpdateStaff({
     const res: IGetSingleStaffResponse =
       await StaffServies.getInstance().getSingleStaff(id);
 
+      const permissionValues: (string | number)[] = Array.isArray(res?.Data?.Permission)
+      ? res?.Data?.Permission.map(permission => permission?.value as string | number).filter(Boolean)
+      : [res?.Data?.Permission?.value as string | number].filter(Boolean);
+
     if (res?.IsSuccess) {
       setValue('Name', res?.Data?.Name ?? '');
       setValue('Email', res?.Data?.Email ?? '');
@@ -81,7 +85,7 @@ function UpdateStaff({
       setValue('FinCode', res?.Data?.FinCode ?? '');
       setValue('Profession', res?.Data?.Profession ?? '');
       setValue('PhoneNumber', res?.Data?.PhoneNumber ?? '');
-      setValue('Permission', res?.Data?.Permission ?? null);
+      setValue('Permission', permissionValues ?? []);
       const file = res?.Data?.File;
       if (file) {
         const tokenizedFile = await tokenizeImage(file);
@@ -97,6 +101,13 @@ function UpdateStaff({
     console.log(typeof data?.Permission);
 
     setIsFormSubmiting(true);
+    console.log(data?.Permission, 'Val');
+    // const permissionValues: (string | number)[] = Array.isArray(data?.Permission)
+    // ? data?.Permission.map(permission => permission?.value as string | number).filter(Boolean)
+    // : [data?.Permission?.value as string | number].filter(Boolean);
+    // console.log(permissionValues, 'lol');
+    
+
     const payload = {
       Name: data.Name ?? '',
       Surname: data.Surname ?? '',
@@ -105,13 +116,12 @@ function UpdateStaff({
       Profession: data.Profession ?? '',
       Email: data.Email ?? '',
       PhoneNumber: data.PhoneNumber ?? '',
-      PermissionId:
-        typeof data?.Permission === 'object'
-          ? data?.Permission?.value
-          : data?.Permission,
+      Permissions: data.Permission,
       FileId: data.fileId
     };
 
+    console.log(payload, 'pp');
+    
     const res: IGlobalResponse = await StaffServies.getInstance().updateStaff(
       selectedItem?.Id,
       payload,
@@ -345,6 +355,7 @@ function UpdateStaff({
                   placeholder={inputPlaceholderText(dictionary.en.permissions)}
                   errors={errors}
                   selectProps={{
+                    mode: 'multiple',
                     allowClear: true,
                     showSearch: true,
                     id: 'Permission',
