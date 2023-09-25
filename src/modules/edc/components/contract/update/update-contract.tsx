@@ -65,7 +65,8 @@ import {
   IEdcContractForm,
   IEdcContractPayload,
   IEdcContractTableFileListItem,
-  IGetEdcContractByIdResponse
+  IGetEdcContractByIdResponse,
+  IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 import FileUploadModal from '../../../modals/file-upload';
@@ -116,9 +117,11 @@ function UpdateContract() {
   const [senderLegalEntityVoen, setSenderLegalEntityVoen] = useState<
     string | null
   >('');
-  const [circulationOptions, setCirculationOptions] = useState<any[]>();
-  const [circulationOptionsLoading, setCirculationOptionsLoading] =
-    useState<boolean>(true);
+  const [templatesListLoading, setTemplatesListLoading] =
+    useState<boolean>(false);
+  const [templatesList, setTemplatesList] =
+    useState<IGetTemplatesListResponse>();
+
   const getByID = async (docId: string) => {
     const isDraft: boolean = pathname?.includes('draft');
 
@@ -163,10 +166,17 @@ function UpdateContract() {
     }
   };
 
+  const fetchTemplatesList = async () => {
+    setTemplatesListLoading(true);
+    const res: IGetTemplatesListResponse =
+      await EdcServies.getInstance().getTemplatesList();
+    setTemplatesList(res);
+    setTemplatesListLoading(false);
+  };
+
   useEffect(() => {
     id && getByID(id);
-    setCirculationOptions([]);
-    setCirculationOptionsLoading(true);
+    fetchTemplatesList();
     window.scrollTo(0, 0);
   }, [id]);
 
@@ -411,75 +421,79 @@ function UpdateContract() {
       <AppRouteBlocker open={blockRoute} />
 
       <Card size="small" className="box box-margin-y">
-        <Row justify="space-between">
-          <Space>
-            <Breadcrumb
-              items={[
-                {
-                  title: (
-                    <Link to="/home">
-                      <HomeOutlined rev={undefined} />
-                    </Link>
-                  )
-                },
+        <Row justify="space-between" gutter={[24, 24]} align="middle">
+          <Col>
+            <Space>
+              <Breadcrumb
+                items={[
+                  {
+                    title: (
+                      <Link to="/home">
+                        <HomeOutlined rev={undefined} />
+                      </Link>
+                    )
+                  },
 
-                {
-                  title: (
-                    <Link to="/edc">
-                      {dictionary.en.electronicDocumentCycle}
-                    </Link>
-                  )
-                },
-                {
-                  title: (
-                    <Link to="/edc">{`${dictionary.en.viewDoc} - ${id}`}</Link>
-                  )
-                },
-                {
-                  title: `${dictionary.en.editDoc} - ${id}`
-                }
-              ]}
-            />
-          </Space>
-          <Space>
-            <Tooltip title={dictionary.en.navigateToBack}>
+                  {
+                    title: (
+                      <Link to="/edc">
+                        {dictionary.en.electronicDocumentCycle}
+                      </Link>
+                    )
+                  },
+                  {
+                    title: (
+                      <Link to="/edc">{`${dictionary.en.viewDoc} - ${id}`}</Link>
+                    )
+                  },
+                  {
+                    title: `${dictionary.en.editDoc} - ${id}`
+                  }
+                ]}
+              />
+            </Space>
+          </Col>
+          <Col>
+            <Space>
+              <Tooltip title={dictionary.en.navigateToBack}>
+                <Button
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                  type="default"
+                >
+                  <Space>
+                    <CloseOutlined rev={undefined} />
+                  </Space>
+                </Button>
+              </Tooltip>
+
               <Button
                 onClick={() => {
-                  navigate(-1);
+                  setFormIsRequired(false);
                 }}
+                htmlType="submit"
+                form="update-contract-form"
                 type="default"
+                loading={draftSubmitLoading}
+                disabled={draftSubmitLoading}
               >
-                <Space>
-                  <CloseOutlined rev={undefined} />
-                </Space>
+                <Space>{dictionary.en.save}</Space>
               </Button>
-            </Tooltip>
-
-            <Button
-              onClick={() => {
-                setFormIsRequired(false);
-              }}
-              htmlType="submit"
-              form="update-contract-form"
-              type="default"
-              loading={draftSubmitLoading}
-              disabled={draftSubmitLoading}
-            >
-              <Space>{dictionary.en.save}</Space>
-            </Button>
-            <Button
-              onClick={() => {
-                setFormIsRequired(true);
-              }}
-              form="update-contract-form"
-              htmlType="submit"
-              loading={mainSubmitLoading}
-              disabled={mainSubmitLoading}
-              type="primary"
-            >
-              <Space>{dictionary.en.editAndSend}</Space>
-            </Button>
-          </Space>
+              <Button
+                onClick={() => {
+                  setFormIsRequired(true);
+                }}
+                form="update-contract-form"
+                htmlType="submit"
+                loading={mainSubmitLoading}
+                disabled={mainSubmitLoading}
+                type="primary"
+              >
+                <Space>{dictionary.en.editAndSend}</Space>
+              </Button>
+            </Space>
+          </Col>
         </Row>
       </Card>
       <Card size="small" className="box box-margin-y">
@@ -743,7 +757,7 @@ function UpdateContract() {
                           <Col className="gutter-row" span={24}>
                             <AppHandledSelect
                               label={dictionary.en.templateName}
-                              name="contractNumber"
+                              name="documentApprovalCycleId"
                               control={control}
                               required
                               placeholder={inputPlaceholderText(
@@ -752,15 +766,15 @@ function UpdateContract() {
                               getLabelOnChange
                               errors={errors}
                               selectProps={{
-                                loading: circulationOptionsLoading,
-                                disabled: circulationOptionsLoading,
+                                loading: templatesListLoading,
+                                disabled: templatesListLoading,
                                 showSearch: true,
-                                id: 'contractNumber',
+                                id: 'documentApprovalCycleId',
                                 placeholder: selectPlaceholderText(
                                   dictionary.en.templateName
                                 ),
                                 className: 'w-full',
-                                options: circulationOptions,
+                                options: templatesList?.Data?.Datas,
                                 size: 'large'
                               }}
                               formItemProps={{
