@@ -15,7 +15,6 @@ import {
   theme
 } from 'antd';
 
-import '@/modules/notifications/styles/style.scss';
 import { dictionary } from '@/utils/constants/dictionary';
 import { toastOptions } from '@/configs/global-configs';
 import { NotificationServices } from '@/services/notification-services/notification-services';
