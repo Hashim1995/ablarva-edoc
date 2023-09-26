@@ -51,7 +51,6 @@ import AppRouteBlocker from '@/components/display/blocker';
 import AppHandledSelect from '@/components/forms/select/handled-select';
 import SingleFileUpload from '@/modules/edc/modals/single-file-upload';
 import dayjs from 'dayjs';
-import { docStatusOptions } from '@/utils/constants/options';
 import {
   IEdcAdditionForm,
   IEdcContractTableFileListItem,
@@ -78,6 +77,8 @@ function CreateAddition() {
       SenderLegalEntityName: '',
       RecieverLegalEntityVoen: '',
       RecieverLegalEntityName: '',
+      Receiver: null,
+      ForInfos: [],
       StartDate: '',
       Description: '',
       tableFileList: []
@@ -106,6 +107,9 @@ function CreateAddition() {
     useState<boolean>(false);
   const [templatesList, setTemplatesList] =
     useState<IGetTemplatesListResponse>();
+  const [receivingEntityEmployees, setReceivingEntityEmployees] =
+    useState<IGetTemplatesListResponse>();
+  const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
 
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
@@ -131,6 +135,28 @@ function CreateAddition() {
       }
     });
   };
+
+  const getReceivingEntityEmployeesList = async (voen: string) => {
+    const res = await EdcServies.getInstance().getReceivingEntityEmployeesList(
+      voen
+    );
+    if (res.IsSuccess) {
+      setReceivingEntityEmployees(res);
+    }
+  };
+
+  useEffect(() => {
+    const receiverValue = watch('Receiver');
+    const forInfoValue = watch('ForInfos');
+    console.log(watch('ForInfos'), 'watch()');
+    
+    if(receiverValue && forInfoValue){
+      console.log(forInfoValue, 'lol');
+      
+      setSelectedReceiver([receiverValue, ...forInfoValue]);
+    }
+
+  }, [watch('Receiver'), watch('ForInfos')]);
 
   const fetchTemplatesList = async () => {
     setTemplatesListLoading(true);
@@ -186,6 +212,8 @@ function CreateAddition() {
       RecieverLegalEntityVoen: data?.RecieverLegalEntityVoen,
       Description: data?.Description,
       DocumentTypeId: 2,
+      Receiver: data.Receiver,
+      ForInfos: data.ForInfos,
       documentApprovalCycleId: data?.documentApprovalCycleId,
       StartDate: data?.StartDate
         ? dayjs(startDate.toISOString()).format()
@@ -409,6 +437,7 @@ function CreateAddition() {
                                 'RecieverLegalEntityName',
                                 e?.receiverName
                               );
+                              getReceivingEntityEmployeesList( e?.receiverVoen)
                             }}
                             errors={errors}
                             selectProps={{
@@ -537,7 +566,11 @@ function CreateAddition() {
                                 dictionary.en.receiver
                               ),
                               className: 'w-full',
-                              options: docStatusOptions,
+                              options:
+                                receivingEntityEmployees?.Data.Datas.filter(
+                                  z =>
+                                    !selectedReceiver.includes(Number(z.value))
+                                ),
                               size: 'large'
                             }}
                             formItemProps={{
@@ -550,7 +583,7 @@ function CreateAddition() {
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.forInfo}
-                            name="ForInfo"
+                            name="ForInfos"
                             control={control}
                             placeholder={inputPlaceholderText(
                               dictionary.en.forInfo
@@ -559,12 +592,17 @@ function CreateAddition() {
                             selectProps={{
                               mode: 'multiple',
                               showSearch: true,
-                              id: 'ForInfo',
+                              id: 'ForInfos',
                               placeholder: selectPlaceholderText(
                                 dictionary.en.forInfo
                               ),
                               className: 'w-full',
-                              options: docStatusOptions,
+
+                              options:
+                                receivingEntityEmployees?.Data.Datas.filter(
+                                  z =>
+                                    !selectedReceiver.includes(Number(z.value))
+                                ),
                               size: 'large'
                             }}
                             formItemProps={{
@@ -618,7 +656,7 @@ function CreateAddition() {
                                 dictionary.en.templateName
                               ),
                               className: 'w-full',
-                              options: templatesList?.Data.Datas,
+                              options: templatesList?.Data?.Datas ?? [],
                               size: 'large'
                             }}
                             formItemProps={{

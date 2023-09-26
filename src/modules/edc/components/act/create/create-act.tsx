@@ -51,7 +51,7 @@ import AppRouteBlocker from '@/components/display/blocker';
 import AppHandledSelect from '@/components/forms/select/handled-select';
 import SingleFileUpload from '@/modules/edc/modals/single-file-upload';
 import dayjs from 'dayjs';
-import { docStatusOptions } from '@/utils/constants/options';
+
 import {
   IEdcActForm,
   IEdcContractTableFileListItem,
@@ -79,6 +79,8 @@ function CreateAct() {
       RecieverLegalEntityVoen: '',
       RecieverLegalEntityName: '',
       StartDate: '',
+      Receiver: null,
+      ForInfos: [],
       Description: '',
       tableFileList: []
     }
@@ -106,11 +108,15 @@ function CreateAct() {
     useState<boolean>(false);
   const [templatesList, setTemplatesList] =
     useState<IGetTemplatesListResponse>();
+    const [receivingEntityEmployees, setReceivingEntityEmployees] =
+    useState<IGetTemplatesListResponse>();
+    const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
     setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
     window.scrollTo(0, 0);
   }, [userCompanyData]);
+
 
   const { useToken } = theme;
   const { token } = useToken();
@@ -130,6 +136,19 @@ function CreateAct() {
       }
     });
   };
+
+  useEffect(() => {
+    const receiverValue = watch('Receiver');
+    const forInfoValue = watch('ForInfos');
+    console.log(watch('ForInfos'), 'watch()');
+    
+    if(receiverValue && forInfoValue){
+      console.log(forInfoValue, 'lol');
+      
+      setSelectedReceiver([receiverValue, ...forInfoValue]);
+    }
+
+  }, [watch('Receiver'), watch('ForInfos')]);
 
   const fetchTemplatesList = async () => {
     setTemplatesListLoading(true);
@@ -188,6 +207,8 @@ function CreateAct() {
       RecieverLegalEntityVoen: data?.RecieverLegalEntityVoen,
       Description: data?.Description,
       DocumentTypeId: 4,
+      Receiver: data.Receiver,
+      ForInfos: data.ForInfos,
       documentApprovalCycleId: data?.documentApprovalCycleId,
       StartDate: data?.StartDate
         ? dayjs(startDate.toISOString()).format()
@@ -279,6 +300,13 @@ function CreateAct() {
       setDocsListOptionsLoading(false);
     }
   };
+
+  const getReceivingEntityEmployeesList = async (voen: string) => {
+    const res = await EdcServies.getInstance().getReceivingEntityEmployeesList(voen);
+    if(res.IsSuccess){
+      setReceivingEntityEmployees(res);
+    }
+  }
 
   useEffect(() => {
     getDocsListOptions();
@@ -411,6 +439,7 @@ function CreateAct() {
                                 'RecieverLegalEntityName',
                                 e?.receiverName
                               );
+                              getReceivingEntityEmployeesList(  e?.receiverVoen)
                             }}
                             errors={errors}
                             selectProps={{
@@ -538,7 +567,7 @@ function CreateAct() {
                                 dictionary.en.receiver
                               ),
                               className: 'w-full',
-                              options: docStatusOptions,
+                              options: receivingEntityEmployees?.Data.Datas.filter(z => !selectedReceiver.includes(Number(z.value))),
                               size: 'large'
                             }}
                             formItemProps={{
@@ -551,7 +580,7 @@ function CreateAct() {
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.forInfo}
-                            name="ForInfo"
+                            name="ForInfos"
                             control={control}
                             placeholder={inputPlaceholderText(
                               dictionary.en.forInfo
@@ -560,12 +589,13 @@ function CreateAct() {
                             selectProps={{
                               mode: 'multiple',
                               showSearch: true,
-                              id: 'ForInfo',
+                              id: 'ForInfos',
                               placeholder: selectPlaceholderText(
                                 dictionary.en.forInfo
                               ),
                               className: 'w-full',
-                              options: docStatusOptions,
+                          
+                              options: receivingEntityEmployees?.Data.Datas.filter(z => !selectedReceiver.includes(Number(z.value))),
                               size: 'large'
                             }}
                             formItemProps={{
@@ -619,7 +649,7 @@ function CreateAct() {
                                 dictionary.en.templateName
                               ),
                               className: 'w-full',
-                              options: templatesList?.Data.Datas,
+                              options: templatesList?.Data?.Datas || [],
                               size: 'large'
                             }}
                             formItemProps={{

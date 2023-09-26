@@ -63,6 +63,7 @@ import {
   IEdcContractForm,
   IEdcContractPayload,
   IEdcContractTableFileListItem,
+  IGetReceivingEntityEmployeesResponse,
   IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
@@ -89,6 +90,8 @@ function CreateContract() {
       StartDate: '',
       ExpireDate: '',
       RenewalDate: '',
+      Receiver: null,
+      ForInfos: [],
       Description: '',
       tableFileList: []
     }
@@ -113,7 +116,9 @@ function CreateContract() {
     useState<boolean>(false);
   const [templatesList, setTemplatesList] =
     useState<IGetTemplatesListResponse>();
-
+    const [receivingEntityEmployees, setReceivingEntityEmployees] =
+    useState<IGetTemplatesListResponse>();
+    const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
   const { useToken } = theme;
   const { token } = useToken();
 
@@ -132,6 +137,20 @@ function CreateContract() {
       }
     });
   };
+
+  useEffect(() => {
+    const receiverValue = watch('Receiver');
+    const forInfoValue = watch('ForInfos');
+    console.log(watch('ForInfos'), 'watch()');
+    
+    if(receiverValue && forInfoValue){
+      console.log(forInfoValue, 'lol');
+      
+      setSelectedReceiver([receiverValue, ...forInfoValue]);
+    }
+
+  }, [watch('Receiver'), watch('ForInfos')]);
+
 
   const fetchTemplatesList = async () => {
     setTemplatesListLoading(true);
@@ -206,6 +225,8 @@ function CreateContract() {
       ProssesType: data?.ProssesType,
       Description: data?.Description,
       documentApprovalCycleId: data?.documentApprovalCycleId,
+      Receiver: data.Receiver,
+      ForInfos: data.ForInfos,
       ExpireDate: data?.ExpireDate
         ? dayjs(expireDate.toISOString()).format()
         : null,
@@ -305,23 +326,35 @@ function CreateContract() {
       toast.error(dictionary.en.voenMustBeDifferent, toastOptions);
     } else {
       setVoenInputLoading(true);
-      const res: ICompanyDetailResponse =
-        await EdcServies.getInstance().getByVoen(
+      const edcServiceInstance = EdcServies.getInstance(); 
+      
+      try {
+        const res: ICompanyDetailResponse = await edcServiceInstance.getByVoen(
           watch('RecieverLegalEntityVoen'),
           () => {
             setVoenInputLoading(false);
             setValue('RecieverLegalEntityName', '');
           }
         );
-
-      if (res.IsSuccess) {
-        setValue('RecieverLegalEntityName', res?.Data?.Name);
-        setdisableRecieverVoen(true);
-        toast.success(dictionary.en.successTxt, toastOptions);
+  
+        if (res.IsSuccess) {
+          setValue('RecieverLegalEntityName', res?.Data?.Name);
+          setdisableRecieverVoen(true);
+          toast.success(dictionary.en.successTxt, toastOptions);
+  
+          const employees: IGetReceivingEntityEmployeesResponse = await edcServiceInstance.getReceivingEntityEmployeesList(watch('RecieverLegalEntityVoen'));
+          console.log(employees, 'employees');
+          if(employees.IsSuccess){
+            setReceivingEntityEmployees(employees);
+          }
+        }
+        setVoenInputLoading(false);
+      } catch (error) {
+        console.error(error);
       }
-      setVoenInputLoading(false);
     }
   };
+  
 
   const suffix = watch('RecieverLegalEntityName') ? (
     <Tooltip title={dictionary.en.resetTxt}>
@@ -598,7 +631,7 @@ function CreateContract() {
                                 dictionary.en.receiver
                               ),
                               className: 'w-full',
-                              options: docStatusOptions,
+                              options: receivingEntityEmployees?.Data.Datas.filter(z => !selectedReceiver.includes(Number(z.value))),
                               size: 'large'
                             }}
                             formItemProps={{
@@ -611,7 +644,7 @@ function CreateContract() {
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.forInfo}
-                            name="ForInfo"
+                            name="ForInfos"
                             control={control}
                             placeholder={inputPlaceholderText(
                               dictionary.en.forInfo
@@ -620,12 +653,13 @@ function CreateContract() {
                             selectProps={{
                               mode: 'multiple',
                               showSearch: true,
-                              id: 'ForInfo',
+                              id: 'ForInfos',
                               placeholder: selectPlaceholderText(
                                 dictionary.en.forInfo
                               ),
                               className: 'w-full',
-                              options: docStatusOptions,
+                          
+                              options: receivingEntityEmployees?.Data.Datas.filter(z => !selectedReceiver.includes(Number(z.value))),
                               size: 'large'
                             }}
                             formItemProps={{
@@ -706,7 +740,7 @@ function CreateContract() {
                                 dictionary.en.templateName
                               ),
                               className: 'w-full',
-                              options: templatesList?.Data.Datas,
+                              options: templatesList?.Data?.Datas ?? [],
                               size: 'large'
                             }}
                             formItemProps={{
