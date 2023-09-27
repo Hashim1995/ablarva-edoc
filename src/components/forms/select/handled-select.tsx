@@ -1,9 +1,10 @@
 import { Controller, FieldValues, RegisterOptions } from 'react-hook-form';
 import { Form, FormItemProps, SelectProps } from 'antd';
+import { ReactNode } from 'react';
 import AppSelect from './index';
 
 interface IAppHandledSelect {
-  label?: string;
+  label?: string | ReactNode;
   name: string;
   control?: any;
   rules?: Omit<

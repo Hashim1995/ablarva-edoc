@@ -70,22 +70,11 @@ const genderOptions: selectOption[] = [
   }
 ];
 
-const circulationTypeOptions: selectOption[] = [
-  {
-    value: 1,
-    label: dictionary.en.successive
-  },
-  {
-    value: 2,
-    label: dictionary.en.parallel
-  }
-];
 export {
   genderOptions,
   roleOptions,
   fileTypeOptions,
   docStatusOptions,
   isBlockedOptions,
-  statusOptions,
-  circulationTypeOptions
+  statusOptions
 };
