@@ -146,6 +146,8 @@ interface IEdcContractPayload {
   ExpireDate: any;
   RenewalDate: any;
   Description: string;
+  Receiver?: number | null;
+  ForInfos?: number[] | null;
   tableFileList: IEdcContractTableFileListItem[];
   documentApprovalCycleId?: number;
 }
@@ -165,6 +167,8 @@ interface IEdcAdditionForm {
   StartDate: any;
   tableFileList: IEdcContractTableFileListItem[];
   Description: string;
+  Receiver?: number | null;
+  ForInfos?: number[] | null;
   contractNumber?: number | IEdcDocsListOptions | null;
   documentApprovalCycleId?: number;
 }
@@ -178,6 +182,8 @@ interface IEdcActForm {
   StartDate: any;
   tableFileList: IEdcContractTableFileListItem[];
   Description: string;
+  Receiver?: number | null;
+  ForInfos?: number[] | null;
   contractNumber?: number | IEdcDocsListOptions | null;
   documentApprovalCycleId?: number;
 }
@@ -191,6 +197,8 @@ interface IEdcInvoiceForm {
   StartDate: any;
   tableFileList: IEdcContractTableFileListItem[];
   Description: string;
+  Receiver?: number | null;
+  ForInfos?: number[] | null;
   contractNumber?: number | IEdcDocsListOptions | null;
   documentApprovalCycleId?: number;
 }
@@ -245,6 +253,15 @@ interface IGetTemplatesListResponse extends IGlobalResponse {
     Datas: selectOption[];
 }
 }
+
+interface IGetReceivingEntityEmployeesResponse extends IGlobalResponse {
+  Data:{
+    TotalCount: number;
+    Datas: selectOption[];
+}
+}
+
+
   
 
 // ADDITION
@@ -278,5 +295,6 @@ export type {
   Permission,
   RejectMessage,
   IPermissionResponse,
-  IGetTemplatesListResponse
+  IGetTemplatesListResponse,
+  IGetReceivingEntityEmployeesResponse
 };
