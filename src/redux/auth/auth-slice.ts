@@ -42,6 +42,12 @@ const initialState = {
       name: '',
       fileUrl: '',
       fileNameOnDisk: ''
+    },
+    PermissionDto: {
+      isFounder: false,
+      documentCompilation: false,
+      sendingDocument: false,
+      editingUser: false
     }
   },
 

@@ -23,7 +23,7 @@ import {
   FilePdfOutlined,
   PlusCircleOutlined,
   SwapOutlined,
-  FileAddOutlined,
+  FileAddOutlined
   // RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
@@ -56,7 +56,7 @@ import {
   IEdcActForm,
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
-  IEdcDocsListOptionsResponse,
+  IEdcDocsListOptionsResponse
   // IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
@@ -117,7 +117,6 @@ function CreateAct() {
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
-
   const { useToken } = theme;
   const { token } = useToken();
 
@@ -141,10 +140,10 @@ function CreateAct() {
   //   const receiverValue = watch('Receiver');
   //   const forInfoValue = watch('ForInfos');
   //   console.log(watch('ForInfos'), 'watch()');
-    
+
   //   if(receiverValue && forInfoValue){
   //     console.log(forInfoValue, 'lol');
-      
+
   //     setSelectedReceiver([receiverValue, ...forInfoValue]);
   //   }
 

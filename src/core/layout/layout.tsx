@@ -63,14 +63,7 @@ function LayoutPage() {
       ),
       key: '0'
     },
-    {
-      label: (
-        <Row>
-          <FaUsers /> <Text>{dictionary.en.legalCabinet}</Text>
-        </Row>
-      ),
-      key: '1'
-    },
+
     {
       label: (
         <Row>
@@ -96,6 +89,16 @@ function LayoutPage() {
       key: '3'
     }
   ];
+
+  user?.PermissionDto.isFounder &&
+    items.splice(1, 0, {
+      label: (
+        <Row>
+          <FaUsers /> <Text>{dictionary.en.legalCabinet}</Text>
+        </Row>
+      ),
+      key: '1'
+    });
 
   const { useToken } = theme;
   const { token } = useToken();

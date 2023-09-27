@@ -12,14 +12,14 @@ function Home() {
   const { useToken } = theme;
   const { useBreakpoint } = Grid;
   const { lg } = useBreakpoint();
-  
+
   const { token } = useToken();
   const [statsLoading, setStatsLoading] = useState(false);
   const [reportsLoading, setReportsLoading] = useState(false);
   const [statsList, setStatsList] = useState<IGetStatisticsListResponse>();
   const [reportsList, setReportsList] =
     useState<IGetReportsListByStatusResponse>();
-    
+
   const fetchStatsList = async () => {
     setStatsLoading(true);
 
@@ -60,8 +60,7 @@ function Home() {
       ) : (
         <Row gutter={16}>
           {statsList?.Data.Datas.map((t: IStatisticsListItem) => (
-           <Col 
-            style={{ width: lg ? '20%' : '33%' }}>
+            <Col style={{ width: lg ? '20%' : '33%' }}>
               <StatisticsCard
                 Id={t.Id}
                 key={t.Id}

@@ -23,7 +23,7 @@ import {
   FilePdfOutlined,
   PlusCircleOutlined,
   SwapOutlined,
-  FileAddOutlined,
+  FileAddOutlined
   // RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
@@ -56,7 +56,7 @@ import {
   IEdcInvoiceForm,
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
-  IEdcDocsListOptionsResponse,
+  IEdcDocsListOptionsResponse
   // IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
@@ -107,10 +107,10 @@ function CreateInvoice() {
   // const [templatesListLoading, setTemplatesListLoading] =
   //   useState<boolean>(false);
   // const [templatesList, setTemplatesList] =
-    // useState<IGetTemplatesListResponse>();
-    // const [receivingEntityEmployees, setReceivingEntityEmployees] =
-    // useState<IGetTemplatesListResponse>();
-    // const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
+  // useState<IGetTemplatesListResponse>();
+  // const [receivingEntityEmployees, setReceivingEntityEmployees] =
+  // useState<IGetTemplatesListResponse>();
+  // const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
 
   // const fetchTemplatesList = async () => {
   //   setTemplatesListLoading(true);
@@ -145,15 +145,14 @@ function CreateInvoice() {
   //   }
   // }
 
-
   // useEffect(() => {
   //   const receiverValue = watch('Receiver');
   //   const forInfoValue = watch('ForInfos');
   //   console.log(watch('ForInfos'), 'watch()');
-    
+
   //   if(receiverValue && forInfoValue){
   //     console.log(forInfoValue, 'lol');
-      
+
   //     setSelectedReceiver([receiverValue, ...forInfoValue]);
   //   }
 
@@ -301,7 +300,7 @@ function CreateInvoice() {
   const getDocsListOptions = async () => {
     const res: IEdcDocsListOptionsResponse =
       await EdcServies.getInstance().getDocsListOptions();
-    
+
     if (res?.IsSuccess) {
       setDocsListOptions(res?.Data?.Datas);
       setDocsListOptionsLoading(false);

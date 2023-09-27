@@ -25,7 +25,7 @@ import {
   FilePdfOutlined,
   PlusCircleOutlined,
   SwapOutlined,
-  FileAddOutlined,
+  FileAddOutlined
   // RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
@@ -62,7 +62,7 @@ import {
   ICompanyDetailResponse,
   IEdcContractForm,
   IEdcContractPayload,
-  IEdcContractTableFileListItem,
+  IEdcContractTableFileListItem
   // IGetReceivingEntityEmployeesResponse,
   // IGetTemplatesListResponse
 } from '../../../models';
@@ -118,7 +118,7 @@ function CreateContract() {
   //   useState<IGetTemplatesListResponse>();
   //   const [receivingEntityEmployees, setReceivingEntityEmployees] =
   //   useState<IGetTemplatesListResponse>();
-    // const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
+  // const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
   const { useToken } = theme;
   const { token } = useToken();
 
@@ -142,15 +142,14 @@ function CreateContract() {
   //   const receiverValue = watch('Receiver');
   //   const forInfoValue = watch('ForInfos');
   //   console.log(watch('ForInfos'), 'watch()');
-    
+
   //   if(receiverValue && forInfoValue){
   //     console.log(forInfoValue, 'lol');
-      
+
   //     setSelectedReceiver([receiverValue, ...forInfoValue]);
   //   }
 
   // }, [watch('Receiver'), watch('ForInfos')]);
-
 
   // const fetchTemplatesList = async () => {
   //   setTemplatesListLoading(true);
@@ -326,8 +325,8 @@ function CreateContract() {
       toast.error(dictionary.en.voenMustBeDifferent, toastOptions);
     } else {
       setVoenInputLoading(true);
-      const edcServiceInstance = EdcServies.getInstance(); 
-      
+      const edcServiceInstance = EdcServies.getInstance();
+
       try {
         const res: ICompanyDetailResponse = await edcServiceInstance.getByVoen(
           watch('RecieverLegalEntityVoen'),
@@ -336,12 +335,12 @@ function CreateContract() {
             setValue('RecieverLegalEntityName', '');
           }
         );
-  
+
         if (res.IsSuccess) {
           setValue('RecieverLegalEntityName', res?.Data?.Name);
           setdisableRecieverVoen(true);
           toast.success(dictionary.en.successTxt, toastOptions);
-  
+
           // const employees: IGetReceivingEntityEmployeesResponse = await edcServiceInstance.getReceivingEntityEmployeesList(watch('RecieverLegalEntityVoen'));
           // console.log(employees, 'employees');
           // if(employees.IsSuccess){
@@ -354,7 +353,6 @@ function CreateContract() {
       }
     }
   };
-  
 
   const suffix = watch('RecieverLegalEntityName') ? (
     <Tooltip title={dictionary.en.resetTxt}>
