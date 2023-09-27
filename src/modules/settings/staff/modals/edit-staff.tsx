@@ -73,8 +73,12 @@ function UpdateStaff({
     const res: IGetSingleStaffResponse =
       await StaffServies.getInstance().getSingleStaff(id);
 
-      const permissionValues: (string | number)[] = Array.isArray(res?.Data?.Permission)
-      ? res?.Data?.Permission.map(permission => permission?.value as string | number).filter(Boolean)
+    const permissionValues: (string | number)[] = Array.isArray(
+      res?.Data?.Permission
+    )
+      ? res?.Data?.Permission.map(
+          permission => permission?.value as string | number
+        ).filter(Boolean)
       : [res?.Data?.Permission?.value as string | number].filter(Boolean);
 
     if (res?.IsSuccess) {
@@ -106,7 +110,6 @@ function UpdateStaff({
     // ? data?.Permission.map(permission => permission?.value as string | number).filter(Boolean)
     // : [data?.Permission?.value as string | number].filter(Boolean);
     // console.log(permissionValues, 'lol');
-    
 
     const payload = {
       Name: data.Name ?? '',
@@ -121,7 +124,7 @@ function UpdateStaff({
     };
 
     console.log(payload, 'pp');
-    
+
     const res: IGlobalResponse = await StaffServies.getInstance().updateStaff(
       selectedItem?.Id,
       payload,

@@ -248,21 +248,18 @@ interface IPermissionResponse extends IGlobalResponse {
 }
 
 interface IGetTemplatesListResponse extends IGlobalResponse {
-  Data:{
+  Data: {
     TotalCount: number;
     Datas: selectOption[];
-}
+  };
 }
 
 interface IGetReceivingEntityEmployeesResponse extends IGlobalResponse {
-  Data:{
+  Data: {
     TotalCount: number;
     Datas: selectOption[];
+  };
 }
-}
-
-
-  
 
 // ADDITION
 
