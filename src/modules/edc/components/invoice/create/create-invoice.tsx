@@ -708,7 +708,11 @@ function CreateInvoice() {
                               style: {
                                 width: '100%'
                               },
-                              format: 'DD.MM.YYYY'
+                              format: 'DD.MM.YYYY',
+
+                              disabledDate: current =>
+                                current &&
+                                current < dayjs().endOf('day').add(-1, 'day')
                             }}
                           />
                         </Col>
