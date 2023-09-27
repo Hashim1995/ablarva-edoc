@@ -303,7 +303,11 @@ function ViewInvoice() {
               <Card
                 size="small"
                 className="box box-margin-y"
-                style={{ minHeight: '49%', maxHeight: '49%', overflowY: 'auto'}}
+                style={{
+                  minHeight: '49%',
+                  maxHeight: '49%',
+                  overflowY: 'auto'
+                }}
               >
                 <Typography.Text>
                   {' '}

@@ -348,7 +348,9 @@ export class EdcServies {
     return res;
   }
 
-  public async getTemplatesList(onError?: ErrorCallBack): Promise<IGetTemplatesListResponse> {
+  public async getTemplatesList(
+    onError?: ErrorCallBack
+  ): Promise<IGetTemplatesListResponse> {
     const res = await HttpUtil.get(
       '/documentapprovalcycle/getallfordocument',
       null,
@@ -357,5 +359,4 @@ export class EdcServies {
     );
     return res;
   }
-
 }

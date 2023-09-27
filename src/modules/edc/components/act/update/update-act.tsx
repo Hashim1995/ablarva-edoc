@@ -109,9 +109,11 @@ function UpdateAct() {
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
   const [skeleton, setSkeleton] = useState<boolean>(true);
-    const [templatesListLoading, setTemplatesListLoading] = useState<boolean>(false);
-  const [templatesList, setTemplatesList] = useState<IGetTemplatesListResponse>();
-  
+  const [templatesListLoading, setTemplatesListLoading] =
+    useState<boolean>(false);
+  const [templatesList, setTemplatesList] =
+    useState<IGetTemplatesListResponse>();
+
   const getDocsListOptions = async () => {
     const res: IEdcDocsListOptionsResponse =
       await EdcServies.getInstance().getDocsListOptions();
@@ -157,7 +159,7 @@ function UpdateAct() {
     setTemplatesListLoading(true);
     const res: IGetTemplatesListResponse =
       await EdcServies.getInstance().getTemplatesList();
-      setTemplatesList(res);
+    setTemplatesList(res);
     setTemplatesListLoading(false);
   };
 
@@ -194,7 +196,6 @@ function UpdateAct() {
       }
     });
   };
-
 
   const createMainAct = async (data: IEdcActForm) => {
     const isDraft: boolean = pathname?.includes('draft');
@@ -340,75 +341,74 @@ function UpdateAct() {
     <div>
       <AppRouteBlocker open={blockRoute} />
       <Card size="small" className="box box-margin-y">
-        <Row justify="space-between" gutter={[24,24]} align='middle'>
+        <Row justify="space-between" gutter={[24, 24]} align="middle">
           <Col>
-          <Space>
-            <Breadcrumb
-              items={[
-                {
-                  title: (
-                    <Link to="/home">
-                      <HomeOutlined rev={undefined} />
-                    </Link>
-                  )
-                },
+            <Space>
+              <Breadcrumb
+                items={[
+                  {
+                    title: (
+                      <Link to="/home">
+                        <HomeOutlined rev={undefined} />
+                      </Link>
+                    )
+                  },
 
-                {
-                  title: (
-                    <Link to="/edc">
-                      {dictionary.en.electronicDocumentCycle}
-                    </Link>
-                  )
-                },
-                {
-                  title: dictionary.en.edcCreateAct
-                }
-              ]}
-            />
-          </Space>
+                  {
+                    title: (
+                      <Link to="/edc">
+                        {dictionary.en.electronicDocumentCycle}
+                      </Link>
+                    )
+                  },
+                  {
+                    title: dictionary.en.edcCreateAct
+                  }
+                ]}
+              />
+            </Space>
           </Col>
-        <Col>
-         <Space>
-            <Tooltip title={dictionary.en.navigateToBack}>
+          <Col>
+            <Space>
+              <Tooltip title={dictionary.en.navigateToBack}>
+                <Button
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                  type="default"
+                >
+                  <Space>
+                    <CloseOutlined rev={undefined} />
+                  </Space>
+                </Button>
+              </Tooltip>
+
               <Button
                 onClick={() => {
-                  navigate(-1);
+                  setFormIsRequired(false);
                 }}
+                htmlType="submit"
+                form="create-contract-form"
                 type="default"
+                loading={draftSubmitLoading}
+                disabled={draftSubmitLoading}
               >
-                <Space>
-                  <CloseOutlined rev={undefined} />
-                </Space>
+                <Space>{dictionary.en.save}</Space>
               </Button>
-            </Tooltip>
-
-            <Button
-              onClick={() => {
-                setFormIsRequired(false);
-              }}
-              htmlType="submit"
-              form="create-contract-form"
-              type="default"
-              loading={draftSubmitLoading}
-              disabled={draftSubmitLoading}
-            >
-              <Space>{dictionary.en.save}</Space>
-            </Button>
-            <Button
-              onClick={() => {
-                setFormIsRequired(true);
-              }}
-              form="create-contract-form"
-              htmlType="submit"
-              loading={mainSubmitLoading}
-              disabled={mainSubmitLoading}
-              type="primary"
-            >
-              <Space>{dictionary.en.send}</Space>
-            </Button>
-          </Space>
-        </Col>
-         
+              <Button
+                onClick={() => {
+                  setFormIsRequired(true);
+                }}
+                form="create-contract-form"
+                htmlType="submit"
+                loading={mainSubmitLoading}
+                disabled={mainSubmitLoading}
+                type="primary"
+              >
+                <Space>{dictionary.en.send}</Space>
+              </Button>
+            </Space>
+          </Col>
         </Row>
       </Card>
       <Card size="small" className="box box-margin-y">

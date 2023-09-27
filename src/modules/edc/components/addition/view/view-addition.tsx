@@ -219,82 +219,84 @@ function ViewAddition() {
       {!skeleton ? (
         <div>
           <Card size="small" className="box box-margin-y">
-            <Row justify="space-between" gutter={[24,24]} align='middle'>
+            <Row justify="space-between" gutter={[24, 24]} align="middle">
               <Col>
-               <Space>
-                <Breadcrumb
-                  items={[
-                    {
-                      title: (
-                        <Link to="/home">
-                          <HomeOutlined rev={undefined} />
-                        </Link>
-                      )
-                    },
+                <Space>
+                  <Breadcrumb
+                    items={[
+                      {
+                        title: (
+                          <Link to="/home">
+                            <HomeOutlined rev={undefined} />
+                          </Link>
+                        )
+                      },
 
-                    {
-                      title: (
-                        <Link to="/edc">
-                          {dictionary.en.electronicDocumentCycle}
-                        </Link>
-                      )
-                    },
-                    {
-                      title: `${dictionary.en.viewDoc} - ${id}`
-                    }
-                  ]}
-                />
-              </Space>
+                      {
+                        title: (
+                          <Link to="/edc">
+                            {dictionary.en.electronicDocumentCycle}
+                          </Link>
+                        )
+                      },
+                      {
+                        title: `${dictionary.en.viewDoc} - ${id}`
+                      }
+                    ]}
+                  />
+                </Space>
               </Col>
-             <Col>
-              <Space>
-                <Tooltip title={dictionary.en.navigateToBack}>
-                  <Button
-                    onClick={() => {
-                      navigate(-1);
-                    }}
-                    type="default"
-                  >
-                    <Space>
-                      <CloseOutlined rev={undefined} />
-                    </Space>
-                  </Button>
-                </Tooltip>
-                {edcViewItem?.permission?.editButton && (
-                  <Button type="default" onClick={updateDoc}>
-                    <Space>{dictionary.en.editBtn}</Space>
-                  </Button>
-                )}
-                {edcViewItem?.permission?.deleteButton && (
-                  <Button type="default" onClick={openDeleteConfirmationModal}>
-                    <Space>{dictionary.en.delete}</Space>
-                  </Button>
-                )}
+              <Col>
+                <Space>
+                  <Tooltip title={dictionary.en.navigateToBack}>
+                    <Button
+                      onClick={() => {
+                        navigate(-1);
+                      }}
+                      type="default"
+                    >
+                      <Space>
+                        <CloseOutlined rev={undefined} />
+                      </Space>
+                    </Button>
+                  </Tooltip>
+                  {edcViewItem?.permission?.editButton && (
+                    <Button type="default" onClick={updateDoc}>
+                      <Space>{dictionary.en.editBtn}</Space>
+                    </Button>
+                  )}
+                  {edcViewItem?.permission?.deleteButton && (
+                    <Button
+                      type="default"
+                      onClick={openDeleteConfirmationModal}
+                    >
+                      <Space>{dictionary.en.delete}</Space>
+                    </Button>
+                  )}
 
-                {edcViewItem?.permission?.returnButton && (
-                  <Button type="default" onClick={returnDoc}>
-                    <Space>{dictionary.en.toReturn}</Space>
-                  </Button>
-                )}
+                  {edcViewItem?.permission?.returnButton && (
+                    <Button type="default" onClick={returnDoc}>
+                      <Space>{dictionary.en.toReturn}</Space>
+                    </Button>
+                  )}
 
-                {edcViewItem?.permission?.rejectButton && (
-                  <Button type="default" onClick={rejectDoc}>
-                    <Space>{dictionary.en.toCancel}</Space>
-                  </Button>
-                )}
-                {edcViewItem?.permission?.approveButton && (
-                  <Button
-                    type="primary"
-                    onClick={approveDoc}
-                    disabled={approveLoading}
-                    loading={approveLoading}
-                  >
-                    <Space>{dictionary.en.toApprove}</Space>
-                  </Button>
-                )}
-              </Space>
-             </Col>
-             
+                  {edcViewItem?.permission?.rejectButton && (
+                    <Button type="default" onClick={rejectDoc}>
+                      <Space>{dictionary.en.toCancel}</Space>
+                    </Button>
+                  )}
+                  {edcViewItem?.permission?.approveButton && (
+                    <Button
+                      type="primary"
+                      onClick={approveDoc}
+                      disabled={approveLoading}
+                      loading={approveLoading}
+                    >
+                      <Space>{dictionary.en.toApprove}</Space>
+                    </Button>
+                  )}
+                </Space>
+              </Col>
             </Row>
           </Card>
           <Row gutter={15} justify="space-between">
@@ -302,7 +304,11 @@ function ViewAddition() {
               <Card
                 size="small"
                 className="box box-margin-y"
-                style={{ minHeight: '49%', maxHeight: '49%', overflowY: 'auto'}}
+                style={{
+                  minHeight: '49%',
+                  maxHeight: '49%',
+                  overflowY: 'auto'
+                }}
               >
                 <Typography.Text>
                   {' '}
