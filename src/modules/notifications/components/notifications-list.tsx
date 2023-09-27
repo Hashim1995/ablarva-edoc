@@ -99,7 +99,11 @@ function NotificationsList() {
                             }}
                             icon={<FileTextOutlined rev={undefined} />}
                           />
-                          <Typography.Text ellipsis strong style={{whiteSpace: 'normal'}}>
+                          <Typography.Text
+                            ellipsis
+                            strong
+                            style={{ whiteSpace: 'normal' }}
+                          >
                             {' '}
                             {t.Message ?? dictionary.en.noDataText}
                           </Typography.Text>

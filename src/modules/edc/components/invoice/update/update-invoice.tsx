@@ -24,7 +24,7 @@ import {
   FilePdfOutlined,
   PlusCircleOutlined,
   SwapOutlined,
-  FileAddOutlined,
+  FileAddOutlined
   // RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -61,7 +61,7 @@ import {
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
   IEdcDocsListOptionsResponse,
-  IGetEdcExtraByIdResponse,
+  IGetEdcExtraByIdResponse
   // IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
