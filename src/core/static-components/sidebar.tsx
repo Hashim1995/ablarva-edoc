@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import { BiChart, BiFile, BiHomeAlt } from 'react-icons/bi';
 import { FiUsers, FiSettings } from 'react-icons/fi';
-import { TbTemplate } from 'react-icons/tb';
+// import { TbTemplate } from 'react-icons/tb';
 import { useLocalStorage } from 'usehooks-ts';
 import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
 import { ReactComponent as Logo } from '@/assets/images/logo.svg';
@@ -53,12 +53,12 @@ function Sidebar() {
         <Link to="/settings/users"> {dictionary.en.users} </Link>,
         '/settings/users',
         <FiUsers />
-      ),
-      getItem(
-        <Link to="/settings/circulation-templates"> Internal structure</Link>,
-        '/settings/circulation-templates',
-        <TbTemplate />
       )
+      // getItem(
+      //   <Link to="/settings/circulation-templates"> Internal structure</Link>,
+      //   '/settings/circulation-templates',
+      //   <TbTemplate />
+      // )
     ])
   ];
 
