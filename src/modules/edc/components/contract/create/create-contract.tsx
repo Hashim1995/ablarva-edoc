@@ -26,7 +26,7 @@ import {
   PlusCircleOutlined,
   SwapOutlined,
   FileAddOutlined,
-  RetweetOutlined
+  // RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -63,8 +63,8 @@ import {
   IEdcContractForm,
   IEdcContractPayload,
   IEdcContractTableFileListItem,
-  IGetReceivingEntityEmployeesResponse,
-  IGetTemplatesListResponse
+  // IGetReceivingEntityEmployeesResponse,
+  // IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 import FileUploadModal from '../../../modals/file-upload';
@@ -112,13 +112,13 @@ function CreateContract() {
   const [mainSubmitLoading, setMainSubmitLoading] = useState<boolean>(false);
   const [draftSubmitLoading, setDraftSubmitLoading] = useState<boolean>(false);
   const [blockRoute, setBlockRoute] = useState(true);
-  const [templatesListLoading, setTemplatesListLoading] =
-    useState<boolean>(false);
-  const [templatesList, setTemplatesList] =
-    useState<IGetTemplatesListResponse>();
-    const [receivingEntityEmployees, setReceivingEntityEmployees] =
-    useState<IGetTemplatesListResponse>();
-    const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
+  // const [templatesListLoading, setTemplatesListLoading] =
+  //   useState<boolean>(false);
+  // const [templatesList, setTemplatesList] =
+  //   useState<IGetTemplatesListResponse>();
+  //   const [receivingEntityEmployees, setReceivingEntityEmployees] =
+  //   useState<IGetTemplatesListResponse>();
+    // const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
   const { useToken } = theme;
   const { token } = useToken();
 
@@ -138,32 +138,32 @@ function CreateContract() {
     });
   };
 
-  useEffect(() => {
-    const receiverValue = watch('Receiver');
-    const forInfoValue = watch('ForInfos');
-    console.log(watch('ForInfos'), 'watch()');
+  // useEffect(() => {
+  //   const receiverValue = watch('Receiver');
+  //   const forInfoValue = watch('ForInfos');
+  //   console.log(watch('ForInfos'), 'watch()');
     
-    if(receiverValue && forInfoValue){
-      console.log(forInfoValue, 'lol');
+  //   if(receiverValue && forInfoValue){
+  //     console.log(forInfoValue, 'lol');
       
-      setSelectedReceiver([receiverValue, ...forInfoValue]);
-    }
+  //     setSelectedReceiver([receiverValue, ...forInfoValue]);
+  //   }
 
-  }, [watch('Receiver'), watch('ForInfos')]);
+  // }, [watch('Receiver'), watch('ForInfos')]);
 
 
-  const fetchTemplatesList = async () => {
-    setTemplatesListLoading(true);
-    const res: IGetTemplatesListResponse =
-      await EdcServies.getInstance().getTemplatesList();
-    setTemplatesList(res);
-    setTemplatesListLoading(false);
-  };
+  // const fetchTemplatesList = async () => {
+  //   setTemplatesListLoading(true);
+  //   const res: IGetTemplatesListResponse =
+  //     await EdcServies.getInstance().getTemplatesList();
+  //   setTemplatesList(res);
+  //   setTemplatesListLoading(false);
+  // };
 
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
     setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
-    fetchTemplatesList();
+    // fetchTemplatesList();
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
@@ -342,11 +342,11 @@ function CreateContract() {
           setdisableRecieverVoen(true);
           toast.success(dictionary.en.successTxt, toastOptions);
   
-          const employees: IGetReceivingEntityEmployeesResponse = await edcServiceInstance.getReceivingEntityEmployeesList(watch('RecieverLegalEntityVoen'));
-          console.log(employees, 'employees');
-          if(employees.IsSuccess){
-            setReceivingEntityEmployees(employees);
-          }
+          // const employees: IGetReceivingEntityEmployeesResponse = await edcServiceInstance.getReceivingEntityEmployeesList(watch('RecieverLegalEntityVoen'));
+          // console.log(employees, 'employees');
+          // if(employees.IsSuccess){
+          //   setReceivingEntityEmployees(employees);
+          // }
         }
         setVoenInputLoading(false);
       } catch (error) {
@@ -614,7 +614,7 @@ function CreateContract() {
                             }}
                           />
                         </Col>
-                        <Col className="gutter-row" span={24}>
+                        {/* <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.receiver}
                             name="Receiver"
@@ -668,7 +668,7 @@ function CreateContract() {
                               style: { fontWeight: 'bolder' }
                             }}
                           />
-                        </Col>
+                        </Col> */}
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.docStatus}
@@ -702,7 +702,7 @@ function CreateContract() {
                 </Collapse>
               </div>
             </Timeline.Item>
-            <Timeline.Item
+            {/* <Timeline.Item
               dot={
                 <RetweetOutlined
                   rev={undefined}
@@ -755,7 +755,7 @@ function CreateContract() {
                   </Collapse.Panel>
                 </Collapse>
               </div>
-            </Timeline.Item>
+            </Timeline.Item> */}
             <Timeline.Item
               dot={
                 <InfoCircleOutlined

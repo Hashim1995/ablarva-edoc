@@ -24,7 +24,7 @@ import {
   PlusCircleOutlined,
   SwapOutlined,
   FileAddOutlined,
-  RetweetOutlined
+  // RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -57,7 +57,7 @@ import {
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
   IEdcDocsListOptionsResponse,
-  IGetTemplatesListResponse
+  // IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 
@@ -104,13 +104,13 @@ function CreateAct() {
     useState<IEdcDocsListOptions[]>();
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
-  const [templatesListLoading, setTemplatesListLoading] =
-    useState<boolean>(false);
-  const [templatesList, setTemplatesList] =
-    useState<IGetTemplatesListResponse>();
-    const [receivingEntityEmployees, setReceivingEntityEmployees] =
-    useState<IGetTemplatesListResponse>();
-    const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
+  // const [templatesListLoading, setTemplatesListLoading] =
+  //   useState<boolean>(false);
+  // const [templatesList, setTemplatesList] =
+  //   useState<IGetTemplatesListResponse>();
+  //   const [receivingEntityEmployees, setReceivingEntityEmployees] =
+  //   useState<IGetTemplatesListResponse>();
+  //   const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
     setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
@@ -137,26 +137,26 @@ function CreateAct() {
     });
   };
 
-  useEffect(() => {
-    const receiverValue = watch('Receiver');
-    const forInfoValue = watch('ForInfos');
-    console.log(watch('ForInfos'), 'watch()');
+  // useEffect(() => {
+  //   const receiverValue = watch('Receiver');
+  //   const forInfoValue = watch('ForInfos');
+  //   console.log(watch('ForInfos'), 'watch()');
     
-    if(receiverValue && forInfoValue){
-      console.log(forInfoValue, 'lol');
+  //   if(receiverValue && forInfoValue){
+  //     console.log(forInfoValue, 'lol');
       
-      setSelectedReceiver([receiverValue, ...forInfoValue]);
-    }
+  //     setSelectedReceiver([receiverValue, ...forInfoValue]);
+  //   }
 
-  }, [watch('Receiver'), watch('ForInfos')]);
+  // }, [watch('Receiver'), watch('ForInfos')]);
 
-  const fetchTemplatesList = async () => {
-    setTemplatesListLoading(true);
-    const res: IGetTemplatesListResponse =
-      await EdcServies.getInstance().getTemplatesList();
-    setTemplatesList(res);
-    setTemplatesListLoading(false);
-  };
+  // const fetchTemplatesList = async () => {
+  //   setTemplatesListLoading(true);
+  //   const res: IGetTemplatesListResponse =
+  //     await EdcServies.getInstance().getTemplatesList();
+  //   setTemplatesList(res);
+  //   setTemplatesListLoading(false);
+  // };
 
   const createMainAct = async (data: IEdcActForm) => {
     if (data?.tableFileList?.length !== 1) {
@@ -301,16 +301,16 @@ function CreateAct() {
     }
   };
 
-  const getReceivingEntityEmployeesList = async (voen: string) => {
-    const res = await EdcServies.getInstance().getReceivingEntityEmployeesList(voen);
-    if(res.IsSuccess){
-      setReceivingEntityEmployees(res);
-    }
-  }
+  // const getReceivingEntityEmployeesList = async (voen: string) => {
+  //   const res = await EdcServies.getInstance().getReceivingEntityEmployeesList(voen);
+  //   if(res.IsSuccess){
+  //     setReceivingEntityEmployees(res);
+  //   }
+  // }
 
   useEffect(() => {
     getDocsListOptions();
-    fetchTemplatesList();
+    // fetchTemplatesList();
   }, []);
 
   return (
@@ -439,7 +439,7 @@ function CreateAct() {
                                 'RecieverLegalEntityName',
                                 e?.receiverName
                               );
-                              getReceivingEntityEmployeesList(  e?.receiverVoen)
+                              // getReceivingEntityEmployeesList(  e?.receiverVoen)
                             }}
                             errors={errors}
                             selectProps={{
@@ -550,7 +550,7 @@ function CreateAct() {
                             }}
                           />
                         </Col>
-                        <Col className="gutter-row" span={24}>
+                        {/* <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.receiver}
                             name="Receiver"
@@ -604,14 +604,14 @@ function CreateAct() {
                               style: { fontWeight: 'bolder' }
                             }}
                           />
-                        </Col>
+                        </Col> */}
                       </Row>
                     </div>
                   </Collapse.Panel>
                 </Collapse>
               </div>
             </Timeline.Item>
-            <Timeline.Item
+            {/* <Timeline.Item
               dot={
                 <RetweetOutlined
                   rev={undefined}
@@ -664,7 +664,7 @@ function CreateAct() {
                   </Collapse.Panel>
                 </Collapse>
               </div>
-            </Timeline.Item>
+            </Timeline.Item> */}
             <Timeline.Item
               dot={
                 <InfoCircleOutlined
