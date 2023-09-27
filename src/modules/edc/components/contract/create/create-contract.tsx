@@ -25,8 +25,8 @@ import {
   FilePdfOutlined,
   PlusCircleOutlined,
   SwapOutlined,
-  FileAddOutlined,
-  RetweetOutlined
+  FileAddOutlined
+  // RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -62,8 +62,9 @@ import {
   ICompanyDetailResponse,
   IEdcContractForm,
   IEdcContractPayload,
-  IEdcContractTableFileListItem,
-  IGetTemplatesListResponse
+  IEdcContractTableFileListItem
+  // IGetReceivingEntityEmployeesResponse,
+  // IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 import FileUploadModal from '../../../modals/file-upload';
@@ -89,6 +90,8 @@ function CreateContract() {
       StartDate: '',
       ExpireDate: '',
       RenewalDate: '',
+      Receiver: null,
+      ForInfos: [],
       Description: '',
       tableFileList: []
     }
@@ -109,11 +112,13 @@ function CreateContract() {
   const [mainSubmitLoading, setMainSubmitLoading] = useState<boolean>(false);
   const [draftSubmitLoading, setDraftSubmitLoading] = useState<boolean>(false);
   const [blockRoute, setBlockRoute] = useState(true);
-  const [templatesListLoading, setTemplatesListLoading] =
-    useState<boolean>(false);
-  const [templatesList, setTemplatesList] =
-    useState<IGetTemplatesListResponse>();
-
+  // const [templatesListLoading, setTemplatesListLoading] =
+  //   useState<boolean>(false);
+  // const [templatesList, setTemplatesList] =
+  //   useState<IGetTemplatesListResponse>();
+  //   const [receivingEntityEmployees, setReceivingEntityEmployees] =
+  //   useState<IGetTemplatesListResponse>();
+  // const [selectedReceiver, setSelectedReceiver] = useState<number[]>([]);
   const { useToken } = theme;
   const { token } = useToken();
 
@@ -133,18 +138,31 @@ function CreateContract() {
     });
   };
 
-  const fetchTemplatesList = async () => {
-    setTemplatesListLoading(true);
-    const res: IGetTemplatesListResponse =
-      await EdcServies.getInstance().getTemplatesList();
-    setTemplatesList(res);
-    setTemplatesListLoading(false);
-  };
+  // useEffect(() => {
+  //   const receiverValue = watch('Receiver');
+  //   const forInfoValue = watch('ForInfos');
+  //   console.log(watch('ForInfos'), 'watch()');
+
+  //   if(receiverValue && forInfoValue){
+  //     console.log(forInfoValue, 'lol');
+
+  //     setSelectedReceiver([receiverValue, ...forInfoValue]);
+  //   }
+
+  // }, [watch('Receiver'), watch('ForInfos')]);
+
+  // const fetchTemplatesList = async () => {
+  //   setTemplatesListLoading(true);
+  //   const res: IGetTemplatesListResponse =
+  //     await EdcServies.getInstance().getTemplatesList();
+  //   setTemplatesList(res);
+  //   setTemplatesListLoading(false);
+  // };
 
   useEffect(() => {
     setValue('SenderLegalEntityName', userCompanyData?.Name);
     setValue('SenderLegalEntityVoen', userCompanyData?.Voen);
-    fetchTemplatesList();
+    // fetchTemplatesList();
     window.scrollTo(0, 0);
   }, [userCompanyData]);
 
@@ -206,6 +224,8 @@ function CreateContract() {
       ProssesType: data?.ProssesType,
       Description: data?.Description,
       documentApprovalCycleId: data?.documentApprovalCycleId,
+      Receiver: data.Receiver,
+      ForInfos: data.ForInfos,
       ExpireDate: data?.ExpireDate
         ? dayjs(expireDate.toISOString()).format()
         : null,
@@ -305,8 +325,10 @@ function CreateContract() {
       toast.error(dictionary.en.voenMustBeDifferent, toastOptions);
     } else {
       setVoenInputLoading(true);
-      const res: ICompanyDetailResponse =
-        await EdcServies.getInstance().getByVoen(
+      const edcServiceInstance = EdcServies.getInstance();
+
+      try {
+        const res: ICompanyDetailResponse = await edcServiceInstance.getByVoen(
           watch('RecieverLegalEntityVoen'),
           () => {
             setVoenInputLoading(false);
@@ -314,12 +336,21 @@ function CreateContract() {
           }
         );
 
-      if (res.IsSuccess) {
-        setValue('RecieverLegalEntityName', res?.Data?.Name);
-        setdisableRecieverVoen(true);
-        toast.success(dictionary.en.successTxt, toastOptions);
+        if (res.IsSuccess) {
+          setValue('RecieverLegalEntityName', res?.Data?.Name);
+          setdisableRecieverVoen(true);
+          toast.success(dictionary.en.successTxt, toastOptions);
+
+          // const employees: IGetReceivingEntityEmployeesResponse = await edcServiceInstance.getReceivingEntityEmployeesList(watch('RecieverLegalEntityVoen'));
+          // console.log(employees, 'employees');
+          // if(employees.IsSuccess){
+          //   setReceivingEntityEmployees(employees);
+          // }
+        }
+        setVoenInputLoading(false);
+      } catch (error) {
+        console.error(error);
       }
-      setVoenInputLoading(false);
     }
   };
 
@@ -581,7 +612,7 @@ function CreateContract() {
                             }}
                           />
                         </Col>
-                        <Col className="gutter-row" span={24}>
+                        {/* <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.receiver}
                             name="Receiver"
@@ -598,7 +629,7 @@ function CreateContract() {
                                 dictionary.en.receiver
                               ),
                               className: 'w-full',
-                              options: docStatusOptions,
+                              options: receivingEntityEmployees?.Data.Datas.filter(z => !selectedReceiver.includes(Number(z.value))),
                               size: 'large'
                             }}
                             formItemProps={{
@@ -611,7 +642,7 @@ function CreateContract() {
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.forInfo}
-                            name="ForInfo"
+                            name="ForInfos"
                             control={control}
                             placeholder={inputPlaceholderText(
                               dictionary.en.forInfo
@@ -620,12 +651,13 @@ function CreateContract() {
                             selectProps={{
                               mode: 'multiple',
                               showSearch: true,
-                              id: 'ForInfo',
+                              id: 'ForInfos',
                               placeholder: selectPlaceholderText(
                                 dictionary.en.forInfo
                               ),
                               className: 'w-full',
-                              options: docStatusOptions,
+                          
+                              options: receivingEntityEmployees?.Data.Datas.filter(z => !selectedReceiver.includes(Number(z.value))),
                               size: 'large'
                             }}
                             formItemProps={{
@@ -634,7 +666,7 @@ function CreateContract() {
                               style: { fontWeight: 'bolder' }
                             }}
                           />
-                        </Col>
+                        </Col> */}
                         <Col className="gutter-row" span={24}>
                           <AppHandledSelect
                             label={dictionary.en.docStatus}
@@ -668,7 +700,7 @@ function CreateContract() {
                 </Collapse>
               </div>
             </Timeline.Item>
-            <Timeline.Item
+            {/* <Timeline.Item
               dot={
                 <RetweetOutlined
                   rev={undefined}
@@ -706,7 +738,7 @@ function CreateContract() {
                                 dictionary.en.templateName
                               ),
                               className: 'w-full',
-                              options: templatesList?.Data.Datas,
+                              options: templatesList?.Data?.Datas ?? [],
                               size: 'large'
                             }}
                             formItemProps={{
@@ -721,7 +753,7 @@ function CreateContract() {
                   </Collapse.Panel>
                 </Collapse>
               </div>
-            </Timeline.Item>
+            </Timeline.Item> */}
             <Timeline.Item
               dot={
                 <InfoCircleOutlined

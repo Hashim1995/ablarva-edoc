@@ -295,7 +295,11 @@ function ViewContract() {
               <Card
                 size="small"
                 className="box box-margin-y"
-                style={{ minHeight: '56%', maxHeight: '56%', overflowY: 'auto' }}
+                style={{
+                  minHeight: '56%',
+                  maxHeight: '56%',
+                  overflowY: 'auto'
+                }}
               >
                 <Typography.Text>
                   {' '}

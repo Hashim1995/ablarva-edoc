@@ -101,6 +101,7 @@ export const dictionary = {
     contactNumber: 'Əlaqə nömrəsi',
     email: 'E-poçt ünvanı',
     createdAt: 'Əlavə olunma tarixi',
+    updatedAt: 'Redaktə olunma tarixi',
     statusSuccessMessage: 'Status uğurla dəyişdirildi',
     FathersName: 'Ata adı',
     addStaff: 'İstifadəçi əlavə edin',
@@ -171,7 +172,8 @@ export const dictionary = {
     addTemplate: 'Şablon əlavə edin',
     docDate: 'Sənədin tarixi',
     receiver: 'Qəbul edən şəxs',
-    forInfo: 'Məlumat üçün'
+    forInfo: 'Məlumat üçün',
+    createdBy: 'Tərtib edən şəxs'
   },
   en: {
     personalCabinet: 'Personal Cabinet',
@@ -212,7 +214,7 @@ export const dictionary = {
     confirmDelete:
       'The data you have entered will be deleted. Are you sure you want to close the modal window?',
     confirmTitle: 'Confirmation',
-    noDataText: 'No Data',
+    noDataText: '-',
     viewImgModalHeader: 'IMAGE VIEW',
     closeBtn: 'Close',
     editBtn: 'Edit',
@@ -275,6 +277,7 @@ export const dictionary = {
     contactNumber: 'Contact Number',
     email: 'Email Address',
     createdAt: 'Date Added',
+    updatedAt: 'Date Updated',
     statusSuccessMessage: 'Status Successfully Changed',
     FathersName: "Father's Name",
     addStaff: 'Add User',
@@ -345,6 +348,7 @@ export const dictionary = {
     voenMustBeDifferent: 'Voen must be different',
     docDate: 'Document Date',
     receiver: 'Recipient',
-    forInfo: 'For Information'
+    forInfo: 'For Information',
+    createdBy: 'Created by'
   }
 };

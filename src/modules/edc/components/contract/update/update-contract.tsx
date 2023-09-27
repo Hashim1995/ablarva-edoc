@@ -26,8 +26,8 @@ import {
   FilePdfOutlined,
   PlusCircleOutlined,
   SwapOutlined,
-  FileAddOutlined,
-  RetweetOutlined
+  FileAddOutlined
+  // RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -65,8 +65,8 @@ import {
   IEdcContractForm,
   IEdcContractPayload,
   IEdcContractTableFileListItem,
-  IGetEdcContractByIdResponse,
-  IGetTemplatesListResponse
+  IGetEdcContractByIdResponse
+  // IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 import FileUploadModal from '../../../modals/file-upload';
@@ -117,10 +117,10 @@ function UpdateContract() {
   const [senderLegalEntityVoen, setSenderLegalEntityVoen] = useState<
     string | null
   >('');
-  const [templatesListLoading, setTemplatesListLoading] =
-    useState<boolean>(false);
-  const [templatesList, setTemplatesList] =
-    useState<IGetTemplatesListResponse>();
+  // const [templatesListLoading, setTemplatesListLoading] =
+  //   useState<boolean>(false);
+  // const [templatesList, setTemplatesList] =
+  //   useState<IGetTemplatesListResponse>();
 
   const getByID = async (docId: string) => {
     const isDraft: boolean = pathname?.includes('draft');
@@ -166,17 +166,17 @@ function UpdateContract() {
     }
   };
 
-  const fetchTemplatesList = async () => {
-    setTemplatesListLoading(true);
-    const res: IGetTemplatesListResponse =
-      await EdcServies.getInstance().getTemplatesList();
-    setTemplatesList(res);
-    setTemplatesListLoading(false);
-  };
+  // const fetchTemplatesList = async () => {
+  //   setTemplatesListLoading(true);
+  //   const res: IGetTemplatesListResponse =
+  //     await EdcServies.getInstance().getTemplatesList();
+  //   setTemplatesList(res);
+  //   setTemplatesListLoading(false);
+  // };
 
   useEffect(() => {
     id && getByID(id);
-    fetchTemplatesList();
+    // fetchTemplatesList();
     window.scrollTo(0, 0);
   }, [id]);
 
@@ -649,7 +649,7 @@ function UpdateContract() {
                               }}
                             />
                           </Col>
-                          <Col className="gutter-row" span={24}>
+                          {/* <Col className="gutter-row" span={24}>
                             <AppHandledSelect
                               label={dictionary.en.receiver}
                               name="Receiver"
@@ -702,7 +702,7 @@ function UpdateContract() {
                                 style: { fontWeight: 'bolder' }
                               }}
                             />
-                          </Col>
+                          </Col> */}
                           <Col className="gutter-row" span={24}>
                             <AppHandledSelect
                               label={dictionary.en.docStatus}
@@ -736,7 +736,7 @@ function UpdateContract() {
                   </Collapse>
                 </div>
               </Timeline.Item>
-              <Timeline.Item
+              {/* <Timeline.Item
                 dot={
                   <RetweetOutlined
                     rev={undefined}
@@ -789,7 +789,7 @@ function UpdateContract() {
                     </Collapse.Panel>
                   </Collapse>
                 </div>
-              </Timeline.Item>
+              </Timeline.Item> */}
               <Timeline.Item
                 dot={
                   <InfoCircleOutlined

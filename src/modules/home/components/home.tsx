@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, Col, Row, Skeleton, theme } from 'antd';
+import { Card, Col, Grid, Row, Skeleton, theme } from 'antd';
 import { BiFile } from 'react-icons/bi';
 import StatisticsCard from '@/components/display/cards/statistics';
 import ReportsLineChart from '@/components/display/charts/line';
@@ -10,6 +10,8 @@ import { IGetStatisticsListResponse, IStatisticsListItem } from '../models';
 
 function Home() {
   const { useToken } = theme;
+  const { useBreakpoint } = Grid;
+  const { lg } = useBreakpoint();
 
   const { token } = useToken();
   const [statsLoading, setStatsLoading] = useState(false);
@@ -17,6 +19,7 @@ function Home() {
   const [statsList, setStatsList] = useState<IGetStatisticsListResponse>();
   const [reportsList, setReportsList] =
     useState<IGetReportsListByStatusResponse>();
+
   const fetchStatsList = async () => {
     setStatsLoading(true);
 
@@ -57,7 +60,7 @@ function Home() {
       ) : (
         <Row gutter={16}>
           {statsList?.Data.Datas.map((t: IStatisticsListItem) => (
-            <Col style={{ width: '20%' }}>
+            <Col style={{ width: lg ? '20%' : '33%' }}>
               <StatisticsCard
                 Id={t.Id}
                 key={t.Id}
