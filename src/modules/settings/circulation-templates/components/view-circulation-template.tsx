@@ -70,17 +70,15 @@ function ViewCirculationTemplate() {
         (t: IGroupedCycleMemberItemView[], i) => {
           const { order } = i;
 
-          if (order !== null && order !== undefined) {
-            const index = t.findIndex(group => group.order === order);
+          const index = t.findIndex(group => group.order === order);
 
-            if (index === -1) {
-              t.push({
-                order,
-                users: [i]
-              });
-            } else {
-              t[index].users.push(i);
-            }
+          if (index === -1) {
+            t.push({
+              order,
+              users: [i]
+            });
+          } else {
+            t[index].users.push(i);
           }
 
           return t;
@@ -146,7 +144,7 @@ function ViewCirculationTemplate() {
               </Typography.Paragraph>
               {templateData?.Data?.forInfo.map(t => (
                 <Row>
-                  <Card style={{ width: 300, marginTop: 10 }} loading={loading}>
+                  <Card style={{ width: 200, marginTop: 10 }} loading={loading}>
                     <Meta
                       style={{ alignItems: 'center' }}
                       avatar={
@@ -195,10 +193,11 @@ function ViewCirculationTemplate() {
                               }}
                             >
                               {i !== 0 &&
-                                usersLength === previousUsersLength &&
-                                nextUsersLength !== 1 &&
-                                previousUsersLength !== 1 && (
-                                  // i !== usersLength + 1 &&
+                                // usersLength === previousUsersLength &&
+                                // nextUsersLength !== 1 &&
+                                previousUsersLength !== 1 &&
+                                // i !== usersLength + 1 &&
+                                usersLength !== 1 && (
                                   <>
                                     {z === Math.floor(usersLength / 2) && (
                                       <Row
@@ -212,7 +211,7 @@ function ViewCirculationTemplate() {
                                       >
                                         <div
                                           style={{
-                                            width: 2,
+                                            width: 1,
                                             height: 30,
                                             background: '#000'
                                           }}
@@ -234,12 +233,11 @@ function ViewCirculationTemplate() {
                                       <div
                                         style={{
                                           width:
-                                            (z === 0 ||
-                                              z === usersLength - 1) &&
-                                            usersLength >= previousUsersLength
-                                              ? '50%'
+                                            z === 0 || z === usersLength - 1
+                                              ? // usersLength >= previousUsersLength
+                                                '50%'
                                               : '100%',
-                                          height: 2,
+                                          height: 1,
                                           background: '#000'
                                         }}
                                       />
@@ -253,7 +251,7 @@ function ViewCirculationTemplate() {
                                       {' '}
                                       <div
                                         style={{
-                                          width: 2,
+                                          width: 1,
                                           height: 100,
                                           background: '#000'
                                         }}
@@ -270,7 +268,7 @@ function ViewCirculationTemplate() {
                                 align="middle"
                                 justify="center"
                               >
-                                <Card style={{ width: 300 }} loading={loading}>
+                                <Card style={{ width: 200 }} loading={loading}>
                                   <Meta
                                     style={{ alignItems: 'center' }}
                                     avatar={
@@ -298,7 +296,7 @@ function ViewCirculationTemplate() {
                                     <Row align="middle" justify="center">
                                       <div
                                         style={{
-                                          width: 2,
+                                          width: 1,
                                           height: 30,
                                           background: '#000'
                                         }}
@@ -329,11 +327,11 @@ function ViewCirculationTemplate() {
                                           width:
                                             (z === 0 ||
                                               z === usersLength - 1) &&
-                                            usersLength >= nextUsersLength &&
+                                            // usersLength >= nextUsersLength &&
                                             usersLength !== 1
                                               ? '50%'
                                               : '100%',
-                                          height: 2,
+                                          height: 1,
                                           background: '#000'
                                         }}
                                       />

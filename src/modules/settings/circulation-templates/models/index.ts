@@ -3,19 +3,30 @@ import { ILegalEntityPhoto } from '@/models/user';
 
 interface ICirculationTemplateFilter {
   name: string;
-  type: selectOption | null;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  status: number | null;
 }
 
 interface ICirculationTemplateItem {
   id: number;
   name?: string | null;
-  type?: string | null;
+  createdBy?: string | null;
+  createdAt?: string | Date | null;
+  updatedAt?: string | Date | null;
+  status?: number;
 }
 
 interface IGetCirculationTemplatesResponse extends IGlobalResponse {
   Data: {
     Datas: ICirculationTemplateItem[];
     TotalDataCount: number;
+  };
+}
+
+interface IDeleteTemplateResponse extends IGlobalResponse {
+  Data?: {
+    Message?: string | string[];
   };
 }
 
@@ -28,33 +39,28 @@ interface IGetUsersResponse extends IGlobalResponse {
 
 interface IGroupedCycleMemberItem {
   users: number[];
-  memberType: number;
-  group: number;
+  group: number | null;
 }
 
 interface ICycleMemberItem {
   authPersonId: number;
-  memberType: number;
   order: number;
   group: number | null;
 }
 
 interface ITemplateAddForm {
   name: string;
-  type: number;
   forInfos: number[];
   approve: {
-    userId: number | number[] | null;
+    userId: number[];
   }[];
-  sign: {
-    userId: number | number[] | null;
-  }[];
+  forSigns: number[];
 }
 
 interface ITemplateAddPayload {
   name: string;
-  type: number;
   forInfos: number[];
+  forSigns: number[];
   cycleMembers: ICycleMemberItem[];
 }
 
@@ -67,7 +73,6 @@ interface ICycleMemberItemView {
   name: string;
   file?: ILegalEntityPhoto | null;
   Profession: string;
-  memberType: number;
   order: number;
   group: number | null;
 }
@@ -80,7 +85,7 @@ interface IGroupedCycleMemberItemView {
 interface IGetSingleTemplateViewResponse extends IGlobalResponse {
   Data: {
     name: string;
-    type: number;
+
     forInfo: {
       id: number;
       name: string;
@@ -102,5 +107,6 @@ export type {
   IGroupedCycleMemberItem,
   IGetSingleTemplateViewResponse,
   ICycleMemberItemView,
-  IGroupedCycleMemberItemView
+  IGroupedCycleMemberItemView,
+  IDeleteTemplateResponse
 };
