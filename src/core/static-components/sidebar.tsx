@@ -55,6 +55,7 @@ function Sidebar() {
         <FiUsers />
       )
       // getItem(
+      //
       //   <Link to="/settings/circulation-templates"> Internal structure</Link>,
       //   '/settings/circulation-templates',
       //   <TbTemplate />
