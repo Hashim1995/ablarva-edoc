@@ -1,8 +1,12 @@
 /* eslint-disable array-callback-return */
 import { useFieldArray } from 'react-hook-form';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  PlusOutlined,
+  InfoCircleFilled
+} from '@ant-design/icons';
 
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Tooltip, theme } from 'antd';
 import AppHandledSelect from '@/components/forms/select/handled-select';
 import { dictionary } from '@/utils/constants/dictionary';
 import {
@@ -17,7 +21,6 @@ interface UserFieldArrayProps {
   control: any;
   name: any;
   errors: any;
-  multiple?: boolean;
   users: selectOption[];
   selectedUsers: any[];
 }
@@ -26,7 +29,6 @@ function UserFieldArray({
   control,
   errors,
   name,
-  multiple,
   users,
   selectedUsers
 }: UserFieldArrayProps) {
@@ -35,15 +37,8 @@ function UserFieldArray({
     name
   });
 
-  const label = () => {
-    if (name === 'approve') {
-      return dictionary.en.approve;
-    }
-    return dictionary.en.sign;
-  };
-
-  // console.log(selectedUsers, 'leblebi');
-
+  const { useToken } = theme;
+  const { token } = useToken();
   return (
     <Row align="top" justify="space-between">
       <Col span={24}>
@@ -53,25 +48,39 @@ function UserFieldArray({
               <Row align="bottom" justify="space-between">
                 <Col span={22}>
                   <AppHandledSelect
-                    label={`${label()}  ${index + 1}`}
+                    label={
+                      <>
+                        {dictionary.en.approve} {index + 1}
+                        {index === 0 && (
+                          <Tooltip title={dictionary.en.successive}>
+                            <InfoCircleFilled
+                              style={{
+                                marginInline: token.marginXS,
+                                color: token.colorPrimary
+                              }}
+                            />
+                          </Tooltip>
+                        )}
+                      </>
+                    }
                     required
                     rules={{
                       required: {
                         value: true,
-                        message: inputValidationText(label())
+                        message: inputValidationText(dictionary.en.approve)
                       }
                     }}
                     name={`${name}.${index}.userId` as keyof ITemplateAddForm}
                     IsDynamic
                     control={control}
-                    placeholder={inputPlaceholderText(label())}
+                    placeholder={inputPlaceholderText(dictionary.en.approve)}
                     errors={errors}
                     selectProps={{
                       allowClear: true,
                       showSearch: true,
-                      mode: multiple ? 'multiple' : undefined,
+                      mode: 'multiple',
                       id: `${name}.${index}.userId`,
-                      placeholder: selectPlaceholderText(label()),
+                      placeholder: selectPlaceholderText(dictionary.en.approve),
                       className: 'w-full',
                       options: users?.filter(
                         z =>
@@ -98,7 +107,7 @@ function UserFieldArray({
                       type="primary"
                       shape="circle"
                       style={{ marginBottom: 8 }}
-                      onClick={() => append({ userId: multiple ? [] : null })}
+                      onClick={() => append({ userId: [] })}
                       icon={<PlusOutlined />}
                     />
                   </Col>

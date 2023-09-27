@@ -4,6 +4,7 @@
 
 import { IGlobalResponse } from '@/models/common';
 import {
+  IDeleteTemplateResponse,
   IGetCirculationTemplatesResponse,
   IGetSingleTemplateResponse,
   IGetSingleTemplateViewResponse,
@@ -97,6 +98,25 @@ export class CirculationTemplateServies {
       false,
       onError
     );
+    return res;
+  }
+
+  public async changeStatus(
+    id: number,
+    onError?: ErrorCallBack
+  ): Promise<IGlobalResponse> {
+    const res = await HttpUtil.patch(
+      `/documentapprovalcycle/changestatus/${id}`,
+      onError
+    );
+    return res;
+  }
+
+  public async deleteTemplate(
+    id: number,
+    onError?: ErrorCallBack
+  ): Promise<IDeleteTemplateResponse> {
+    const res = await HttpUtil.delete(`/documentapprovalcycle/${id}`, onError);
     return res;
   }
 }

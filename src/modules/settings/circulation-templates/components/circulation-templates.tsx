@@ -12,6 +12,7 @@ import {
   Row,
   Space,
   Spin,
+  Switch,
   Table,
   Tooltip,
   Typography,
@@ -28,12 +29,16 @@ import {
 } from '@/utils/constants/texts';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { convertFormDataToQueryParams } from '@/utils/functions/functions';
-import { circulationTypeOptions } from '@/utils/constants/options';
+import { statusOptions } from '@/utils/constants/options';
 import AppEmpty from '@/components/display/empty';
 import AppPagination from '@/components/display/pagination';
 import { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
 import { CirculationTemplateServies } from '@/services/circulation-template-services/circulation-template-service';
-import { selectOption } from '@/models/common';
+import { IGlobalResponse, selectOption } from '@/models/common';
+import { toast } from 'react-toastify';
+import DeleteConfirmationModal from '@/components/display/DeleteConfirmationModal';
+import { toastOptions } from '@/configs/global-configs';
 import {
   ICirculationTemplateFilter,
   ICirculationTemplateItem,
@@ -53,7 +58,9 @@ function CirculationTemplates() {
     mode: 'onChange',
     defaultValues: {
       name: '',
-      type: null
+      createdAt: '',
+      updatedAt: '',
+      status: null
     }
   });
 
@@ -74,6 +81,8 @@ function CirculationTemplates() {
     useState<boolean>(false);
   const [refreshComponent, setRefreshComponent] = useState<boolean>(false);
   const [queryParams, setQueryParams] = useState<IHTTPSParams[]>([]);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
+    useState<boolean>(false);
 
   const items: MenuProps['items'] = [
     {
@@ -84,11 +93,11 @@ function CirculationTemplates() {
     {
       label: <Typography.Text>{dictionary.en.view}</Typography.Text>,
       key: '1'
+    },
+    {
+      label: <Typography.Text>{dictionary.en.delete}</Typography.Text>,
+      key: '2'
     }
-    // {
-    //   label: <Typography.Text>{dictionary.en.delete}</Typography.Text>,
-    //   key: '2'
-    // }
   ];
 
   const handleMenuClick = (e: any, raw: ICirculationTemplateItem) => {
@@ -98,6 +107,10 @@ function CirculationTemplates() {
     }
     if (e?.key === '1') {
       navigate(`/settings/circulation-templates/view/${raw.id}`);
+    }
+    if (e?.key === '2') {
+      setSelectedItem(raw.id.toString());
+      setShowDeleteConfirmationModal(true);
     }
   };
 
@@ -125,6 +138,20 @@ function CirculationTemplates() {
     }
   };
 
+  const onChangeStatus = async (id: number) => {
+    setLoading(true);
+
+    const res: IGlobalResponse =
+      await CirculationTemplateServies.getInstance().changeStatus(id);
+    if (res.IsSuccess) {
+      setLoading(false);
+      setRefreshComponent(!refreshComponent);
+      toast.success(dictionary.en.statusSuccessMessage);
+    } else {
+      setLoading(false);
+    }
+  };
+
   const onSubmit: SubmitHandler<ICirculationTemplateFilter> = async (
     data: ICirculationTemplateFilter
   ) => {
@@ -133,6 +160,23 @@ function CirculationTemplates() {
       convertFormDataToQueryParams<ICirculationTemplateFilter>(data);
     setQueryParams(queryParamsData);
     setRefreshComponent(!refreshComponent);
+  };
+
+  const closeDeleteConfirmationModal = () => {
+    setShowDeleteConfirmationModal(false);
+  };
+
+  const deleteTemplate = async () => {
+    if (selectedItem) {
+      const res = await CirculationTemplateServies.getInstance().deleteTemplate(
+        Number(selectedItem)
+      );
+      if (res.IsSuccess) {
+        toast.success(res.Data?.Message, toastOptions);
+        setShowDeleteConfirmationModal(false);
+        setRefreshComponent(z => !z);
+      }
+    }
   };
 
   const columns: ColumnsType<ICirculationTemplateItem> = [
@@ -156,9 +200,9 @@ function CirculationTemplates() {
       )
     },
     {
-      title: dictionary.en.circulationType,
-      dataIndex: 'type',
-      key: 'type',
+      title: dictionary.en.createdBy,
+      dataIndex: 'createdBy',
+      key: 'createdBy',
 
       render: record => (
         <Typography.Paragraph
@@ -170,8 +214,64 @@ function CirculationTemplates() {
             tooltip: record
           }}
         >
-          {record === 1 ? dictionary.en.successive : dictionary.en.parallel}
+          {record}
         </Typography.Paragraph>
+      )
+    },
+    {
+      title: dictionary.en.createdAt,
+      dataIndex: 'createdDate',
+      key: 'createdDate',
+      responsive: ['lg'],
+      render: (record: string) => (
+        <Typography.Paragraph
+          style={{
+            margin: 0
+          }}
+          ellipsis={{
+            rows: 1,
+            tooltip: record ?? record
+          }}
+        >
+          {dayjs(record).format('YYYY-MM-DD')}
+        </Typography.Paragraph>
+      )
+    },
+    {
+      title: dictionary.en.updatedAt,
+      dataIndex: 'updateDate',
+      key: 'updateDate',
+      responsive: ['lg'],
+      render: (record: string) => (
+        <Typography.Paragraph
+          style={{
+            margin: 0
+          }}
+          ellipsis={{
+            rows: 1,
+            tooltip: record ?? record
+          }}
+        >
+          {record
+            ? dayjs(record).format('YYYY-MM-DD')
+            : dictionary.en.noDataText}
+        </Typography.Paragraph>
+      )
+    },
+    {
+      title: dictionary.en.status,
+      dataIndex: 'status',
+      key: 'status',
+      responsive: ['lg'],
+      render: (record, raw: ICirculationTemplateItem) => (
+        <Tooltip placement="top" title="Statusu dəyiş">
+          <Switch
+            checked={record === 1}
+            onChange={() => {
+              onChangeStatus(raw.id);
+            }}
+          />
+        </Tooltip>
       )
     },
     {
@@ -269,26 +369,23 @@ function CirculationTemplates() {
                       errors={errors}
                     />
                   </Col>
-
                   <Col span={6}>
                     <AppHandledSelect
-                      label={dictionary.en.circulationType}
+                      label={dictionary.en.status}
                       required={false}
-                      name="type"
+                      name="status"
                       control={control}
-                      placeholder={inputPlaceholderText(
-                        dictionary.en.circulationType
-                      )}
+                      placeholder={inputPlaceholderText(dictionary.en.status)}
                       errors={errors}
                       selectProps={{
                         allowClear: true,
                         showSearch: true,
-                        id: 'type',
+                        id: 'status',
                         placeholder: selectPlaceholderText(
-                          dictionary.en.circulationType
+                          dictionary.en.status
                         ),
                         className: 'w-full',
-                        options: circulationTypeOptions
+                        options: statusOptions
                       }}
                     />
                   </Col>
@@ -375,6 +472,11 @@ function CirculationTemplates() {
           selectedItem={selectedItem}
         />
       )}
+      <DeleteConfirmationModal
+        onCancel={closeDeleteConfirmationModal}
+        onOk={deleteTemplate}
+        visible={showDeleteConfirmationModal}
+      />
     </div>
   );
 }
