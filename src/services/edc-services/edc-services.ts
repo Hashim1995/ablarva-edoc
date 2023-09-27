@@ -13,6 +13,7 @@ import {
   IGetEdcContractByIdResponse,
   IGetEdcExtraByIdResponse,
   IGetEdcListResponse,
+  IGetReceivingEntityEmployeesResponse,
   IGetTemplatesListResponse,
   IPermissionResponse,
   RejectMessage
@@ -353,6 +354,19 @@ export class EdcServies {
   ): Promise<IGetTemplatesListResponse> {
     const res = await HttpUtil.get(
       '/documentapprovalcycle/getallfordocument',
+      null,
+      false,
+      onError
+    );
+    return res;
+  }
+
+  public async getReceivingEntityEmployeesList(
+    voen: string,
+    onError?: ErrorCallBack
+  ): Promise<IGetReceivingEntityEmployeesResponse> {
+    const res = await HttpUtil.get(
+      `/documentapprovalcycle/getallfordocument/${voen}`,
       null,
       false,
       onError

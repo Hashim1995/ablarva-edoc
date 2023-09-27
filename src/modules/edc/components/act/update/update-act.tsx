@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Breadcrumb,
   Button,
@@ -25,8 +24,8 @@ import {
   FilePdfOutlined,
   PlusCircleOutlined,
   SwapOutlined,
-  FileAddOutlined,
-  RetweetOutlined
+  FileAddOutlined
+  // RetweetOutlined
 } from '@ant-design/icons';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -56,14 +55,14 @@ import AppRouteBlocker from '@/components/display/blocker';
 import AppHandledSelect from '@/components/forms/select/handled-select';
 import SingleFileUpload from '@/modules/edc/modals/single-file-upload';
 import dayjs from 'dayjs';
-import { docStatusOptions } from '@/utils/constants/options';
+// import { docStatusOptions } from '@/utils/constants/options';
 import {
   IEdcActForm,
   IEdcContractTableFileListItem,
   IEdcDocsListOptions,
   IEdcDocsListOptionsResponse,
-  IGetEdcExtraByIdResponse,
-  IGetTemplatesListResponse
+  IGetEdcExtraByIdResponse
+  // IGetTemplatesListResponse
 } from '../../../models';
 import AppHandledDate from '../../../../../components/forms/date/handled-date';
 
@@ -109,10 +108,8 @@ function UpdateAct() {
   const [docsListOptionsLoading, setDocsListOptionsLoading] =
     useState<boolean>(true);
   const [skeleton, setSkeleton] = useState<boolean>(true);
-  const [templatesListLoading, setTemplatesListLoading] =
-    useState<boolean>(false);
-  const [templatesList, setTemplatesList] =
-    useState<IGetTemplatesListResponse>();
+  //   const [templatesListLoading, setTemplatesListLoading] = useState<boolean>(false);
+  // const [templatesList, setTemplatesList] = useState<IGetTemplatesListResponse>();
 
   const getDocsListOptions = async () => {
     const res: IEdcDocsListOptionsResponse =
@@ -155,17 +152,17 @@ function UpdateAct() {
     }
   };
 
-  const fetchTemplatesList = async () => {
-    setTemplatesListLoading(true);
-    const res: IGetTemplatesListResponse =
-      await EdcServies.getInstance().getTemplatesList();
-    setTemplatesList(res);
-    setTemplatesListLoading(false);
-  };
+  // const fetchTemplatesList = async () => {
+  //   setTemplatesListLoading(true);
+  //   const res: IGetTemplatesListResponse =
+  //     await EdcServies.getInstance().getTemplatesList();
+  //     setTemplatesList(res);
+  //   setTemplatesListLoading(false);
+  // };
 
   useEffect(() => {
     getDocsListOptions();
-    fetchTemplatesList();
+    // fetchTemplatesList();
   }, []);
 
   useEffect(() => {
@@ -575,7 +572,7 @@ function UpdateAct() {
                               }}
                             />
                           </Col>
-                          <Col className="gutter-row" span={24}>
+                          {/* <Col className="gutter-row" span={24}>
                             <AppHandledSelect
                               label={dictionary.en.receiver}
                               name="Receiver"
@@ -628,14 +625,14 @@ function UpdateAct() {
                                 style: { fontWeight: 'bolder' }
                               }}
                             />
-                          </Col>
+                          </Col> */}
                         </Row>
                       </div>
                     </Collapse.Panel>
                   </Collapse>
                 </div>
               </Timeline.Item>
-              <Timeline.Item
+              {/* <Timeline.Item
                 dot={
                   <RetweetOutlined
                     rev={undefined}
@@ -688,7 +685,7 @@ function UpdateAct() {
                     </Collapse.Panel>
                   </Collapse>
                 </div>
-              </Timeline.Item>
+              </Timeline.Item> */}
               <Timeline.Item
                 dot={
                   <InfoCircleOutlined
