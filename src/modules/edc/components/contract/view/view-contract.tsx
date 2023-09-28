@@ -642,7 +642,7 @@ function ViewContract() {
               <Card
                 size="small"
                 className="box box-margin-y"
-                style={{ minHeight: '15%' }}
+                style={{ minHeight: '19%' }}
               >
                 <Typography.Text>
                   {' '}
@@ -716,8 +716,8 @@ function ViewContract() {
                 size="small"
                 className="box box-margin-y"
                 style={{
-                  minHeight: '27%',
-                  maxHeight: '27%',
+                  minHeight: '23%',
+                  maxHeight: '23%',
                   overflowY: 'auto'
                 }}
               >
@@ -783,9 +783,9 @@ function ViewContract() {
               lg={16}
               xl={16}
               md={24}
-              style={{ marginTop: !lg ? '90px' : '' }}
+              style={{ marginTop: !lg ? token.marginLG : '' }}
             >
-              <Card size="small" className="box box-margin-y">
+              <Card size="small" className="box box-margin-y" style={{minHeight: '980px'}}>
                 <Typography.Text>
                   {' '}
                   {dictionary.en.file.toLocaleUpperCase('en-EN')}
@@ -850,7 +850,7 @@ function ViewContract() {
               </Card>
             </Col>
           </Row>
-          <Row style={{ marginTop: token.marginXL }}>
+          <Row >
             {!isDraft && (
               <ChangeLog id={id} refreshComponent={refreshComponent} />
             )}
