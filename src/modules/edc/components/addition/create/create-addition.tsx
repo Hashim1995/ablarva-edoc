@@ -51,6 +51,7 @@ import AppRouteBlocker from '@/components/display/blocker';
 import AppHandledSelect from '@/components/forms/select/handled-select';
 import SingleFileUpload from '@/modules/edc/modals/single-file-upload';
 import dayjs from 'dayjs';
+import ConfirmSaveModalCustom from '@/components/display/ConfirmSaveModalCustom';
 import {
   IEdcAdditionForm,
   IEdcContractTableFileListItem,
@@ -357,18 +358,15 @@ function CreateAddition() {
                 </Button>
               </Tooltip>
 
-              <Button
-                onClick={() => {
-                  setFormIsRequired(false);
-                }}
-                htmlType="submit"
-                form="create-contract-form"
-                type="default"
-                loading={draftSubmitLoading}
-                disabled={draftSubmitLoading}
-              >
-                <Space>{dictionary.en.save}</Space>
-              </Button>
+              <ConfirmSaveModalCustom 
+              okText={dictionary.en.yesTxt} 
+              closeText={dictionary.en.noTxt} 
+              descriptionText={dictionary.en.confirmationSaveDraftMessage}
+              isRequired={setFormIsRequired}
+              loading={draftSubmitLoading}
+              form="create-contract-form"
+              titleText={dictionary.en.confirmTitle}
+              />
               <Button
                 onClick={() => {
                   setFormIsRequired(true);

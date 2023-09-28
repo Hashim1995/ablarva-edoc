@@ -58,6 +58,7 @@ import AppHandledInputWithButton from '@/components/forms/input/handled-input-wi
 import { ICreateResponse } from '@/models/common';
 import ViewFileModal from '@/components/display/view-file-modal';
 import AppRouteBlocker from '@/components/display/blocker';
+import ConfirmSaveModalCustom from '@/components/display/ConfirmSaveModalCustom';
 import {
   ICompanyDetailResponse,
   IEdcContractForm,
@@ -433,18 +434,15 @@ function CreateContract() {
                 </Button>
               </Tooltip>
 
-              <Button
-                onClick={() => {
-                  setFormIsRequired(false);
-                }}
-                htmlType="submit"
-                form="create-contract-form"
-                type="default"
-                loading={draftSubmitLoading}
-                disabled={draftSubmitLoading}
-              >
-                <Space>{dictionary.en.save}</Space>
-              </Button>
+              <ConfirmSaveModalCustom 
+              okText={dictionary.en.yesTxt} 
+              closeText={dictionary.en.noTxt} 
+              descriptionText={dictionary.en.confirmationSaveDraftMessage}
+              isRequired={setFormIsRequired}
+              loading={draftSubmitLoading}
+              form="create-contract-form"
+              titleText={dictionary.en.confirmTitle}
+              />
               <Button
                 onClick={() => {
                   setFormIsRequired(true);
