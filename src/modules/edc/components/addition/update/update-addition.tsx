@@ -734,9 +734,9 @@ function UpdateAddition() {
                                 },
                                 format: 'DD.MM.YYYY',
 
-                              disabledDate: current =>
-                              current &&
-                              current < dayjs().endOf('day').add(-1, 'day')
+                                disabledDate: current =>
+                                  current &&
+                                  current < dayjs().endOf('day').add(-1, 'day')
                               }}
                             />
                           </Col>

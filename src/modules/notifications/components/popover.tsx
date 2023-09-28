@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import AppPopover from '@/components/display/popover';
 import { useState, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +22,7 @@ import { NotificationServices } from '@/services/notification-services/notificat
 import notificationSocket from '@/redux/notification-socket';
 import { formatDateToWords } from '@/utils/functions/functions';
 import { IGlobalResponse } from '@/models/common';
+import AppEmpty from '@/components/display/empty';
 import {
   IGetNotificationsListResponse,
   IReadNotificationPayload
@@ -35,6 +37,7 @@ function NotificationsPopover() {
   const [loading, setLoading] = useState<boolean>(false);
   const [refresh, setRefresh] = useState<boolean>(false);
   const [unreadCount, setUnreadCount] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const navigate = useNavigate();
 
   const readAll = async () => {
@@ -80,6 +83,7 @@ function NotificationsPopover() {
       setLoading(false);
       setNotifications(res);
       setUnreadCount(res?.Data?.unReadCount);
+      setTotalCount(res?.Data?.TotalDataCount);
     }
   };
   useEffect(() => {
@@ -88,7 +92,6 @@ function NotificationsPopover() {
 
   useEffect(() => {
     notificationSocket.on('Receiver', data => {
-      console.log(data, 'letafet');
       data && fetchNotificationsList();
     });
   }, []);
@@ -101,7 +104,7 @@ function NotificationsPopover() {
       >
         {loading ? (
           <Skeleton />
-        ) : (
+        ) : totalCount > 0 ? (
           notifications?.Data.Datas.map(t => (
             <Space
               key={t.Id}
@@ -138,6 +141,8 @@ function NotificationsPopover() {
               </Col>
             </Space>
           ))
+        ) : (
+          <AppEmpty />
         )}
       </div>
       <div
