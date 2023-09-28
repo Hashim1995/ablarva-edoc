@@ -18,7 +18,7 @@ const StatusColors: Record<string, string> = {
   Termination: '#fadb14',
   Signed: '#13c2c2',
   Overdue: '#722ed1',
-  Canceled: '#5c0011',
+  Rejected: '#5c0011',
   Draft: '#595959'
 };
 

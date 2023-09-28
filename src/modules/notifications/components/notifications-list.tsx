@@ -86,7 +86,15 @@ function NotificationsList() {
           <Spin size="large" spinning={loading}>
             {notifications?.Data?.Datas.length ? (
               notifications?.Data.Datas.map((t: INotificationsListItem) => (
-                <Card key={t.Id} className="box-margin-y">
+                <Card
+                  style={{
+                    background: t.IsRead
+                      ? token.colorBgBase
+                      : token.colorPrimaryBg
+                  }}
+                  key={t.Id}
+                  className="box-margin-y"
+                >
                   <Link to={`/edc/view-contract/${t.DocumentId}`}>
                     <Row justify="space-between" align="middle">
                       <Col>

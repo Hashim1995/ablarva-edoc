@@ -48,7 +48,7 @@ const Status: selectOption[] = [
   },
   {
     value: 7,
-    label: dictionary.en.canceled
+    label: dictionary.en.rejected
   },
   {
     value: 8,

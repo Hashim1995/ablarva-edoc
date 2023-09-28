@@ -10,7 +10,7 @@ import {
   Col,
   Row,
   Skeleton,
-  Space,
+  // Space,
   Typography,
   Badge,
   theme
@@ -106,7 +106,7 @@ function NotificationsPopover() {
           <Skeleton />
         ) : totalCount > 0 ? (
           notifications?.Data.Datas.map(t => (
-            <Space
+            <Row
               key={t.Id}
               onClick={() => handleClick(t.Id, t.DocumentId, t.IsRead)}
               style={{
@@ -116,8 +116,9 @@ function NotificationsPopover() {
                 padding: token.paddingMD,
                 background: t.IsRead ? token.colorBgBase : token.colorPrimaryBg
               }}
+              align="middle"
             >
-              <Col>
+              <Col span={3}>
                 <Avatar
                   style={{
                     backgroundColor: token.colorPrimaryBgHover,
@@ -126,9 +127,14 @@ function NotificationsPopover() {
                   icon={<FileTextOutlined rev={undefined} />}
                 />
               </Col>
-              <Col>
+              <Col span={21}>
                 <Row>
-                  <Typography.Text>{t.Message}</Typography.Text>
+                  <Typography.Paragraph
+                    ellipsis={{ rows: 2, tooltip: t.Message }}
+                    style={{ margin: 0 }}
+                  >
+                    {t.Message}
+                  </Typography.Paragraph>
                 </Row>
                 <Row justify="end">
                   <Typography.Text
@@ -139,7 +145,7 @@ function NotificationsPopover() {
                   </Typography.Text>
                 </Row>
               </Col>
-            </Space>
+            </Row>
           ))
         ) : (
           <AppEmpty />
