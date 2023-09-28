@@ -58,6 +58,7 @@ import AppHandledInputWithButton from '@/components/forms/input/handled-input-wi
 import { ICreateResponse } from '@/models/common';
 import ViewFileModal from '@/components/display/view-file-modal';
 import AppRouteBlocker from '@/components/display/blocker';
+import ConfirmSaveModalCustom from '@/components/display/ConfirmSaveModalCustom';
 import {
   ICompanyDetailResponse,
   IEdcContractForm,
@@ -201,21 +202,18 @@ function CreateContract() {
   const onSubmit: SubmitHandler<IEdcContractForm> = async (
     data: IEdcContractForm
   ) => {
-    const startDate = new Date(
-      data.StartDate.$y,
-      data.StartDate.$M,
-      data.StartDate.$D
-    );
-    const expireDate = new Date(
-      data.ExpireDate.$y,
-      data.ExpireDate.$M,
-      data.ExpireDate.$D
-    );
-    const renewalDate = new Date(
-      data.RenewalDate.$y,
-      data.RenewalDate.$M,
-      data.RenewalDate.$D
-    );
+    const startDate = data?.StartDate
+    ? new Date(data.StartDate.$y, data.StartDate.$M, data.StartDate.$D)
+    : null;
+  
+  const expireDate = data?.ExpireDate
+    ? new Date(data.ExpireDate.$y, data.ExpireDate.$M, data.ExpireDate.$D)
+    : null;
+  
+  const renewalDate = data?.RenewalDate
+    ? new Date(data.RenewalDate.$y, data.RenewalDate.$M, data.RenewalDate.$D)
+    : null;
+  
     setBlockRoute(false);
     const payload: IEdcContractPayload = {
       ...data,
@@ -227,13 +225,13 @@ function CreateContract() {
       Receiver: data.Receiver,
       ForInfos: data.ForInfos,
       ExpireDate: data?.ExpireDate
-        ? dayjs(expireDate.toISOString()).format()
+        ? dayjs(expireDate?.toISOString()).format()
         : null,
       RenewalDate: data?.RenewalDate
-        ? dayjs(renewalDate.toISOString()).format()
+        ? dayjs(renewalDate?.toISOString()).format()
         : null,
       StartDate: data?.StartDate
-        ? dayjs(startDate.toISOString()).format()
+        ? dayjs(startDate?.toISOString()).format()
         : null,
       tableFileList: data?.tableFileList?.map(z => ({
         type: z?.type,
@@ -433,18 +431,15 @@ function CreateContract() {
                 </Button>
               </Tooltip>
 
-              <Button
-                onClick={() => {
-                  setFormIsRequired(false);
-                }}
-                htmlType="submit"
-                form="create-contract-form"
-                type="default"
-                loading={draftSubmitLoading}
-                disabled={draftSubmitLoading}
-              >
-                <Space>{dictionary.en.save}</Space>
-              </Button>
+              <ConfirmSaveModalCustom 
+              okText={dictionary.en.yesTxt} 
+              closeText={dictionary.en.noTxt} 
+              descriptionText={dictionary.en.confirmationSaveDraftMessage}
+              isRequired={setFormIsRequired}
+              loading={draftSubmitLoading}
+              form="create-contract-form"
+              titleText={dictionary.en.confirmTitle}
+              />
               <Button
                 onClick={() => {
                   setFormIsRequired(true);

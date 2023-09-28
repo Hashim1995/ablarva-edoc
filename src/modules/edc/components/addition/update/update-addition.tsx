@@ -56,6 +56,7 @@ import AppHandledSelect from '@/components/forms/select/handled-select';
 import SingleFileUpload from '@/modules/edc/modals/single-file-upload';
 import dayjs from 'dayjs';
 // import { docStatusOptions } from '@/utils/constants/options';
+import ConfirmSaveModalCustom from '@/components/display/ConfirmSaveModalCustom';
 import {
   IEdcAdditionForm,
   IEdcContractTableFileListItem,
@@ -242,11 +243,9 @@ function UpdateAddition() {
     data: IEdcAdditionForm
   ) => {
     setBlockRoute(false);
-    const startDate = new Date(
-      data.StartDate.$y,
-      data.StartDate.$M,
-      data.StartDate.$D
-    );
+    const startDate = data?.StartDate
+    ? new Date(data.StartDate.$y, data.StartDate.$M, data.StartDate.$D)
+    : null;
     const payload: IEdcAdditionForm = {
       ...data,
       contractNumber:
@@ -258,7 +257,7 @@ function UpdateAddition() {
       Description: data?.Description,
       DocumentTypeId: 2,
       StartDate: data?.StartDate
-        ? dayjs(startDate.toISOString()).format()
+        ? dayjs(startDate?.toISOString()).format()
         : null,
       tableFileList: data?.tableFileList?.map(z => ({
         type: z?.type,
@@ -384,18 +383,15 @@ function UpdateAddition() {
                 </Button>
               </Tooltip>
 
-              <Button
-                onClick={() => {
-                  setFormIsRequired(false);
-                }}
-                htmlType="submit"
-                form="create-contract-form"
-                type="default"
-                loading={draftSubmitLoading}
-                disabled={draftSubmitLoading}
-              >
-                <Space>{dictionary.en.save}</Space>
-              </Button>
+              <ConfirmSaveModalCustom 
+              okText={dictionary.en.yesTxt} 
+              closeText={dictionary.en.noTxt} 
+              descriptionText={dictionary.en.confirmationSaveDraftMessage}
+              isRequired={setFormIsRequired}
+              loading={draftSubmitLoading}
+              form="create-contract-form"
+              titleText={dictionary.en.confirmTitle}
+              />
               <Button
                 onClick={() => {
                   setFormIsRequired(true);
