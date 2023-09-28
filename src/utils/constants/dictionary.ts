@@ -173,7 +173,8 @@ export const dictionary = {
     docDate: 'Sənədin tarixi',
     receiver: 'Qəbul edən şəxs',
     forInfo: 'Məlumat üçün',
-    createdBy: 'Tərtib edən şəxs'
+    createdBy: 'Tərtib edən şəxs',
+    confirmationSaveDraftMessage: "Bu sənədi qaralama kimi saxlamaq istəyirsinizmi?",
   },
   en: {
     personalCabinet: 'Personal Cabinet',
@@ -349,6 +350,7 @@ export const dictionary = {
     docDate: 'Document Date',
     receiver: 'Recipient',
     forInfo: 'For Information',
-    createdBy: 'Created by'
+    createdBy: 'Created by',
+    confirmationSaveDraftMessage: "Would you like to save this document as a draft?",
   }
 };
