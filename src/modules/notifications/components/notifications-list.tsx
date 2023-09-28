@@ -52,7 +52,6 @@ function NotificationsList() {
 
   useEffect(() => {
     notificationSocket.on('Receiver', data => {
-      console.log(data, 'letafet');
       data && fetchNotificationsList();
     });
   }, []);
