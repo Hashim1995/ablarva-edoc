@@ -254,21 +254,17 @@ function UpdateContract() {
     data: IEdcContractForm
   ) => {
     setBlockRoute(false);
-    const startDate = new Date(
-      data.StartDate.$y,
-      data.StartDate.$M,
-      data.StartDate.$D
-    );
-    const expireDate = new Date(
-      data.ExpireDate.$y,
-      data.ExpireDate.$M,
-      data.ExpireDate.$D
-    );
-    const renewalDate = new Date(
-      data.RenewalDate.$y,
-      data.RenewalDate.$M,
-      data.RenewalDate.$D
-    );
+    const startDate = data?.StartDate
+    ? new Date(data.StartDate.$y, data.StartDate.$M, data.StartDate.$D)
+    : null;
+  
+  const expireDate = data?.ExpireDate
+    ? new Date(data.ExpireDate.$y, data.ExpireDate.$M, data.ExpireDate.$D)
+    : null;
+  
+  const renewalDate = data?.RenewalDate
+    ? new Date(data.RenewalDate.$y, data.RenewalDate.$M, data.RenewalDate.$D)
+    : null;
 
     const payload: IEdcContractPayload = {
       ...data,
@@ -279,13 +275,13 @@ function UpdateContract() {
         : data?.ProssesType,
       Description: data?.Description,
       ExpireDate: data?.ExpireDate
-        ? dayjs(expireDate.toISOString()).format()
+        ? dayjs(expireDate?.toISOString()).format()
         : null,
       RenewalDate: data?.RenewalDate
-        ? dayjs(renewalDate.toISOString()).format()
+        ? dayjs(renewalDate?.toISOString()).format()
         : null,
       StartDate: data?.StartDate
-        ? dayjs(startDate.toISOString()).format()
+        ? dayjs(startDate?.toISOString()).format()
         : null,
       tableFileList: data?.tableFileList?.map(z => ({
         type: z?.type,

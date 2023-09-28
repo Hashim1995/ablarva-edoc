@@ -246,11 +246,9 @@ function UpdateInvoice() {
     data: IEdcInvoiceForm
   ) => {
     setBlockRoute(false);
-    const startDate = new Date(
-      data.StartDate.$y,
-      data.StartDate.$M,
-      data.StartDate.$D
-    );
+    const startDate = data?.StartDate
+    ? new Date(data.StartDate.$y, data.StartDate.$M, data.StartDate.$D)
+    : null;
     const payload: IEdcInvoiceForm = {
       ...data,
       contractNumber:
@@ -262,7 +260,7 @@ function UpdateInvoice() {
       Description: data?.Description,
       DocumentTypeId: 3,
       StartDate: data?.StartDate
-        ? dayjs(startDate.toISOString()).format()
+        ? dayjs(startDate?.toISOString()).format()
         : null,
       tableFileList: data?.tableFileList?.map(z => ({
         type: z?.type,

@@ -196,11 +196,9 @@ function CreateAct() {
 
   const onSubmit: SubmitHandler<IEdcActForm> = async (data: IEdcActForm) => {
     setBlockRoute(false);
-    const startDate = new Date(
-      data.StartDate.$y,
-      data.StartDate.$M,
-      data.StartDate.$D
-    );
+    const startDate = data?.StartDate
+    ? new Date(data.StartDate.$y, data.StartDate.$M, data.StartDate.$D)
+    : null;
     const payload: IEdcActForm = {
       ...data,
       RecieverLegalEntityName: data?.RecieverLegalEntityName,
@@ -211,7 +209,7 @@ function CreateAct() {
       ForInfos: data.ForInfos,
       documentApprovalCycleId: data?.documentApprovalCycleId,
       StartDate: data?.StartDate
-        ? dayjs(startDate.toISOString()).format()
+        ? dayjs(startDate?.toISOString()).format()
         : null,
       tableFileList: data?.tableFileList?.map(z => ({
         type: z?.type,
