@@ -832,14 +832,12 @@ function ViewContract() {
                 <div>
                   {!versionLoading ? (
                     <TokenizedIframe
-                      style={{
-                        height: '862px'
-                      }}
+                     className='file-height'
                       tokenized
                       src={activePdfOnStage?.fileUrl ?? ''}
                     />
                   ) : (
-                    <Skeleton.Node className="w-full h-full" active>
+                    <Skeleton.Node className="w-full file-height" active>
                       <DotChartOutlined
                         rev={undefined}
                         style={{ fontSize: 40, color: '#bfbfbf' }}
