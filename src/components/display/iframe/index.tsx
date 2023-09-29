@@ -27,7 +27,9 @@ function TokenizedIframe({
   const token = useReadLocalStorage<any>('userToken');
 
   const [iframeUrl, setIframeUrl] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
   const fetchImage = async () => {
+    setLoading(true)
     if (tokenized) {
       try {
         const response = await fetch(src, {
@@ -45,6 +47,8 @@ function TokenizedIframe({
         }
       } catch (error) {
         console.error('error 2', error);
+      } finally {
+        setLoading(false)
       }
     } else {
       setIframeUrl(src);
@@ -55,10 +59,11 @@ function TokenizedIframe({
 
     return () => URL.revokeObjectURL(iframeUrl);
   }, [src]);
+console.log(style, 'style');
 
   return (
     <div style={{ height: '100%' }}>
-      {iframeUrl ? (
+      {iframeUrl && !loading ? (
         <iframe
           width="100%"
           title={title}
@@ -71,7 +76,7 @@ function TokenizedIframe({
           id={id}
         />
       ) : (
-        <Skeleton.Node style={style} className="w-full h-full" active>
+        <Skeleton.Node style={style} className={`w-full ${className}`} active>
           <DotChartOutlined
             rev={undefined}
             style={{ fontSize: 40, color: '#bfbfbf' }}

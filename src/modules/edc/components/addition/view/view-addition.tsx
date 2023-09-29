@@ -723,18 +723,20 @@ function ViewAddition() {
                           }
                         }
                       })}
+                      rowClassName={(_, index) => index !== -1 ? 'row-pointer' : ''}
                       size="small"
                       pagination={false}
                       locale={{
                         emptyText: <AppEmpty />
                       }}
-                      scroll={{ x: 300 }}
+                      scroll={{ x: 300 }} 
                       columns={columns}
                       dataSource={
                         edcViewItem?.RelationDocs !== null
                           ? edcViewItem?.RelationDocs
                           : []
                       }
+                    
                     />
                   </div>
                 ) : (
@@ -797,14 +799,12 @@ function ViewAddition() {
                 <div>
                   {!versionLoading ? (
                     <TokenizedIframe
-                      style={{
-                        height: '862px'
-                      }}
+                     className='file-height'
                       tokenized
                       src={activePdfOnStage?.fileUrl ?? ''}
                     />
                   ) : (
-                    <Skeleton.Node className="w-full h-full" active>
+                    <Skeleton.Node className="w-full file-height" active>
                       <DotChartOutlined
                         rev={undefined}
                         style={{ fontSize: 40, color: '#bfbfbf' }}
