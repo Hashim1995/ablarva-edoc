@@ -755,7 +755,11 @@ function ViewAct() {
               md={24}
               style={{ marginTop: !lg ? token.marginLG : '' }}
             >
-              <Card size="small" className="box box-margin-y" style={{minHeight: '975px'}}>
+              <Card
+                size="small"
+                className="box box-margin-y"
+                style={{ minHeight: '975px' }}
+              >
                 <Typography.Text>
                   {' '}
                   {dictionary.en.file.toLocaleUpperCase('en-EN')}
