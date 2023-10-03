@@ -618,7 +618,7 @@ function ViewAddition() {
               <Card
                 size="small"
                 className="box box-margin-y"
-                style={{ minHeight: '16%' , maxHeight: '16%' }}
+                style={{ minHeight: '16%', maxHeight: '16%' }}
               >
                 <Typography.Text>
                   {' '}
@@ -749,7 +749,11 @@ function ViewAddition() {
               md={24}
               style={{ marginTop: !lg ? token.marginLG : '' }}
             >
-              <Card size="small" className="box box-margin-y" style={{minHeight: '975px'}}>
+              <Card
+                size="small"
+                className="box box-margin-y"
+                style={{ minHeight: '975px' }}
+              >
                 <Typography.Text>
                   {' '}
                   {dictionary.en.file.toLocaleUpperCase('en-EN')}
@@ -815,7 +819,7 @@ function ViewAddition() {
               </Card>
             </Col>
           </Row>
-          <Row >
+          <Row>
             {!isDraft && (
               <ChangeLog id={id} refreshComponent={refreshComponent} />
             )}
