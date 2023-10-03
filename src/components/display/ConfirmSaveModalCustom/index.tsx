@@ -12,14 +12,14 @@ interface IConfirmationModalProps {
   isRequired: Dispatch<SetStateAction<boolean>>;
 }
 
-function ConfirmSaveModalCustom ({
+function ConfirmSaveModalCustom({
   titleText,
   descriptionText,
   closeText,
   okText,
   form,
   loading,
-  isRequired,
+  isRequired
 }: IConfirmationModalProps) {
   const showConfirmationModal = () => {
     Modal.confirm({
@@ -28,7 +28,14 @@ function ConfirmSaveModalCustom ({
       okText,
       cancelText: closeText,
       footer: (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', paddingTop: '10px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: '10px',
+            paddingTop: '10px'
+          }}
+        >
           <Button key="back" onClick={() => Modal.destroyAll()}>
             {closeText}
           </Button>
@@ -46,7 +53,7 @@ function ConfirmSaveModalCustom ({
             <Space>{okText}</Space>
           </Button>
         </div>
-      ),
+      )
     });
   };
 
@@ -55,6 +62,6 @@ function ConfirmSaveModalCustom ({
       <Button onClick={showConfirmationModal}>{dictionary.en.save}</Button>
     </div>
   );
-};
+}
 
 export default ConfirmSaveModalCustom;

@@ -203,8 +203,8 @@ function CreateAddition() {
   ) => {
     setBlockRoute(false);
     const startDate = data?.StartDate
-    ? new Date(data.StartDate.$y, data.StartDate.$M, data.StartDate.$D)
-    : null;
+      ? new Date(data.StartDate.$y, data.StartDate.$M, data.StartDate.$D)
+      : null;
     const payload: IEdcAdditionForm = {
       ...data,
       RecieverLegalEntityName: data?.RecieverLegalEntityName,
@@ -241,13 +241,13 @@ function CreateAddition() {
 
   const columns: ColumnsType<IEdcContractTableFileListItem> = [
     {
-      title: 'Sənədin tipi',
+      title: 'Document type',
       dataIndex: 'type',
       key: 'name',
       render: () => dictionary.en.fileTypeIsMain
     },
     {
-      title: 'Sənədin adı',
+      title: 'Document name',
       dataIndex: 'name',
       key: 'age'
     },
@@ -356,14 +356,14 @@ function CreateAddition() {
                 </Button>
               </Tooltip>
 
-              <ConfirmSaveModalCustom 
-              okText={dictionary.en.yesTxt} 
-              closeText={dictionary.en.noTxt} 
-              descriptionText={dictionary.en.confirmationSaveDraftMessage}
-              isRequired={setFormIsRequired}
-              loading={draftSubmitLoading}
-              form="create-contract-form"
-              titleText={dictionary.en.confirmTitle}
+              <ConfirmSaveModalCustom
+                okText={dictionary.en.yesTxt}
+                closeText={dictionary.en.noTxt}
+                descriptionText={dictionary.en.confirmationSaveDraftMessage}
+                isRequired={setFormIsRequired}
+                loading={draftSubmitLoading}
+                form="create-contract-form"
+                titleText={dictionary.en.confirmTitle}
               />
               <Button
                 onClick={() => {
