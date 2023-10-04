@@ -279,7 +279,7 @@ function Staff() {
       key: 'Status',
       responsive: ['lg'],
       render: (record: string, raw: IStaffItem) => (
-        <Tooltip placement="top" title="Statusu dəyiş">
+        <Tooltip placement="top" title="Toggle status">
           <Switch
             checked={record === dictionary.en.active}
             onChange={() => {

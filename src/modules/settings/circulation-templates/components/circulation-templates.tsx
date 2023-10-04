@@ -264,7 +264,7 @@ function CirculationTemplates() {
       key: 'status',
       responsive: ['lg'],
       render: (record, raw: ICirculationTemplateItem) => (
-        <Tooltip placement="top" title="Statusu dəyiş">
+        <Tooltip placement="top" title="Toggle status">
           <Switch
             checked={record === 1}
             onChange={() => {
