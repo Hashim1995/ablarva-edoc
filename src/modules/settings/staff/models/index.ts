@@ -15,7 +15,7 @@ interface IStaffItem {
   Status?: string | null;
   LegalEntity?: string | null;
   IsFounder?: boolean | null;
-  File?: any;
+  getFile?: any;
 }
 
 interface IStaffFilter {
