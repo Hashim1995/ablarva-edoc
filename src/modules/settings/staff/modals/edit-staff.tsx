@@ -90,7 +90,7 @@ function UpdateStaff({
       setValue('Profession', res?.Data?.Profession ?? '');
       setValue('PhoneNumber', res?.Data?.PhoneNumber ?? '');
       setValue('Permission', permissionValues ?? []);
-      const file = res?.Data?.File;
+      const file = res?.Data?.getFile;
       if (file) {
         const tokenizedFile = await tokenizeImage(file);
         setFileList([tokenizedFile]);
