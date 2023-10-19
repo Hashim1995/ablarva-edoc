@@ -175,7 +175,8 @@ export const dictionary = {
     receiver: 'Qəbul edən şəxs',
     forInfo: 'Məlumat üçün',
     createdBy: 'Tərtib edən şəxs',
-    confirmationSaveDraftMessage: "Bu sənədi qaralama kimi saxlamaq istəyirsinizmi?",
+    confirmationSaveDraftMessage:
+      'Bu sənədi qaralama kimi saxlamaq istəyirsinizmi?'
   },
   en: {
     personalCabinet: 'Personal Cabinet',
@@ -321,7 +322,7 @@ export const dictionary = {
     docStartdate: 'Document start date',
     edcCreateAct: 'Create act',
     edcCreateInvoice: 'Create invoice',
-    voen: 'VOEN',
+    voen: 'VAT',
     activityField: 'Activity field',
     address: 'Address',
     rejectionReason: 'Rejection reason',
@@ -353,6 +354,7 @@ export const dictionary = {
     receiver: 'Recipient',
     forInfo: 'For Information',
     createdBy: 'Created by',
-    confirmationSaveDraftMessage: "Would you like to save this document as a draft?",
+    confirmationSaveDraftMessage:
+      'Would you like to save this document as a draft?'
   }
 };

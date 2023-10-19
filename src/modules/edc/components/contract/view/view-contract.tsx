@@ -660,9 +660,9 @@ function ViewContract() {
                       (z: IEdcContractTableFileListItem) => {
                         let tooltipText;
                         if (z.type === 1) {
-                          tooltipText = dictionary?.az?.fileTypeIsMain;
+                          tooltipText = dictionary?.en?.fileTypeIsMain;
                         } else if (z.type === 2) {
-                          tooltipText = dictionary?.az?.fileTypeIsPrivate;
+                          tooltipText = dictionary?.en?.fileTypeIsPrivate;
                         } else {
                           tooltipText = dictionary.en.noDataText;
                         }
@@ -785,7 +785,11 @@ function ViewContract() {
               md={24}
               style={{ marginTop: !lg ? token.marginLG : '' }}
             >
-              <Card size="small" className="box box-margin-y" style={{minHeight: '980px'}}>
+              <Card
+                size="small"
+                className="box box-margin-y"
+                style={{ minHeight: '980px' }}
+              >
                 <Typography.Text>
                   {' '}
                   {dictionary.en.file.toLocaleUpperCase('en-EN')}
@@ -848,7 +852,7 @@ function ViewContract() {
               </Card>
             </Col>
           </Row>
-          <Row >
+          <Row>
             {!isDraft && (
               <ChangeLog id={id} refreshComponent={refreshComponent} />
             )}
