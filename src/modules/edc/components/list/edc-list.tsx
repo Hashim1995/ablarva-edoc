@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 /* eslint-disable no-debugger */
 import {
   Breadcrumb,
@@ -533,8 +534,9 @@ function EdcList() {
           {edcListData?.Data?.Datas.length ? (
             <Spin size="large" spinning={loading}>
               <Row gutter={[0, 10]}>
+            
                 {edcListData?.Data?.Datas?.map((z: IEdcListItem) => (
-                  <Col span={24} key={z.Id}>
+                  <Col span={24} key={window.crypto.randomUUID()}>
                     {' '}
                     <EdcListItemCard
                       isDraft={z?.isDraft}
